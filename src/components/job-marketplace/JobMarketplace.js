@@ -1,18 +1,22 @@
 import React from "react"
+import styled from "styled-components"
 import JobCardList from "./JobCardList";
 import SearchAccordion from "./SearchAccordion"
-import './JobMarketplace.css'
+
+const StyledJobMarketplace = styled.div`
+    display: flex;
+    margin: 30px 150px;
+    column-gap: 30px;
+    align-items: flex-start;
+`
 
 const JobMarketplace = () => {
-
     return(
-        <div className="Job-marketplace">
+        <StyledJobMarketplace>
             <SearchAccordion />
             <JobCardList />
-        </div>
+        </StyledJobMarketplace>
     )
 }
-
-
 
 export default JobMarketplace;

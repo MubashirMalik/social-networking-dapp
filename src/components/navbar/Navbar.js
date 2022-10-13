@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom"
 import { addressFormatter } from "../../util";
 import { FaUserEdit } from "react-icons/fa";
 import './Navbar.css'
@@ -59,9 +60,11 @@ function Navbar() {
             </div>
             <div className="Navbar-end">
                 <ul >
-                    <li>Jobs</li>
+                    <li><Link to="/">Jobs</Link></li>
                     <li>Another Link</li>
-                    <li style={{display: "flex", marginLeft: "30px", alignItems: "center", columnGap: "5px"}}>Mubashir <FaUserEdit /></li>
+                    <li style={{display: "flex", marginLeft: "30px", alignItems: "center", columnGap: "5px"}}> 
+                        <Link to="/account">Account <FaUserEdit /></Link>
+                    </li>
                 </ul>
             </div>
         </div>

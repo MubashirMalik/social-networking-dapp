@@ -1,23 +1,9 @@
-:root {
-    --badge-green: #43edac;
-    --badge-light-green: #cdf5d4;
-    --badge-red: #ef4b62;
-    --badge-light-red: #ffe0e5;
-    --badge-yellow: #fcdf35;
-    --badge-light-yellow: #faf4cf;
-
-    --job-mode-remote: #8343e7;
-    --job-mode-on-site: #00aeff;
-    --job-mode-hybrid: #b84592;
-    --btn-green: #1cc7d0;
-}
-
 .Navbar {
     display: flex;
     height: 40px;
     padding: 10px;
-    background-color: rgb(237, 237, 237, 0.2);
-    border-bottom: 1px solid rgb(229 229 229);;
+    background-color: rgb(237, 237, 237, 0.8);
+    border-bottom: 1px solid rgb(229 229 229);
     align-items: center;
     justify-content: space-between;
     font-size: 14px;

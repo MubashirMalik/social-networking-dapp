@@ -1,5 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+:root {
+    --badge-green: #43edac;
+    --badge-light-green: #cdf5d4;
+    --badge-red: #ef4b62;
+    --badge-light-red: #ffe0e5;
+    --badge-yellow: #fcdf35;
+    --badge-light-yellow: #faf4cf;
+
+    --job-mode-remote: #8343e7;
+    --job-mode-on-site: #00aeff;
+    --job-mode-hybrid: #b84592;
+    --btn-green: #1cc7d0;
+	--border-color: rgba(9, 30, 66, 0.2);
+}
+
 * {
 	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 	'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',

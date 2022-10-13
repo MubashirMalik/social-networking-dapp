@@ -1,3 +1,4 @@
+import React from "react"
 import JobCardList from "./JobCardList";
 import SearchAccordion from "./SearchAccordion"
 import './JobMarketplace.css'

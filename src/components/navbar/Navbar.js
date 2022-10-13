@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addressFormatter } from "../../util";
 import { FaUserEdit } from "react-icons/fa";
 import './Navbar.css'
@@ -12,7 +12,7 @@ function Navbar() {
 
     useEffect(() => {
         if (window.ethereum) {
-            window?.ethereum?._metamask.isUnlocked().then(isUnlocked => {
+            window.ethereum._metamask.isUnlocked().then(isUnlocked => {
                 if (isUnlocked === false) {
                     setProviderStatus(prevProviderStatus => ({
                         ...prevProviderStatus, 

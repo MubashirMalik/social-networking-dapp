@@ -1,0 +1,55 @@
+.Job-card {
+    display: flex;
+    padding: 1.5em;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    width: 620px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.Job-card > .Left {
+    width: 80%;
+}
+
+.Job-card > .Right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 20%;
+}
+
+.Job-details-row {
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.Job-mode {
+    background-color: var(--job-mode-purple);
+    color: #ffffff;
+}
+
+.Tiny-label {
+    padding: 5.83px  8.33px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.Job-location {
+    font-size: 15px;
+}
+
+.Job-title {
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.Job-engagement, .Job-type {
+    border: 1px solid #e8e8e8;
+}
+
+.Job-match {
+    font-size: 14px;
+}
+

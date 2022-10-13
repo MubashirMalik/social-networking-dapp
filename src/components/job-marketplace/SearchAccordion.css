@@ -1,0 +1,42 @@
+.Search-accordion {
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
+    width: 350px;
+    border-radius: 5px;
+}
+
+
+.Accordion-common {
+    display: flex;
+    padding: 10.5px 14px;
+    border-bottom: 1px solid rgba(9, 30, 66, 0.1);
+    font-size: 14px;
+}
+
+.Accordion-heading {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Accordion-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.Icon-text {
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.Accordion-checkbox {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+}
+
+.Checkbox-group {
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+}

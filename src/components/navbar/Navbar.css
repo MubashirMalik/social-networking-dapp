@@ -2,11 +2,11 @@
     display: flex;
     height: 40px;
     padding: 10px;
-    background-color: rgb(237, 237, 237, 0.8);
-    border-bottom: 1px solid rgb(229 229 229);
+    border-bottom: 1px solid var(--border-color);
     align-items: center;
     justify-content: space-between;
     font-size: 14px;
+    color: #2a2825;
 }
 
 .Navbar-start {
@@ -24,7 +24,7 @@
 .Provider-status {
     display: flex;
     align-items: center;
-    column-gap: 3px;
+    column-gap: 5px;
 }
 
 .Provider-status .badge {
@@ -32,11 +32,18 @@
     height: 12px;
     background-color: var(--badge-light-red);
     border-radius: 50%;
-    box-shadow: inset 0 0 0 0.2rem var(--badge-red);
+    box-shadow: inset 0 0 0 0.2px var(--badge-red);
+    line-height: 28px;
 }
 
-.Navbar-end > ul {
+.Provider-message {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.Navbar-end {
     display: flex;
+    align-items: flex-end;
     list-style: none;
     column-gap: 15px;
     margin-right: 20px;

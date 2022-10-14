@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { FaQuestion } from "react-icons/fa";
 import styled from "styled-components"
 
@@ -10,7 +11,7 @@ const EditMenuBlock = styled.div`
     border: 1px solid var(--border-color);
     align-items: center;
     column-gap: 40px;
-    width: 420px;
+    width: 380px;
     padding: 10px 24px;
 
     .Description {
@@ -30,38 +31,48 @@ const EditMenu = () => {
         <StyledEditMenu>
             <EditMenuBlock>
                 <FaQuestion className="Icon"/>
-                <div className="Menu-text">
-                    <div><b>About You</b></div>
-                    <div className="Description">Tell us more about you</div>
-                </div>
+                <Link to="/account/about">
+                    <div>
+                        <div><b>About You</b></div>
+                        <div className="Description">Tell us more about you</div>
+                    </div>
+                </Link>
             </EditMenuBlock>
             <EditMenuBlock>
                 <FaQuestion className="Icon"/>
-                <div className="Menu-text">
-                    <div><b>Your Education</b></div>
-                    <div className="Description">What's your academic background?</div>
-                </div>
+                <Link to="/account/education">
+                    <div>
+                        <div><b>Your Education</b></div>
+                        <div className="Description">What's your academic background?</div>
+                    </div>
+                </Link>
             </EditMenuBlock>
             <EditMenuBlock>
                 <FaQuestion className="Icon"/>
-                <div className="Menu-text">
-                    <div><b>Your Experience</b></div>
-                    <div className="Description">What's your experience so far?</div>
-                </div>
+                <Link to="/account/experience">
+                    <div>
+                        <div><b>Your Experience</b></div>
+                        <div className="Description">What's your experience so far?</div>
+                    </div>
+                </Link>
             </EditMenuBlock>
             <EditMenuBlock>
                 <FaQuestion className="Icon"/>
-                <div className="Menu-text">
-                    <div><b>Your Skills</b></div>
-                    <div className="Description">What are you good at?</div>
-                </div>
+                <Link to="/account/skills">
+                    <div>
+                        <div><b>Your Skills</b></div>
+                        <div className="Description">What are you good at?</div>
+                    </div>
+                </Link>
             </EditMenuBlock>
             <EditMenuBlock>
                 <FaQuestion className="Icon"/>
-                <div className="Menu-text">
-                    <div><b>Your Certifications</b></div>
-                    <div className="Description">Do you have any certifications?</div>
-                </div>
+                <Link to="/account/certification">
+                    <div>
+                        <div><b>Your Certifications</b></div>
+                        <div className="Description">Do you have any certifications?</div>
+                    </div>
+                </Link>
             </EditMenuBlock>
         </StyledEditMenu>
     )

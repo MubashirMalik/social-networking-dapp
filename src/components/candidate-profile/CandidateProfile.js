@@ -1,7 +1,7 @@
 import React from "react"
 import {
     Routes,
-    Route
+    Route,
 } from "react-router-dom"
 import styled from "styled-components"
 
@@ -10,6 +10,9 @@ import EditMenu from "./EditMenu"
 import EditSection from "./EditSection"
 import About from "./sections/About"
 import Education from "./sections/Education"
+import Experience from "./sections/Experience"
+import Certification from "./sections/Certification"
+import Skills from "./sections/Skills"
 
 const StyledCandidateProfile = styled.div`
     margin: 30px 80px;
@@ -28,8 +31,11 @@ const CandidateProfile = () => {
                 <EditMenu />
                 <EditSection>
                     <Routes>
-                        <Route exact path="/about" element={<About />} />
-                        <Route exact path="/account/education" element={<Education />} />
+                        <Route exact path="about" element={<About />} />
+                        <Route exact path="education" element={<Education />} />
+                        <Route exact path="experience" element={<Experience />} />
+                        <Route exact path="certification" element={<Certification />} />
+                        <Route exact path="skills" element={<Skills />} />
                     </Routes>
                 </EditSection>
             </ProfileBody>

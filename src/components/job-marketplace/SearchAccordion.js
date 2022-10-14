@@ -11,7 +11,7 @@ const SearchAccordion = () => {
                 <b>Filter</b>
                 <TbRefresh />
             </div>
-            <div class="Accordion-input Accordion-common">
+            <div className="Accordion-input Accordion-common">
                 <div className="Icon-text">
                     <TbListSearch /> 
                     Keyword
@@ -22,7 +22,7 @@ const SearchAccordion = () => {
                     placeholder="Search..."
                 />
             </div>
-            <div class="Accordion-input Accordion-common">
+            <div className="Accordion-input Accordion-common">
                 <div className="Icon-text"> 
                     <TbCurrentLocation /> 
                     Location
@@ -51,7 +51,7 @@ const SearchAccordion = () => {
                     </div>
                 </div>
             </div>
-            <div class="Accordion-input Accordion-common">
+            <div className="Accordion-input Accordion-common">
                 <div className="Icon-text"> 
                     <TbBuildingSkyscraper /> 
                     Job engagement
@@ -73,7 +73,7 @@ const SearchAccordion = () => {
                     </div>
                 </div>
             </div>
-            <div class="Accordion-input Accordion-common">
+            <div className="Accordion-input Accordion-common">
                 <div className="Icon-text"> 
                     <TbBuildingSkyscraper /> 
                     Job type

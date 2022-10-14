@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 const StyledEditSection = styled.div`
     border-left: 1px solid var(--border-color);
-    height: 100px;
+    padding: 20px 80px;
 `
 const EditSection = (props) => {
     return (

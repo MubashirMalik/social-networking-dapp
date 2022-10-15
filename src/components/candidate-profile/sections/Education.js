@@ -25,7 +25,7 @@ const Education = () => {
                     </select>
                 </InputGroup>
                 <InputGroup>
-                    <label>Too<sup>*</sup></label>
+                    <label>To<sup>*</sup></label>
                     <select>
                         <option>2018</option>
                         <option>2019</option>       
@@ -45,6 +45,9 @@ const Education = () => {
                         type="text"
                     />
                 </InputGroup>
+            </FlexRow>
+            <FlexRow>
+                <button>Update</button>
             </FlexRow>
         </div>
     )

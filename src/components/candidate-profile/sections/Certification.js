@@ -1,5 +1,6 @@
 import React from 'react'
 import { Title, FlexRow, InputGroup, SelectGroup } from '../../styles/Section.styled'
+import ToggleSwitch from "../../ToggleSwitch"
 
 function Certification() {
   	return (
@@ -46,6 +47,10 @@ function Certification() {
 						</select>
 					</SelectGroup>
                 </InputGroup>
+                <InputGroup>
+                    <label>The certification doesn't expire</label>
+                    <ToggleSwitch />
+                </InputGroup>
             </FlexRow>
 			<FlexRow>
                 <InputGroup>
@@ -54,6 +59,9 @@ function Certification() {
                         type="text"
                     />
                 </InputGroup>
+            </FlexRow>
+            <FlexRow>
+                <button>Update</button>
             </FlexRow>
     	</div>
   )

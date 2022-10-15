@@ -66,12 +66,15 @@ const About = () => {
                
             </FlexRow>
             <FlexRow>
-            <InputGroup>
+                <InputGroup>
                     <label>Your Website/Portfolio</label>
                     <input 
                         type="text"
                     /> 
                 </InputGroup>
+            </FlexRow>
+            <FlexRow>
+                <button>Update</button>
             </FlexRow>
         </div>
     )

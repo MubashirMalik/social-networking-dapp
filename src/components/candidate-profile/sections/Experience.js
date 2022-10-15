@@ -69,8 +69,11 @@ function Experience() {
 			<FlexRow>
                 <InputGroup>
                     <label>Responsibilities<sup>*</sup></label>
-                    <textarea></textarea>
+                    <textarea rows="7"></textarea>
                 </InputGroup>
+            </FlexRow>
+            <FlexRow>
+                <button>Update</button>
             </FlexRow>
     </div>
   )

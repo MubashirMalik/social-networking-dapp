@@ -47,7 +47,7 @@ const ProfileHeader = () => {
         <StyledProfileHeader>
             <img src={avatar} alt="avatar"/>
             <ProfileInfo>
-                <div className="Name">Hi Mubashir</div>
+                <div className="Name">Hi Omar Assem Toubar</div>
                 <div className="Strength-bar">
                     <div className="Current"></div>
                 </div>

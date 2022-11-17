@@ -16,7 +16,7 @@ const JobCardList = () => {
         {
             title: "Associate Software Engineer",
             location: {
-                country: "Islamabad/Lahore, Pakistan"
+                country: "Dubai"
             },
             type:"CONTRACT",
             engagement: "PART-TIME",
@@ -25,7 +25,7 @@ const JobCardList = () => {
         {
             title: "Associate Software Engineer",
             location: {
-                country: "Islamabad/Lahore, Pakistan"
+                country: "Ajman, U.A.E"
             },
             type:"CONTRACT",
             engagement: "PART-TIME",

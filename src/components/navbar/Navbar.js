@@ -78,7 +78,7 @@ function Navbar() {
     return(
         <div className="Navbar">
             <div className="Navbar-start">
-                <div className="Logo-text">Indeed</div>
+                <div className="Logo-text">{"{app_name}"}</div>
                 <div className="Provider-status">
                     <div 
                         className="badge" 

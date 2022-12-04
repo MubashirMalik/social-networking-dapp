@@ -1,3 +1,4 @@
+import React from "react"
 import { Link } from "react-router-dom"
 import { FaQuestion } from "react-icons/fa";
 import styled from "styled-components"

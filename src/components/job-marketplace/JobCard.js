@@ -9,13 +9,16 @@ const JobCard = (props) => {
         <div className="Job-card">
                 <div className="Left">
                     <div className="Job-details-row">
-                        <div className="Job-mode Tiny-label" style={{backgroundColor: `var(--job-mode-${mode.toLowerCase()})`}}>{ mode }</div>
-                        <div className="Job-location">{ location.country }</div>
+                        <div className="Job-mode Tiny-label" style={{backgroundColor: `var(--job-mode-${mode.toLowerCase()})`}}>{ mode.toUpperCase() }</div>
+                        <div className="Job-location">
+                            { location.city + ", " + location.country }</div>
                     </div>
                     <h2 className="Job-title">{ title }</h2>
                     <div className="Job-details-row">
-                        <div className="Job-engagement Tiny-label">{ engagement }</div>
-                        <div className="Job-type Tiny-label">{ type }</div>
+                        <div className="Job-engagement Tiny-label">{ engagement.toUpperCase() }</div>
+                        <div className="Job-type Tiny-label">
+                            { type.toUpperCase() }
+                        </div>
                     </div>
                     <div className="Job-description">
                         <ul>

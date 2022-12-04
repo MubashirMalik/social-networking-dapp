@@ -1,3 +1,4 @@
+import React from "react"
 import styled from "styled-components"
 import avatar from '../../images/dummy-avatar.png'
 

@@ -1,3 +1,4 @@
+import React from "react"
 import { Title, FlexRow, InputGroup } from "../../styles/Section.styled"
 
 const Education = () => {

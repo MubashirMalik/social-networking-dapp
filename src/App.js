@@ -7,6 +7,7 @@ import {
 import CandidateProfile from "./components/candidate-profile/CandidateProfile";
 import JobMarketplace from "./components/job-marketplace/JobMarketplace";
 import Navbar from "./components/navbar/Navbar";
+import PostJob from "./components/job-marketplace/PostJob"
 
 export default function App() {
 	return (
@@ -15,6 +16,7 @@ export default function App() {
 			<Routes>
 				<Route exact path="/account/*" element={<CandidateProfile />} />
 				<Route exact path="/" element={<JobMarketplace />} />
+                <Route exact path="/post-job" element={<PostJob /> } />
 				{/* <Route path="*" element={ <PageNotFound />}/> */}
 			</Routes>
     	</div>

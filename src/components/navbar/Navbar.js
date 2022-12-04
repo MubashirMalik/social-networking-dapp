@@ -92,6 +92,9 @@ function Navbar() {
                 </div>
             </div>
             <div className="Navbar-end">
+                <button onClick={() => navigate("/post-job")}>
+                    Post a Job
+                </button>
                 <button onClick={() => navigate("/")}>Jobs<MdWork /></button>
                 { providerStatus.connectedAccount === "" ? 
                     <button onClick={connectWallet}>Connect</button> :

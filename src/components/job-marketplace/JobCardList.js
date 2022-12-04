@@ -1,51 +1,22 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
+import { getJobs } from "../../services/job.service"
 import JobCard from "./JobCard"
 
 const JobCardList = () => {
+    const [jobList, setJobList] = useState([])
 
-    const data = [
-        {
-            title: "Frontend Engineer - Blockchain",
-            location: {
-                country: "Singapore"
-            },
-            type:"PERMANENT",
-            engagement: "FULL-TIME",
-            mode: "REMOTE"
-        },
-        {
-            title: "Associate Software Engineer",
-            location: {
-                country: "Dubai"
-            },
-            type:"CONTRACT",
-            engagement: "PART-TIME",
-            mode: "HYBRID"
-        },
-        {
-            title: "Associate Software Engineer",
-            location: {
-                country: "Ajman, U.A.E"
-            },
-            type:"CONTRACT",
-            engagement: "PART-TIME",
-            mode: "HYBRID"
-        }
-    ]
+    useEffect(() => {
+        getJobs()
+        .then(res => {
+            if (!res){
+                console.log("Something went wrong")
+            } else{
+                setJobList(res);
+            }
+        });
+    }, [])
 
-    const displayJobs = data.map((job) => {
-        return (
-            <JobCard 
-                title={job.title}
-                mode={job.mode}
-                location={job.location}
-                engagement={job.engagement}
-                type={job.type}
-                description={job.description}
-            />
-        )
-    })
-
+    const displayJobs = jobList.map((job) => <JobCard key={job._id} {...job} />)
 
     return (
         <div className="Job-card-list">

@@ -25,3 +25,29 @@ export const postJob = async (job) => {
         console.log("Exception in postJob():", err);
     }
 }
+
+export const getJob = async (jobId) => {
+    try {
+        const url = BASE_URL + "get-job?jobId=" + jobId
+        const response = await fetch(url);
+        return await response.json();
+    } catch (err) {
+        console.log("Exception in getJob():", err);
+    }
+}
+
+export const updateJob = async (job) => {
+    try {
+        const url = BASE_URL + "update-job"
+        const response = await fetch(url, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({job})
+        });
+        return await response.json();
+    } catch (err) {
+        console.log("Exception in updateJob():", err);
+    }
+}

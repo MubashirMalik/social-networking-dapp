@@ -16,7 +16,7 @@ export default function App() {
 			<Routes>
 				<Route exact path="/account/*" element={<CandidateProfile />} />
 				<Route exact path="/" element={<JobMarketplace />} />
-                <Route exact path="/post-job" element={<PostJob /> } />
+                <Route exact path="/job/:jobId" element={<PostJob /> } />
 				{/* <Route path="*" element={ <PageNotFound />}/> */}
 			</Routes>
     	</div>

@@ -92,7 +92,7 @@ function Navbar() {
                 </div>
             </div>
             <div className="Navbar-end">
-                <button onClick={() => navigate("/post-job")}>
+                <button onClick={() => navigate("/job/0")}>
                     Post a Job
                 </button>
                 <button onClick={() => navigate("/")}>Jobs<MdWork /></button>

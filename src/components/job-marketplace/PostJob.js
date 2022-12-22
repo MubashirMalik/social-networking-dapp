@@ -1,12 +1,13 @@
 import React, { useState } from "react"
 import styled from "styled-components"
 import { Title, Subtitle, FlexRow, InputGroup } from "../styles/Section.styled"
-import { postJob } from "../../services/job.service";
-import { useNavigate } from "react-router-dom";
+import { postJob, getJob, updateJob } from "../../services/job.service";
+import { useNavigate, useParams } from "react-router-dom";
 import CountrySelect from "../CountrySelect";
 
 // assets
 import image from "../../images/undraw_post_job.svg"
+import { useEffect } from "react";
 
 const StyledPostJob = styled.div`
     display: flex;
@@ -26,6 +27,9 @@ const SectionLeft = styled.div`
 
 const PostJob = () => {
     const navigate = useNavigate()
+    const {jobId} = useParams()
+    const isEditMode = jobId && jobId !== "0"
+
     const [formData, setFormData] = useState({
         title: "",
         mode: "Hybrid",
@@ -38,6 +42,23 @@ const PostJob = () => {
         posterAddress: "0x123"
     })
 
+    useEffect(() => {
+        if (isEditMode) {
+            getJob(jobId)
+            .then(res => {
+                if (!res){
+                    console.log("Something went wrong")
+                } else{
+                    setFormData({
+                        ...res,
+                        city: res.location.city,
+                        country: res.location.country,
+                    })
+                }
+            });
+        }
+    }, [jobId])
+
     const handleChange = (event) => {
         setFormData(
             prevFormData => ({
@@ -48,14 +69,26 @@ const PostJob = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        postJob(formData)
-        .then(res => {
-            if (!res){
-                console.log("Something went wrong")
-            } else{
-                navigate("/")
-            }
-        });
+
+        if (isEditMode) {
+            updateJob(formData)
+            .then(res => {
+                if (!res){
+                    console.log("Something went wrong")
+                } else{
+                    navigate("/")
+                }
+            });
+        } else {
+            postJob(formData)
+            .then(res => {
+                if (!res){
+                    console.log("Something went wrong")
+                } else{
+                    navigate("/")
+                }
+            });
+        }
     }
 
     return(
@@ -126,6 +159,7 @@ const PostJob = () => {
                                 name="city"
                                 placeholder="e.g., Dubai"
                                 onChange={handleChange}
+                                value={formData.city}
                                 required
                             /> 
                         </InputGroup>
@@ -150,7 +184,9 @@ const PostJob = () => {
                         </InputGroup>
                     </FlexRow>
                     <FlexRow>
-                        <button>Post</button>
+                        <button>
+                            { isEditMode ? "Update" : "Post" }
+                        </button>
                     </FlexRow>
                 </form>
             </div>

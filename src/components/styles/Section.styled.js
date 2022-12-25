@@ -38,7 +38,7 @@ export const FlexRow = styled.div`
 
 export const SkillItem = styled.div`
     display: flex;
-	column-gap: 3px;
+	column-gap: 10px;
 	align-items: flex-end;
 	font-weight: 600;
     line-height: 1em;
@@ -46,7 +46,7 @@ export const SkillItem = styled.div`
 	color: #ffffff;
 	border-radius: 0.2357rem;
 	border: none;
-	padding: 10px 20px;
+	padding: 10px 10px;
     font-size: 13.33px;
 	cursor: pointer;
 

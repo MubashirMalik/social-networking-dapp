@@ -1,13 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Title, FlexRow, InputGroup, SkillItem } from "../../styles/Section.styled"
 import { ImCancelCircle } from "react-icons/im";
 
 function Skills() {
-	const skills = ["C++", "Java"]
+    const [newSkill, setNewSkill] = useState()
+	const [skills, setSkills] = useState(["C++", "Java"])
 
 	const skillsList = skills.map(skill => 
-		<SkillItem>{skill}<ImCancelCircle /></SkillItem>
+		<SkillItem>{skill}<ImCancelCircle onClick={() => handleRemove(skill)} /></SkillItem>
 	)
+
+    const handleAdd = () => {
+        setSkills(prevSkills => [...prevSkills, newSkill])
+    }
+
+    const handleRemove = (skill) => {
+        setSkills(skills.filter(sk => sk !== skill))
+    }
 
 	return (
 		<div>
@@ -16,13 +25,15 @@ function Skills() {
 				<InputGroup>
 					<label>Example: Java, Python, Spanish, Excel</label>
 					<input 
+                        name="newSkill"
+                        value={newSkill}
 						type="text"
-						placeholder=''
+                        onChange={(event) => setNewSkill(event.target.value)}
 					/>
 				</InputGroup>
 			</FlexRow>
 			<FlexRow>
-                <button>Add</button>
+                <button onClick={handleAdd}>Add</button>
 				<button>Save</button>
             </FlexRow>
 			<FlexRow>

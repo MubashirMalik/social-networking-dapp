@@ -1,48 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { MdWork } from "react-icons/md";
 import { useNavigate } from "react-router-dom"
 import { addressFormatter } from "../../util";
 import { FaUserEdit } from "react-icons/fa";
+import { AuthenticationContext } from "../../context/authenticationContext";
+
 import './Navbar.css'
 
 function Navbar() {
     const navigate = useNavigate();
-    const [providerStatus, setProviderStatus] = useState({
-        message: "Detecting provider",
-        connectedAccount: "",
-        badgeColor: "red"
-    })
-
-    useEffect(() => {
-        if (window.ethereum) {
-            window.ethereum._metamask.isUnlocked().then(isUnlocked => {
-                if (isUnlocked === false) {
-                    setProviderStatus(prevProviderStatus => ({
-                        ...prevProviderStatus, 
-                        message: "Locked account",
-                        badgeColor: "yellow"
-                    }))
-                } else if (isUnlocked === true) {
-                    window.ethereum.request({
-                        method: 'eth_requestAccounts'
-                    }).then(accounts => {
-                        console.log("Account connected:", accounts)
-                        setProviderStatus(prevProviderStatus => ({
-                            ...prevProviderStatus, 
-                            connectedAccount: accounts[0],
-                            message: "Connected wallet: " + addressFormatter(accounts[0]),
-                            badgeColor: "green" 
-                        }))
-                    })
-                }
-                console.log("Account Unlocked:", isUnlocked)
-            });
-
-        } else {
-            setProviderStatus(prevProviderStatus => ({...prevProviderStatus, message: "No wallet"}))
-        }
-    }, [])
-
+    const  { providerStatus, setProviderStatus } = useContext(AuthenticationContext)
 
     const connectWallet = () => {
         if (window.ethereum) {

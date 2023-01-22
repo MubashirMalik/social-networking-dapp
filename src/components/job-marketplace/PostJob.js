@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import styled from "styled-components"
 import { Title, Subtitle, FlexRow, InputGroup } from "../styles/Section.styled"
 import { postJob, getJob, updateJob } from "../../services/job.service";
@@ -8,6 +8,7 @@ import CountrySelect from "../CountrySelect";
 // assets
 import image from "../../images/undraw_post_job.svg"
 import { useEffect } from "react";
+import { AuthenticationContext } from "../../context/authenticationContext";
 
 const StyledPostJob = styled.div`
     display: flex;
@@ -29,6 +30,7 @@ const PostJob = () => {
     const navigate = useNavigate()
     const {jobId} = useParams()
     const isEditMode = jobId && jobId !== "0"
+    const { providerStatus } = useContext(AuthenticationContext)
 
     const [formData, setFormData] = useState({
         title: "",
@@ -38,8 +40,6 @@ const PostJob = () => {
         city: "",
         country: "Afghanistan",
         description: "",
-        // TODO: Connect Wallet
-        posterAddress: "0x123"
     })
 
     useEffect(() => {
@@ -57,7 +57,7 @@ const PostJob = () => {
                 }
             });
         }
-    }, [jobId])
+    }, [jobId, isEditMode])
 
     const handleChange = (event) => {
         setFormData(
@@ -80,7 +80,9 @@ const PostJob = () => {
                 }
             });
         } else {
-            postJob(formData)
+            // set posterAddress
+            const job = {...formData, posterAddress: providerStatus.connectedAccount}
+            postJob(job)
             .then(res => {
                 if (!res){
                     console.log("Something went wrong")

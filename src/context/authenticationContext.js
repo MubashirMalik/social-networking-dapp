@@ -20,17 +20,17 @@ function AuthenticationContextProvider(props) {
                         badgeColor: "yellow"
                     }))
                 } else if (isUnlocked === true) {
-                    window.ethereum.request({
-                        method: 'eth_requestAccounts'
-                    }).then(accounts => {
-                        console.log("Account connected:", accounts)
-                        setProviderStatus(prevProviderStatus => ({
-                            ...prevProviderStatus, 
-                            connectedAccount: accounts[0],
-                            message: "Connected wallet: " + addressFormatter(accounts[0]),
-                            badgeColor: "green" 
-                        }))
-                    })
+                    // window.ethereum.request({
+                    //     method: 'eth_requestAccounts'
+                    // }).then(accounts => {
+                    //     console.log("Account connected:", accounts)
+                    //     setProviderStatus(prevProviderStatus => ({
+                    //         ...prevProviderStatus, 
+                    //         connectedAccount: accounts[0],
+                    //         message: "Connected wallet: " + addressFormatter(accounts[0]),
+                    //         badgeColor: "green" 
+                    //     }))
+                    // })
                 }
                 console.log("Account Unlocked:", isUnlocked)
             });

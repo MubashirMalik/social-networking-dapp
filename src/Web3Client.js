@@ -3,7 +3,7 @@ import SmartContractBuild from "contracts/SmartContract.json"
 
 const web3 = new Web3(window.ethereum)
 
-let smartContract;
+let smartContract = null;
 
 export const initWeb3Client = async () => {
     try {
@@ -25,6 +25,55 @@ export const isRegistered = async (connectedAccount) => {
         return await res;
     }  catch (e) {
         console.log("[Solidity] isRegistered(): ", e)
+        return null;
+    }
+}
+
+export const registerUser = async (fullName, accountType, connectedAccount) => {
+    try {
+        let isCompany = true
+        if (accountType === "Candidate") {
+            isCompany = false
+        }
+        const res = await smartContract.methods
+        .registerUser(fullName, isCompany)
+        .send({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] registerUser(): ", e)
+        return null;
+    }
+}
+
+export const getUser = async (connectedAccount) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        const res = await smartContract.methods
+        .getUser()
+        .call({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] getUser(): ", e)
+        return null;
+    }
+}
+
+export const addDegree = async (connectedAccount, formData) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        const { title, fromMonth, fromYear, toMonth, toYear, issuingOrganization } = formData
+        const res = await smartContract.methods
+        .addDegree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization)
+        .send({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] addDegree(): ", e)
         return null;
     }
 }

@@ -1,12 +1,26 @@
-import React from "react"
+import React, { useContext, useEffect, useState } from "react"
+import { AuthenticationContext } from "../../../context/authenticationContext"
+import { getUser } from "../../../Web3Client"
 import { Title, Subtitle, FlexRow, InputGroup } from "../../styles/Section.styled"
 
 const About = () => {
+    const { providerStatus } = useContext(AuthenticationContext)
+    const [fullName, setFullName] = useState("")
+
+    useEffect(() => {
+        getUser(providerStatus.connectedAccount)
+        .then(res => {
+            if (res) {
+                setFullName(res[0])
+            }
+        })
+    }, [])
+
     return(
         <div>
-            <Title>Hi Mubashir Tell us more about yourself</Title>
+            <Title>Hi, Tell us more about yourself</Title>
             <FlexRow>
-                <InputGroup>
+                <InputGroup style={{ width: "150px" }}>
                     <label>Title<sup>*</sup></label>
                     <select>
                         <option>Mr.</option>
@@ -14,15 +28,11 @@ const About = () => {
                     </select> 
                 </InputGroup>
                 <InputGroup>
-                    <label>First name<sup>*</sup></label>
+                    <label>Full name<sup>*</sup></label>
                     <input 
                         type="text"
-                    />
-                </InputGroup>
-                <InputGroup>
-                    <label>Last name<sup>*</sup></label>
-                    <input 
-                        type="text"
+                        disabled
+                        value={fullName}
                     />
                 </InputGroup>
             </FlexRow>
@@ -30,6 +40,7 @@ const About = () => {
                 <InputGroup>
                     <label>Where do you live?<sup>*</sup></label>
                     <input 
+                        name="country"
                         type="text"
                         placeholder="Country"
                     /> 
@@ -37,6 +48,7 @@ const About = () => {
                 <InputGroup>
                     <label>City</label>
                     <input 
+                        name="city"
                         type="text"
                         placeholder="City"
                     />
@@ -44,6 +56,7 @@ const About = () => {
                 <InputGroup>
                     <label>Your Nationality<sup>*</sup></label>
                     <input 
+                        name="nationality"
                         type="text"
                     />
                 </InputGroup>
@@ -71,6 +84,16 @@ const About = () => {
                     <label>Your Website/Portfolio</label>
                     <input 
                         type="text"
+                    /> 
+                </InputGroup>
+            </FlexRow>
+            <FlexRow>
+                <InputGroup>
+                    <label>Your Address</label>
+                    <input 
+                        type="text"
+                        disabled
+                        value={providerStatus.connectedAccount}
                     /> 
                 </InputGroup>
             </FlexRow>

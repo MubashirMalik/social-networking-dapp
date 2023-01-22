@@ -1,13 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { MdWork } from "react-icons/md";
 import { useNavigate } from "react-router-dom"
 import { addressFormatter } from "../../util";
 import { FaUserEdit } from "react-icons/fa";
 import { AuthenticationContext } from "../../context/authenticationContext";
+import { isRegistered } from "../../Web3Client";
+import RegistrationPopup from "../RegistrationPopup";
 
 import './Navbar.css'
 
 function Navbar() {
+    const [isOpenModal, setIsOpenModal] = useState(false);
     const navigate = useNavigate();
     const  { providerStatus, setProviderStatus } = useContext(AuthenticationContext)
 
@@ -34,6 +37,15 @@ function Navbar() {
                         message: "Connected wallet: " + addressFormatter(accounts[0]),
                         badgeColor: "green" 
                     }))
+
+                    isRegistered(accounts[0])
+                    .then(isRegistered => {
+                        if (isRegistered !== null  && isRegistered === false) {
+                            setIsOpenModal(true)
+                        } else {
+                            navigate("/account/about")
+                        }
+                    })
                 })
             });
 
@@ -43,6 +55,8 @@ function Navbar() {
     }
 
     return(
+        <>
+        <RegistrationPopup isOpenModal={isOpenModal} handleClose={() => setIsOpenModal(false)} />
         <div className="Navbar">
             <div className="Navbar-start">
                 <div className="Logo-text">{"{app_name}"}</div>
@@ -69,6 +83,7 @@ function Navbar() {
                 }
             </div>
         </div>
+        </>
     )
 }
 

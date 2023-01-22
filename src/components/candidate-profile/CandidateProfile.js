@@ -15,7 +15,7 @@ import Certification from "./sections/Certification"
 import Skills from "./sections/Skills"
 
 const StyledCandidateProfile = styled.div`
-    margin: 30px 80px;
+    margin: 30px 70px;
 `
 const ProfileBody = styled.div`
     display: flex;

@@ -6,8 +6,8 @@ function Skills() {
     const [newSkill, setNewSkill] = useState()
 	const [skills, setSkills] = useState(["C++", "Java"])
 
-	const skillsList = skills.map(skill => 
-		<SkillItem>{skill}<ImCancelCircle onClick={() => handleRemove(skill)} /></SkillItem>
+	const skillsList = skills.map((skill, idx) => 
+		<SkillItem key={idx}>{skill}<ImCancelCircle onClick={() => handleRemove(skill)} /></SkillItem>
 	)
 
     const handleAdd = () => {

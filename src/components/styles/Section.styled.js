@@ -51,3 +51,9 @@ export const SkillItem = styled.div`
 	cursor: pointer;
 
 `
+
+export const Error = styled.div`
+    color: #ef4b62;
+    font-size: 14px;
+    text-align: center;
+`

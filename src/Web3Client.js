@@ -77,3 +77,67 @@ export const addDegree = async (connectedAccount, formData) => {
         return null;
     }
 }
+
+export const addCertification = async (connectedAccount, formData) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        let { name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, hasExpirationDate } = formData
+
+        if (hasExpirationDate) {
+            expirationMonth = 0
+            expirationYear = 0
+        }
+
+        const res = await smartContract.methods
+        .addCertification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization)
+        .send({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] addCertification(): ", e)
+        return null;
+    }
+}
+
+export const addWorkExperience = async (connectedAccount, formData) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        let { designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, isCurrentJob } = formData
+
+        if (isCurrentJob) {
+            toMonth = 0
+            toYear = 0
+        }
+
+        const res = await smartContract.methods
+        .addWorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization)
+        .send({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] addWorkExperience(): ", e)
+        return null;
+    }
+}
+
+export const getAllCompanies = async () => {
+
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        const accounts = await web3.eth.getAccounts();
+        const res = await smartContract.methods
+        .getAllCompanies()
+        .call({ from: accounts[0] })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] getAllCompanies(): ", e)
+        return null;
+    }
+}

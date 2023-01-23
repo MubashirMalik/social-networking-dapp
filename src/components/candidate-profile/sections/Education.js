@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react"
-import { AuthenticationContext } from "../../../context/authenticationContext"
 import { addDegree } from "../../../Web3Client"
 import CountrySelect from "../../CountrySelect"
 import MonthSelect from "../../MonthSelect"
 import { Title, FlexRow, InputGroup, Error } from "../../styles/Section.styled"
-import Web3 from "web3"
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+import { NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
+import { AuthenticationContext } from "../../../context/authenticationContext"
+import { ContractCompaniesContext } from "../../../context/contractCompaniesContext"
+import Select from 'react-select'
 
 const Education = () => {
+    const { companiesList } = useContext(ContractCompaniesContext)
     const { providerStatus } = useContext(AuthenticationContext)
     const [formData, setFormData] = useState({
         issuingOrganization: "",
@@ -30,17 +32,13 @@ const Education = () => {
 
     const validateFormData = () => {
         if (formData.issuingOrganization === "") {
-            setError("Institution Wallet Address cannot be empty.")
+            setError("Please select an institution")
             return false
-        } else if (!Web3.utils.isAddress(formData.issuingOrganization)) {
-            setError(`${formData.issuingOrganization} is not a valid Ethereum address.`)
-            return false
-        }
-        else if (formData.title === "") {
-            setError("Degree or Diploma cannot be empty.")
+        } else if (formData.title === "") {
+            setError("Please provide a degree/diploma")
             return false
         } else if (formData.fromYear > formData.toYear) {
-            setError("From Date cannot be after To Date.")
+            setError("Please provide valid starting and ending dates.")
             return false
         } 
 
@@ -60,7 +58,7 @@ const Education = () => {
             });
         }
     }
- 
+
     return(
         <div>
             <Title>Education</Title>
@@ -69,12 +67,12 @@ const Education = () => {
             </Error>
             <FlexRow>
                 <InputGroup>
-                    <label>Institution Wallet Address<sup>*</sup></label>
-                    <input 
-                        type="text"
-                        name="issuingOrganization"
-                        onChange={handleChange}
-                        value={formData.issuingOrganization}
+                    <label>Institution (Name - Address)<sup>*</sup></label>
+                    <Select 
+                        options={companiesList} 
+                        onChange={({ value }) => setFormData(prevFormData => ({
+                            ...prevFormData, issuingOrganization: value
+                        }))}
                     />
                 </InputGroup>
             </FlexRow>
@@ -146,11 +144,8 @@ const Education = () => {
             <FlexRow>
                 <button type="button" onClick={handleSubmit}>Add</button>
             </FlexRow>
-            <NotificationContainer/>
         </div>
     )
 }
-
-
 
 export default Education;

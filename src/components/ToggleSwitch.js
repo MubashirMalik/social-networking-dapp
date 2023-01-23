@@ -54,11 +54,17 @@ const StyledToggleSwitch = styled.div`
 	}
 `
 
-function ToggleSwitch() {
+function ToggleSwitch({ name, checked, handleChange }) {
   return (
     <StyledToggleSwitch>
         <label className="toggle">
-			<input className="toggle-checkbox" type="checkbox" />
+			<input 
+                className="toggle-checkbox" 
+                type="checkbox"
+                name={name} 
+                checked={checked}
+                onChange={handleChange}
+                />
 			<div className="toggle-switch"></div>
         </label>
     </StyledToggleSwitch>

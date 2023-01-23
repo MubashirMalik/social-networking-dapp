@@ -9,6 +9,7 @@ import JobMarketplace from "./components/job-marketplace/JobMarketplace";
 import Navbar from "./components/navbar/Navbar";
 import PostJob from "./components/job-marketplace/PostJob"
 import { initWeb3Client } from "./Web3Client";
+import { NotificationContainer } from "react-notifications";
 
 export default function App() {
     useEffect(() => {
@@ -24,6 +25,7 @@ export default function App() {
                 <Route exact path="/job/:jobId" element={<PostJob /> } />
 				{/* <Route path="*" element={ <PageNotFound />}/> */}
 			</Routes>
+            <NotificationContainer />
     	</div>
   )
 }

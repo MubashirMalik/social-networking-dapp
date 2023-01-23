@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 // Contexts
 import { BrowserRouter } from 'react-router-dom'
 import { AuthenticationContextProvider } from './context/authenticationContext';
+import { ContractCompaniesContextProvider } from './context/contractCompaniesContext';
 
 // Custom Components
 import App from './App';
@@ -16,7 +17,9 @@ root.render(
 	<React.StrictMode>
 		<BrowserRouter>
             <AuthenticationContextProvider>
-			    <App />
+                <ContractCompaniesContextProvider>
+			        <App />
+                </ContractCompaniesContextProvider>
             </AuthenticationContextProvider>
 		</ BrowserRouter>
 	</React.StrictMode>

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { MantineProvider } from '@mantine/core'
 
 // Contexts
 import { BrowserRouter } from 'react-router-dom'
@@ -18,7 +19,9 @@ root.render(
 		<BrowserRouter>
             <AuthenticationContextProvider>
                 <ContractCompaniesContextProvider>
-			        <App />
+                    <MantineProvider>
+			            <App />
+                    </MantineProvider>
                 </ContractCompaniesContextProvider>
             </AuthenticationContextProvider>
 		</ BrowserRouter>

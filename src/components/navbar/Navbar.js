@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { addressFormatter } from "../../util";
 import { FaUserEdit } from "react-icons/fa";
 import { AuthenticationContext } from "../../context/authenticationContext";
-import { isRegistered } from "../../Web3Client";
+import { getUser, isRegistered } from "../../Web3Client";
 import RegistrationPopup from "../RegistrationPopup";
 
 import './Navbar.css'
@@ -43,7 +43,16 @@ function Navbar() {
                         if (isRegistered !== null  && isRegistered === false) {
                             setIsOpenModal(true)
                         } else {
-                            navigate("/account/about")
+                            getUser(providerStatus.connectedAccount)
+                            .then(res => {
+                                if (res) {
+                                    setProviderStatus(prevProviderStatus => ({
+                                        ...prevProviderStatus, 
+                                        userName: res[0] 
+                                    }))
+                                    navigate("/account/about")
+                                }
+                            })
                         }
                     })
                 })

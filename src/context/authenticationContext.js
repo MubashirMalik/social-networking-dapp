@@ -7,7 +7,8 @@ function AuthenticationContextProvider(props) {
     const [providerStatus, setProviderStatus] = useState({
         message: "Detecting provider",
         connectedAccount: "",
-        badgeColor: "red"
+        badgeColor: "red",
+        userName: ""
     })
 
     useEffect(() => {

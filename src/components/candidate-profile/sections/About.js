@@ -1,20 +1,9 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { AuthenticationContext } from "../../../context/authenticationContext"
-import { getUser } from "../../../Web3Client"
 import { Title, Subtitle, FlexRow, InputGroup } from "../../styles/Section.styled"
 
 const About = () => {
     const { providerStatus } = useContext(AuthenticationContext)
-    const [fullName, setFullName] = useState("")
-
-    useEffect(() => {
-        getUser(providerStatus.connectedAccount)
-        .then(res => {
-            if (res) {
-                setFullName(res[0])
-            }
-        })
-    }, [])
 
     return(
         <div>
@@ -32,7 +21,7 @@ const About = () => {
                     <input 
                         type="text"
                         disabled
-                        value={fullName}
+                        value={providerStatus.userName}
                     />
                 </InputGroup>
             </FlexRow>

@@ -141,3 +141,19 @@ export const getAllCompanies = async () => {
         return null;
     }
 }
+
+export const getUserData = async (connectedAccount) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        const res = await smartContract.methods
+        .getUserData()
+        .call({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] getUserData(): ", e)
+        return null;
+    }
+}

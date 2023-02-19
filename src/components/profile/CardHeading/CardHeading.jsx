@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
     Card,
     Box,
     Text,
-    Badge,
     Button,
     createStyles,
     Avatar,
     Title,
 } from '@mantine/core';
 
-import {TiTick} from "react-icons/ti";
 import image from '../../assets/60111.jpg'
+import { AuthenticationContext } from '../../../context/authenticationContext';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -59,7 +58,8 @@ const useStyles = createStyles((theme) => ({
     }
 }));
 
-function CardHeading(props) {
+function CardHeading() {
+    const { providerStatus } = useContext(AuthenticationContext)
     const {classes, cx} = useStyles();
     const avatar = (
         <Avatar
@@ -69,46 +69,30 @@ function CardHeading(props) {
             src={image}
         />
     );
-    const tick = (
-        <div style={{}}>
-            <TiTick size={20}/>
-        </div>
-
-    )
 
     return (
         <Card
-
             className={classes.card} p="lg" radius="md" withBorder
             display={'flex'}
             direction={"column"}
+            pl={40} pr={40}
         >
             <Box className={classes.headerIconBox}>
                 <Box>
                     <Avatar radius={100} src={image} sx={{width: "150px", height: "150px"}}/>
-
-                </Box>
-                <Box>
-                    <Badge sx={{paddingLeft: 0}} size="lg" color="teal" leftSection={avatar} >
-                        Verified
-                    </Badge>
-
                 </Box>
             </Box>
             <Box display={"flex"} direction={"row"} className={classes.wrapper}>
-                <Box ml={25}
-                     className={classes.titleBox}
-                >
-                    <Title>Abdul Saboor</Title>
-                    <Text>Software Engineering Student at National University of Sciences and Technology (NUST)</Text>
+                <Box className={classes.titleBox}>
+                    <Title>{ providerStatus.userName }</Title>
+                    <Text>{ 
+                        providerStatus.userHeadline }</Text>
                 </Box>
                 <Box className={classes.button}>
                     <Button  radius={"lg"}>Open to</Button>
                     <Button ml={10}  radius={"lg"} variant={"outline"}>Add Section</Button>
                 </Box>
             </Box>
-
-
         </Card>
     );
 }

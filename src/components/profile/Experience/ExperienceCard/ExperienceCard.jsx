@@ -30,7 +30,7 @@ const data = {
     }
 }
 
-export function ExperienceCard({verified}) {
+export function ExperienceCard({ workExperience }) {
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
     return (<Card withBorder radius="md" p={20} className={classes.card}>
@@ -42,20 +42,13 @@ export function ExperienceCard({verified}) {
                         {data.title}
                     </Text>
                     {
-                        (verified?  <Badge size="lg" radius="xl" color="teal">
+                        workExperience.isVerified?  <Badge size="lg" radius="xl" color="teal">
                             verified
-                        </Badge>: <Loader color="yellow" >Verfiying</Loader>)
+                        </Badge>: <Loader color="yellow" >Verfiying</Loader>
                     }
-
-
-
-
-
                 </Box>
 
                 <Group noWrap spacing="xs">
-
-
                     <Text size="xs" color="dimmed">
                         {data.from_date}
                     </Text>
@@ -68,16 +61,15 @@ export function ExperienceCard({verified}) {
                     {data.organization}
                 </Text>
                 <Group spacing="xs" width={300}>
-
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>
                         <Popover.Target>
                             <Text size="xs" color="dimmed" truncate onMouseEnter={open} onMouseLeave={close}>
-                                0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7
+                                { workExperience.issuingOrganization }
                             </Text>
                         </Popover.Target>
                         <Popover.Dropdown sx={{pointerEvents: 'none'}}>
                             <Text size="xs" color="dimmed" truncate>
-                                0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7
+                                { workExperience.issuingOrganization }
                             </Text>
                         </Popover.Dropdown>
                     </Popover>

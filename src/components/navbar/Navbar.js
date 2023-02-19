@@ -88,7 +88,10 @@ function Navbar() {
                 <button onClick={() => navigate("/")}>Jobs<MdWork /></button>
                 { providerStatus.connectedAccount === "" ? 
                     <button onClick={connectWallet}>Connect</button> :
-                    <button onClick={() => navigate("/account/about")}>Account <FaUserEdit /></button>
+                    <>
+                        <button onClick={() => navigate("/account/about")}>Edit Profile <FaUserEdit /></button>
+                        <button onClick={() => navigate("/profile")}>View Profile</button>
+                    </>
                 }
             </div>
         </div>

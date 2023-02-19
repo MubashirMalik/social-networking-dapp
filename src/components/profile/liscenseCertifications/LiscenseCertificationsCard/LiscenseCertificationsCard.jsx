@@ -10,8 +10,8 @@ import {
     Button,
     Loader,
 } from '@mantine/core';
-
 import {useDisclosure} from "@mantine/hooks";
+import { MONTH_NAMES } from '../../../../util';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -42,7 +42,7 @@ const data = {
     }
 }
 
-export function LiscenseCertificationsCard({verified}) {
+export function LiscenseCertificationsCard({ certification }) {
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
     return (<Card withBorder radius="md" p={20} className={classes.card}>
@@ -51,29 +51,25 @@ export function LiscenseCertificationsCard({verified}) {
             <div className={classes.body}>
                 <Box className={classes.box}>
                     <Text className={classes.title} mt="sm">
-                        {data.title}
+                        {certification.name}
                     </Text>
                     {
-                        (verified ? <Badge size="lg" radius="xl" color="red">
+                        certification.isVerified ? <Badge size="lg" radius="xl" color="red">
                            not verified
-                        </Badge> : <Loader color="yellow">Verfiying</Loader>)
+                        </Badge> : <Loader color="yellow">Verfiying</Loader>
                     }
 
 
                 </Box>
 
                 <Group spacing="xs">
-
-
                     <Text size="xs" color="dimmed" weight={500}>
-                        <strong>Issued: </strong> {data.from_date}  </Text>
-
-
-
+                        <strong>Issued: </strong> {certification.issueMonth + " " + certification.issueYear}  </Text>
                 </Group>
                 <Group spacing="xs">
                     <Text size="xs" color="dimmed" weight={500}>
-                   <strong> Expiry:</strong>    {data.to_date}
+                   <strong> Expiry: </strong>  
+                    { MONTH_NAMES[certification.expirationMonth] + " " + certification.expirationYear}
                     </Text>
 
 
@@ -88,23 +84,17 @@ export function LiscenseCertificationsCard({verified}) {
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>
                         <Popover.Target>
                             <Text size="xs" color="dimmed" truncate onMouseEnter={open} onMouseLeave={close}>
-                                0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7
+                                { certification.issuingOrganization }
                             </Text>
                         </Popover.Target>
                         <Popover.Dropdown sx={{pointerEvents: 'none'}}>
                             <Text size="xs" color="dimmed" truncate>
-                                0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7
+                                { certification.issuingOrganization }
                             </Text>
                         </Popover.Dropdown>
                     </Popover>
 
                 </Group>
-                {verified?
-                    <Button  color={"teal"} radius="xl" size="xs" compact uppercase>
-                        Verify
-                    </Button>:""}
-
-
             </div>
 
 

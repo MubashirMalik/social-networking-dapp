@@ -25,11 +25,6 @@ export const InputGroup = styled.div`
     }
 `
 
-export const SelectGroup = styled.div`
-    display: flex;
-    column-gap: 10px;
-`
-
 export const FlexRow = styled.div`
     display: flex;
     column-gap: 20px;

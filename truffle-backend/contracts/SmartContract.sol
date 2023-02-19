@@ -237,4 +237,13 @@ contract SmartContract {
 
         return (companyAddresses, companyNames);
     }
+
+    // Get all data of a user
+    function getUserData() public view returns (Degree[] memory, Certification[] memory, WorkExperience[] memory) {
+        return (
+            candidateDegrees[msg.sender], 
+            candidateCertifications[msg.sender], 
+            candidateWorkExperiences[msg.sender]
+        );
+    }
 }

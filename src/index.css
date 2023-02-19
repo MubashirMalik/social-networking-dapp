@@ -48,7 +48,7 @@ button {
 }
 
 input, select, textarea {
-	padding: 9.5px 14px;
+	padding: 10px 14px;
 	border: 1px solid rgba(34, 36, 38, 0.15);
 	border-radius: 0.2357rem;
 }

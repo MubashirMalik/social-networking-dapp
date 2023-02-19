@@ -37,7 +37,7 @@ const Education = () => {
         } else if (formData.title === "") {
             setError("Please provide a degree/diploma")
             return false
-        } else if (formData.fromYear > formData.toYear) {
+        } else if (formData.fromYear > formData.toYear || (formData.fromYear === formData.toYear && formData.fromMonth > formData.toMonth)) {
             setError("Please provide valid starting and ending dates.")
             return false
         } 

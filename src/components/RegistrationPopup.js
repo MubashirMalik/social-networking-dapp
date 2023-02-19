@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
 import Modal from 'react-modal';
+import { NotificationManager } from 'react-notifications';
 import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../context/authenticationContext';
+import { registerUserToDatabase } from '../services/user.service';
 import { registerUser } from '../Web3Client';
 import { FlexRow, InputGroup, Title } from './styles/Section.styled';
 
@@ -32,17 +34,22 @@ const RegistrationPopup = ({ isOpenModal, handleClose }) => {
         )
     }
     
-    const handleSubmit = async () => {
-        const res = await registerUser(
+    const handleSubmit = () => {
+        registerUser(
             formData.fullName, 
             formData.accountType, 
             providerStatus.connectedAccount
         )
-
-        if (res) {
-            handleClose()
-            navigate("/account/about")
-        }
+        .then(async res => {
+            if (!res) {
+                NotificationManager.error("Something went wrong", "Registration failed")
+            } else {
+                await registerUserToDatabase(providerStatus.connectedAccount)
+                NotificationManager.success("User registered with Smart Contract", "Transaction successful");
+                handleClose()
+                navigate("/account/about")
+            }
+        })
     }
 
     Modal.setAppElement('#root')
@@ -63,7 +70,7 @@ const RegistrationPopup = ({ isOpenModal, handleClose }) => {
                         <input 
                             name="fullName"
                             type="text"
-                            placeholder="Omer Assem Taubar"
+                            placeholder=""
                             onChange={handleChange}
                             value={formData.fullName}
                             required

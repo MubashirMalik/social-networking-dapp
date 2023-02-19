@@ -38,10 +38,10 @@ function Experience() {
         } else if (formData.designation === "") {
             setError("Please provide a job title")
             return false
-        } else if (formData.fromYear > formData.toYear) {
+        } else if (formData.fromYear > formData.toYear || (formData.fromYear === formData.toYear && formData.fromMonth > formData.toMonth)) {
             setError("Please provide valid starting and ending dates.")
             return false
-        } 
+        }
 
         setError("")
         return true

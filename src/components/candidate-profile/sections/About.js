@@ -1,20 +1,56 @@
-import React, { useContext } from "react"
+import React, {useContext, useEffect, useState} from "react"
 import { AuthenticationContext } from "../../../context/authenticationContext"
 import { Title, Subtitle, FlexRow, InputGroup } from "../../styles/Section.styled"
+import {getUserDetails, updateUserDetails} from "../../../services/user.service";
+import {NotificationManager} from "react-notifications";
 
 const About = () => {
     const { providerStatus } = useContext(AuthenticationContext)
+    const [formData, setFormData] = useState({
+        headline: "",
+        bio: ""
+    })
+
+    useEffect(() => {
+        getUserDetails(providerStatus.connectedAccount)
+        .then(res => {
+            if (res) {
+                setFormData(res)
+            }
+        })
+    }, [providerStatus.connectedAccount])
+    const handleChange = (event) => {
+        const { type } = event.target
+        setFormData(
+            prevFormData => ({
+                ...prevFormData, [event.target.name]: type === "checkbox" ? event.target.checked : event.target.value
+            })
+        )
+    }
+
+    const handleSubmit = () => {
+        updateUserDetails({ ...formData, walletAddress: providerStatus.connectedAccount })
+        .then(res => {
+            if (!res){
+                NotificationManager.error("Something went wrong", "Error")
+            } else {
+                NotificationManager.success("Data updated successfully", "Success");
+            }
+        })
+    }
 
     return(
         <div>
             <Title>Hi, Tell us more about yourself</Title>
             <FlexRow>
-                <InputGroup style={{ width: "150px" }}>
-                    <label>Title<sup>*</sup></label>
-                    <select>
-                        <option>Mr.</option>
-                        <option>Ms.</option>       
-                    </select> 
+                <InputGroup>
+                    <label>Headline<sup>*</sup></label>
+                    <input 
+                        name="headline"
+                        value={formData.headline}
+                        onChange={handleChange}
+                        type="text"
+                    /> 
                 </InputGroup>
                 <InputGroup>
                     <label>Full name<sup>*</sup></label>
@@ -87,7 +123,18 @@ const About = () => {
                 </InputGroup>
             </FlexRow>
             <FlexRow>
-                <button>Update</button>
+                <InputGroup>
+                    <label>Bio<sup>*</sup></label>
+                    <textarea 
+                        rows="7" 
+                        onChange={handleChange}
+                        name="bio"
+                        value={formData.bio}    
+                    />
+                </InputGroup>
+            </FlexRow>
+            <FlexRow>
+                <button onClick={handleSubmit}>Update</button>
             </FlexRow>
         </div>
     )

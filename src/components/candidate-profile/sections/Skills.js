@@ -3,15 +3,17 @@ import { Title, FlexRow, InputGroup, SkillItem } from "../../styles/Section.styl
 import { ImCancelCircle } from "react-icons/im";
 
 function Skills() {
-    const [newSkill, setNewSkill] = useState()
-	const [skills, setSkills] = useState(["C++", "Java"])
+    const [newSkill, setNewSkill] = useState("")
+	const [skills, setSkills] = useState([])
 
 	const skillsList = skills.map((skill, idx) => 
 		<SkillItem key={idx}>{skill}<ImCancelCircle onClick={() => handleRemove(skill)} /></SkillItem>
 	)
 
     const handleAdd = () => {
-        setSkills(prevSkills => [...prevSkills, newSkill])
+        if (newSkill !== "") {
+            setSkills(prevSkills => [...prevSkills, newSkill])
+        }
     }
 
     const handleRemove = (skill) => {

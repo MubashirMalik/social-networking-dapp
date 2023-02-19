@@ -38,7 +38,7 @@ function Certification() {
         } else if (formData.name === "") {
             setError("Please provide a name")
             return false
-        } else if (formData.issueYear > formData.expirationYear) {
+        } else if (formData.issueYear > formData.expirationYear || (formData.issueYear === formData.expirationYear && formData.issueMonth > formData.expirationMonth)) {
             setError("Please provide valid starting and ending dates.")
             return false
         } 

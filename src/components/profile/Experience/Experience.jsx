@@ -1,4 +1,4 @@
-import {createStyles, Card, Title, Grid, Button, Box, Stack} from '@mantine/core';
+import {createStyles, Card, Title, Grid, Stack} from '@mantine/core';
 import {ExperienceCard} from "./ExperienceCard/ExperienceCard.jsx";
 import NoRecordAlert from "../NoRecordAlert";
 

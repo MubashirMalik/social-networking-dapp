@@ -1,5 +1,5 @@
 import {createStyles, Card, Title, Grid, Stack } from '@mantine/core';
-import {LiscenseCertificationsCard} from "./LiscenseCertificationsCard/LiscenseCertificationsCard.jsx";
+import {CertificationCard} from "./CertificationCard/CertificationCard.jsx";
 import NoRecordAlert from "../NoRecordAlert";
 
 const useStyles = createStyles((theme) => ({
@@ -9,12 +9,12 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function LiscenseCertifications({ certifications }) {
+export function Certification({ certifications }) {
     const {classes} = useStyles();
 
     const items = certifications.map(certification => (
         <Grid.Col span={6}>
-            <LiscenseCertificationsCard certification={certification}/>
+            <CertificationCard certification={certification}/>
         </Grid.Col>
     ))
 
@@ -24,11 +24,14 @@ export function LiscenseCertifications({ certifications }) {
                 <Title size={20}>
                     License & Certifications
                 </Title>
-                <NoRecordAlert
-                    section="certifications"
-                    message="Add certification and licenses to stand out to employers."
-                    href="/account/certifications"
-                />
+                { certifications.length > 0 ?
+                    <Grid gutter={5} gutterXs="md" gutterMd="xl" gutterXl={15}>{ items } </Grid> :
+                    <NoRecordAlert
+                        section="certifications"
+                        message="Add certification and licenses to stand out to employers."
+                        href="/account/certifications"
+                    />
+                }
             </Stack>
         </Card>
     );

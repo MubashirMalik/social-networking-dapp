@@ -3,7 +3,7 @@ import CardHeading from "./CardHeading/CardHeading.jsx";
 import Viewable from "./Viewable/Viewable.jsx";
 import { Experience } from "./Experience/Experience.jsx";
 import { Education } from "./Education/Education.jsx";
-import { LiscenseCertifications } from "./liscenseCertifications/LiscenseCertifications.jsx"
+import { Certification } from "./Certification/CertificationCard.jsx"
 import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../context/authenticationContext.js";
 import { getUserData } from "../../Web3Client.js";
@@ -26,7 +26,7 @@ function Profile() {
                 setWorkExperiences(res[2])
             }
         });
-    }, [])
+    }, [providerStatus.connectedAccount])
 
     return (
         <Group ml={180} mr={180} mb={80}>
@@ -34,7 +34,7 @@ function Profile() {
             <Viewable/>
             <Experience workExperiences={workExperiences} />
             <Education degrees={degrees} />
-            <LiscenseCertifications certifications={certifications}/>
+            <Certification certifications={certifications}/>
         </Group>
     )
 }

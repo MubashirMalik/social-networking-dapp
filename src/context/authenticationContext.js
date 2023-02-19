@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { addressFormatter } from "../util";
+// import { addressFormatter } from "../util";
 
 const AuthenticationContext = React.createContext() 
 

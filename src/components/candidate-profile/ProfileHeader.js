@@ -1,5 +1,6 @@
-import React from "react"
+import React, { useContext } from "react"
 import styled from "styled-components"
+import { AuthenticationContext } from "../../context/authenticationContext"
 import avatar from '../../images/dummy-avatar.png'
 
 const StyledProfileHeader = styled.div`
@@ -44,11 +45,12 @@ const ProfileInfo = styled.div`
 `
 
 const ProfileHeader = () => {
+    const { providerStatus } = useContext(AuthenticationContext)
     return(
         <StyledProfileHeader>
             <img src={avatar} alt="avatar"/>
             <ProfileInfo>
-                <div className="Name">Hi Omar Assem Toubar</div>
+                <div className="Name">Hi, { providerStatus.userName }</div>
                 <div className="Strength-bar">
                     <div className="Current"></div>
                 </div>

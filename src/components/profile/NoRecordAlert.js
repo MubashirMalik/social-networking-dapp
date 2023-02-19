@@ -1,4 +1,4 @@
-import {Alert, Anchor, Flex} from '@mantine/core';
+import {Alert} from '@mantine/core';
 import { Link } from "react-router-dom"
 const NoRecordAlert = ({ section, message, href }) => {
     return (

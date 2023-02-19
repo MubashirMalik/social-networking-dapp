@@ -12,7 +12,7 @@ import {
 import image from '../../assets/60111.jpg'
 import { AuthenticationContext } from '../../../context/authenticationContext';
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     card: {
         marginTop:"10px",
         width: "100%",
@@ -29,17 +29,11 @@ const useStyles = createStyles((theme) => ({
 
 
     },
-    progressBar: {
-        backgroundColor: "#8A2BE2"
-    },
     headerIconBox: {
 
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between"
-    },
-    badge: {
-        display: "flex"
     },
     button :{
 
@@ -60,15 +54,7 @@ const useStyles = createStyles((theme) => ({
 
 function CardHeading() {
     const { providerStatus } = useContext(AuthenticationContext)
-    const {classes, cx} = useStyles();
-    const avatar = (
-        <Avatar
-            alt="Avatar for badge"
-            size={24}
-            mr={5}
-            src={image}
-        />
-    );
+    const {classes} = useStyles();
 
     return (
         <Card

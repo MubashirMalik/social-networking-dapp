@@ -1,6 +1,17 @@
-import {createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button } from '@mantine/core';
+import {
+    createStyles,
+    Card,
+    Image,
+    Text,
+    Group,
+    Badge,
+    Box,
+    Popover,
+    Button,
+    Flex,
+} from '@mantine/core';
 import {useDisclosure} from "@mantine/hooks";
-import {MONTH_NAMES} from "../../../../util";
+import { MONTH_NAMES } from '../../../../util';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -19,27 +30,27 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = {
-    "image": "https://seeklogo.com/images/A/ajman-university-logo-CF1E1592D6-seeklogo.com.png",
-    "organization": "NUST",
+    "image": "https://ezbrt4adg6k.exactdn.com/wp-content/uploads/2021/04/unnamed.png",
+    "organization": "Facebook",
 }
 
-export function EducationCard({ degree }) {
+export function CertificationCard({ certification }) {
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
-            <Image src={data.image} height={100} width={100} radius={"md"}/>
+            <Image src={data.image} height={100} width={100} radius={"md"} />
             <div className={classes.body}>
                 <Box className={classes.box}>
                     <Text className={classes.title} mt="sm">
-                        { degree.title }
+                        {certification.name}
                     </Text>
                     {
-                        degree.isVerified ? 
+                        certification.isVerified ?
                             <Badge size="lg" radius="xl" color="teal">
                                 verified
-                            </Badge>   
-                        :
+                            </Badge>
+                            :
                             <Badge size="lg" radius="xl" color="red">
                                 not verified
                             </Badge>
@@ -47,11 +58,15 @@ export function EducationCard({ degree }) {
                 </Box>
                 <Group noWrap spacing="xs">
                     <Text size="sm" color="dimmed" weight={700}>
-                        { MONTH_NAMES[degree.fromMonth-1] + " " + degree.fromYear }
+                        { MONTH_NAMES[certification.issueMonth-1] + " " + certification.issueYear }
                     </Text>
                     -
                     <Text size="sm" color="dimmed" weight={700}>
-                        { MONTH_NAMES[degree.toMonth-1] + " " + degree.toYear }
+                        {
+                            (Number(certification.expirationMonth) === 0) || (Number(certification.expirationYear) === 0) ? "Doesn't expire" :
+                                MONTH_NAMES[certification.expirationMonth-1]  + " " +
+                                certification.expirationYear
+                        }
                     </Text>
                 </Group>
                 <Text transform="uppercase" weight={700} size="sm">
@@ -61,17 +76,17 @@ export function EducationCard({ degree }) {
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>
                         <Popover.Target>
                             <Text size="sm" color="dimmed" truncate onMouseEnter={open} onMouseLeave={close}>
-                               { degree.issuingOrganization }
+                                { certification.issuingOrganization }
                             </Text>
                         </Popover.Target>
                         <Popover.Dropdown sx={{pointerEvents: 'none'}}>
                             <Text size="sm" color="dimmed" truncate>
-                               { degree.issuingOrganization }
+                                { certification.issuingOrganization }
                             </Text>
                         </Popover.Dropdown>
                     </Popover>
                 </Group>
-                { !degree.isVerified ?
+                { !certification.isVerified ?
                     <Flex justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase>
                             Request Verification

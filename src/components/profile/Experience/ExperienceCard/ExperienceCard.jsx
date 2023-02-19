@@ -1,5 +1,6 @@
-import {createStyles, Card, Image, Text, Group, Badge, Box, Popover, Loader} from '@mantine/core';
+import {createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button} from '@mantine/core';
 import {useDisclosure} from "@mantine/hooks";
+import { MONTH_NAMES} from "../../../../util";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -7,7 +8,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     title: {
-        fontWeight: 700, fontFamily: `Greycliff CF, ${theme.fontFamily}`, lineHeight: 1.2,
+        fontWeight: 700, lineHeight: 1.2,
     },
 
     body: {
@@ -18,16 +19,8 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = {
-    "image": "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
+    "image": "https://media.licdn.com/dms/image/C4D0BAQF1Seuee0hEjA/company-logo_200_200/0/1594064752669?e=2147483647&v=beta&t=f-_DaHdiL-mCog1kCury7keFykH7XQ0bR-Xvy7DD2N8",
     "organization": "Facebook",
-    "title": "Software Engineer",
-    "from_date": "Feb 2019",
-    "to_date": "Feb 2021",
-    "address": "0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7",
-    "author": {
-        "name": "Elsa Brown",
-        "avatar": "https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-    }
 }
 
 export function ExperienceCard({ workExperience }) {
@@ -39,43 +32,58 @@ export function ExperienceCard({ workExperience }) {
             <div className={classes.body}>
                 <Box className={classes.box}>
                     <Text className={classes.title} mt="sm">
-                        {data.title}
+                        { workExperience.designation }
                     </Text>
                     {
-                        workExperience.isVerified?  <Badge size="lg" radius="xl" color="teal">
-                            verified
-                        </Badge>: <Loader color="yellow" >Verfiying</Loader>
+                        workExperience.isVerified ?
+                            <Badge size="lg" radius="xl" color="teal">
+                                verified
+                            </Badge>
+                            :
+                            <Badge size="lg" radius="xl" color="red">
+                                not verified
+                            </Badge>
                     }
                 </Box>
 
                 <Group noWrap spacing="xs">
-                    <Text size="xs" color="dimmed">
-                        {data.from_date}
+                    <Text size="sm" color="dimmed" weight={700}>
+                        { MONTH_NAMES[workExperience.fromMonth-1] + " " + workExperience.fromYear }
                     </Text>
                     -
-                    <Text size="xs" color="dimmed">
-                        {data.to_date}
+                    <Text size="sm" color="dimmed" weight={700}>
+                        {
+                            (Number(workExperience.toYear) === 0) || (Number(workExperience.toMonth) === 0) ? "Present" :
+                            MONTH_NAMES[workExperience.toMonth-1]  + " " +
+                            workExperience.toYear
+                        }
                     </Text>
                 </Group>
-                <Text transform="uppercase" color="dimmed" weight={700} size="xs">
+                <Text transform="uppercase" weight={700} size="sm">
                     {data.organization}
                 </Text>
                 <Group spacing="xs" width={300}>
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>
                         <Popover.Target>
-                            <Text size="xs" color="dimmed" truncate onMouseEnter={open} onMouseLeave={close}>
+                            <Text size="sm" color="dimmed" truncate onMouseEnter={open} onMouseLeave={close}>
                                 { workExperience.issuingOrganization }
                             </Text>
                         </Popover.Target>
                         <Popover.Dropdown sx={{pointerEvents: 'none'}}>
-                            <Text size="xs" color="dimmed" truncate>
+                            <Text size="sm" color="dimmed" truncate>
                                 { workExperience.issuingOrganization }
                             </Text>
                         </Popover.Dropdown>
                     </Popover>
-
                 </Group>
-
+                { !workExperience.isVerified ?
+                    <Flex justify={"flex-end"} mt="10px">
+                        <Button size="sm" compact uppercase>
+                            Request Verification
+                        </Button>
+                    </Flex>
+                    : null
+                }
             </div>
         </Group>
     </Card>);

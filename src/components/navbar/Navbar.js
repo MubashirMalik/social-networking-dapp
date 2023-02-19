@@ -50,7 +50,7 @@ function Navbar() {
                                         ...prevProviderStatus, 
                                         userName: res[0] 
                                     }))
-                                    navigate("/account/about")
+                                    navigate("/profile")
                                 }
                             })
                         }

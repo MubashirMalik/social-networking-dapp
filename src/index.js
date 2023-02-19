@@ -19,7 +19,7 @@ root.render(
 		<BrowserRouter>
             <AuthenticationContextProvider>
                 <ContractCompaniesContextProvider>
-                    <MantineProvider>
+                    <MantineProvider theme={{fontFamily: 'Inter'}}>
 			            <App />
                     </MantineProvider>
                 </ContractCompaniesContextProvider>

@@ -1,21 +1,7 @@
-import React, { useState, useEffect } from "react"
-import { getJobs } from "../../services/job.service"
+import React from "react"
 import JobCard from "./JobCard"
 
-const JobCardList = () => {
-    const [jobList, setJobList] = useState([])
-
-    useEffect(() => {
-        getJobs()
-        .then(res => {
-            if (!res){
-                console.log("Something went wrong")
-            } else{
-                setJobList(res);
-            }
-        });
-    }, [])
-
+const JobCardList = ({jobList}) => {
     const displayJobs = jobList.map((job) => <JobCard key={job._id} {...job} />)
 
     return (

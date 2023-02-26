@@ -3,7 +3,7 @@ import './SearchAccordion.css'
 import { TbListSearch, TbRefresh,TbCurrentLocation, TbBuildingSkyscraper } from "react-icons/tb";
 
 
-const SearchAccordion = () => {
+const SearchAccordion = ({ searchForm, handleChange }) => {
 
     return (
         <div className="Search-accordion">
@@ -20,6 +20,8 @@ const SearchAccordion = () => {
                     type="text"
                     name="keyword"
                     placeholder="Search..."
+                    value={searchForm.keyword}
+                    onChange={handleChange}
                 />
             </div>
             <div className="Accordion-input Accordion-common">
@@ -32,22 +34,32 @@ const SearchAccordion = () => {
                     <div className="Checkbox-group">
                         <input
                             type="checkbox"
+                            name="jobModeOnsite"
+                            checked={searchForm.jobModeOnsite}
+                            id="jobModeOnsite"
+                            onChange={handleChange}
                         />
-                        <label>Onsite</label>
-                        
+                        <label htmlFor="jobModeOnsite">Onsite</label>
                     </div>
                     <div className="Checkbox-group">
                         <input
                             type="checkbox"
+                            name="jobModeHybrid"
+                            checked={searchForm.jobModeHybrid}
+                            id="jobModeHybrid"
+                            onChange={handleChange}
                         />
-                        <label>Hybrid</label>
-                       
+                        <label htmlFor="jobModeHybrid">Hybrid</label>
                     </div>
                     <div className="Checkbox-group">
                         <input
                             type="checkbox"
+                            name="jobModeRemote"
+                            checked={searchForm.jobModeRemote}
+                            id="jobModeRemote"
+                            onChange={handleChange}
                         />
-                        <label>Remote</label>
+                        <label htmlFor="jobModeRemote">Remote</label>
                     </div>
                 </div>
             </div>
@@ -63,7 +75,6 @@ const SearchAccordion = () => {
                             type="checkbox"
                         />
                         <label>Part Time</label>
-                        
                     </div>
                     <div className="Checkbox-group">
                         <input

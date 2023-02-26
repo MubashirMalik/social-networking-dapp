@@ -1,6 +1,9 @@
 import {createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button} from '@mantine/core';
 import {useDisclosure} from "@mantine/hooks";
+import { useState } from 'react';
+import { useEffect } from 'react';
 import { MONTH_NAMES} from "../../../../util";
+import { getUser } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -19,13 +22,23 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = {
-    "image": "https://media.licdn.com/dms/image/C4D0BAQF1Seuee0hEjA/company-logo_200_200/0/1594064752669?e=2147483647&v=beta&t=f-_DaHdiL-mCog1kCury7keFykH7XQ0bR-Xvy7DD2N8",
-    "organization": "Facebook",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png",
 }
 
 export function ExperienceCard({ workExperience }) {
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
+    const [issuingOrganization, setIssuingOrganization] = useState()
+
+    useEffect(() => {
+        getUser(workExperience.issuingOrganization)
+        .then(res => {
+            if (res) {
+                setIssuingOrganization(res)
+            }
+        })
+    }, [workExperience.issuingOrganization])
+
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
             <Image src={data.image} height={100} width={100} radius={"md"}/>
@@ -60,7 +73,7 @@ export function ExperienceCard({ workExperience }) {
                     </Text>
                 </Group>
                 <Text transform="uppercase" weight={700} size="sm">
-                    {data.organization}
+                    { issuingOrganization?.fullName }
                 </Text>
                 <Group spacing="xs" width={300}>
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>

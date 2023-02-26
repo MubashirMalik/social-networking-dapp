@@ -4,7 +4,7 @@ import { NotificationManager } from 'react-notifications';
 import { useNavigate } from 'react-router-dom';
 import { AuthenticationContext } from '../context/authenticationContext';
 import { registerUserToDatabase } from '../services/user.service';
-import { registerUser } from '../Web3Client';
+import { getUser, registerUser } from '../Web3Client';
 import { FlexRow, InputGroup, Title } from './styles/Section.styled';
 
 const customStyles = {
@@ -20,7 +20,7 @@ const customStyles = {
 
 const RegistrationPopup = ({ isOpenModal, handleClose }) => {
     const navigate = useNavigate()
-    const  { providerStatus } = useContext(AuthenticationContext)
+    const  { providerStatus, setProviderStatus } = useContext(AuthenticationContext)
     const [formData, setFormData] = useState({
         fullName: "",
         accountType: "Candidate"
@@ -47,7 +47,18 @@ const RegistrationPopup = ({ isOpenModal, handleClose }) => {
                 await registerUserToDatabase(providerStatus.connectedAccount)
                 NotificationManager.success("User registered with Smart Contract", "Transaction successful");
                 handleClose()
-                navigate("/account/about")
+
+                getUser(providerStatus.connectedAccount)
+                .then(res => {
+                    if (res) {
+                        setProviderStatus(prevProviderStatus => ({
+                            ...prevProviderStatus, 
+                            userName: res[0] 
+                        }))
+                        navigate("/account/about")
+                    }
+                })
+                
             }
         })
     }

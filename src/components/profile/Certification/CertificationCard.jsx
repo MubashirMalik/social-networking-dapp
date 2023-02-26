@@ -29,7 +29,7 @@ export function Certification({ certifications }) {
                     <NoRecordAlert
                         section="certifications"
                         message="Add certification and licenses to stand out to employers."
-                        href="/account/certifications"
+                        href="/account/certification"
                     />
                 }
             </Stack>

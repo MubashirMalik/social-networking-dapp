@@ -11,7 +11,10 @@ import {
     Flex,
 } from '@mantine/core';
 import {useDisclosure} from "@mantine/hooks";
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { MONTH_NAMES } from '../../../../util';
+import { getUser } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -31,12 +34,22 @@ const useStyles = createStyles((theme) => ({
 
 const data = {
     "image": "https://ezbrt4adg6k.exactdn.com/wp-content/uploads/2021/04/unnamed.png",
-    "organization": "Facebook",
 }
 
 export function CertificationCard({ certification }) {
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
+    const [issuingOrganization, setIssuingOrganization] = useState()
+
+    useEffect(() => {
+        getUser(certification.issuingOrganization)
+        .then(res => {
+            if (res) {
+                setIssuingOrganization(res)
+            }
+        })
+    }, [certification.issuingOrganization])
+
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
             <Image src={data.image} height={100} width={100} radius={"md"} />
@@ -70,7 +83,7 @@ export function CertificationCard({ certification }) {
                     </Text>
                 </Group>
                 <Text transform="uppercase" weight={700} size="sm">
-                    {data.organization}
+                    { issuingOrganization?.fullName }
                 </Text>
                 <Group spacing="xs" width={300}>
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>

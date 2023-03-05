@@ -9,12 +9,16 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function Certification({ certifications }) {
+export function Certification({ certifications, setRefreshUserData }) {
     const {classes} = useStyles();
 
-    const items = certifications.map(certification => (
+    const items = certifications.map((certification, index) => (
         <Grid.Col span={6}>
-            <CertificationCard certification={certification}/>
+            <CertificationCard 
+                certification={certification}
+                id={index}
+                setRefreshUserData={setRefreshUserData}    
+            />
         </Grid.Col>
     ))
 
@@ -36,5 +40,3 @@ export function Certification({ certifications }) {
         </Card>
     );
 }
-
-

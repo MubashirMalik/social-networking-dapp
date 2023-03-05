@@ -1,5 +1,5 @@
 import {createStyles, Card, Title, Grid, Stack} from '@mantine/core';
-import {EducationCard} from "./ExperienceCard/EducationCard.jsx";
+import {EducationCard} from "./EducationCard/EducationCard.jsx";
 import NoRecordAlert from "../NoRecordAlert";
 
 const useStyles = createStyles((theme) => ({
@@ -9,12 +9,16 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function Education({ degrees }) {
+export function Education({ degrees, setRefreshUserData }) {
     const {classes} = useStyles();
     
-    const items = degrees.map(degree => (
+    const items = degrees.map((degree, index) => (
         <Grid.Col span={6}>
-            <EducationCard degree={degree} />
+            <EducationCard 
+                degree={degree} 
+                id={index}   
+                setRefreshUserData={setRefreshUserData}    
+            />
         </Grid.Col>
     ));   
 

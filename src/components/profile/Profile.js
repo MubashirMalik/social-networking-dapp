@@ -3,7 +3,7 @@ import CardHeading from "./CardHeading/CardHeading.jsx";
 import Viewable from "./Viewable/Viewable.jsx";
 import { Experience } from "./Experience/Experience.jsx";
 import { Education } from "./Education/Education.jsx";
-import { Certification } from "./Certification/CertificationCard.jsx"
+import { Certification } from "./Certification/Certification.jsx"
 import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../context/authenticationContext.js";
 import { getUserData } from "../../Web3Client.js";
@@ -14,6 +14,7 @@ function Profile() {
     const [degrees, setDegrees] = useState([])
     const [certifications, setCertifications] = useState([])
     const [workExperiences, setWorkExperiences] = useState([])
+    const [refreshUserData, setRefreshUserData] = useState(false)
 
     useEffect(() => {
         getUserData(providerStatus.connectedAccount)
@@ -26,15 +27,15 @@ function Profile() {
                 setWorkExperiences(res[2])
             }
         });
-    }, [providerStatus.connectedAccount])
+    }, [providerStatus.connectedAccount, refreshUserData])
 
     return (
         <Group ml={180} mr={180} mb={80}>
             <CardHeading/>
             <Viewable/>
-            <Experience workExperiences={workExperiences} />
-            <Education degrees={degrees} />
-            <Certification certifications={certifications}/>
+            <Experience workExperiences={workExperiences} setRefreshUserData={setRefreshUserData} />
+            <Education degrees={degrees} setRefreshUserData={setRefreshUserData}/>
+            <Certification certifications={certifications} setRefreshUserData={setRefreshUserData} />
         </Group>
     )
 }

@@ -12,6 +12,7 @@ contract SmartContract {
         uint16 toYear;
         address issuingOrganization;
         bool isVerified;
+        bool isPendingVerification;
     }
 
     struct Certification {
@@ -22,6 +23,7 @@ contract SmartContract {
         uint16 expirationYear; // 0 if doesn't expire
         address issuingOrganization;
         bool isVerified;
+        bool isPendingVerification;
     }
 
     struct Degree {
@@ -32,6 +34,7 @@ contract SmartContract {
         uint16 toYear;
         address issuingOrganization;
         bool isVerified;
+        bool isPendingVerification;
     }
 
     struct User {
@@ -196,7 +199,7 @@ contract SmartContract {
     ) public {
         // Only Registered Users Require
         candidateDegrees[msg.sender].push(
-            Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false)
+            Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false)
         );
     }
 
@@ -210,7 +213,7 @@ contract SmartContract {
     ) public {
         // Only Registered Users Require
         candidateCertifications[msg.sender].push(
-            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false)
+            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false)
         );
     }
 
@@ -224,7 +227,7 @@ contract SmartContract {
     ) public {
         // Only Registered Users Require
         candidateWorkExperiences[msg.sender].push(
-            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false)
+            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false)
         );
     }
 
@@ -245,5 +248,49 @@ contract SmartContract {
             candidateCertifications[msg.sender], 
             candidateWorkExperiences[msg.sender]
         );
+    }
+
+    // Request verification from company
+    function requestVerification(uint8 id, uint8 tokenType) public { 
+        if (tokenType == 1) { // Education
+
+            require(
+                candidateDegrees[msg.sender].length > 0,
+                "No degrees to verify."
+            );
+
+            require(
+                candidateDegrees[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateDegrees[msg.sender][id].isPendingVerification = true;    
+        } else if (tokenType == 2) { // Work Experience
+
+            require(
+                candidateWorkExperiences[msg.sender].length > 0,
+                "No work experiences to verify."
+            );
+
+            require(
+                candidateWorkExperiences[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateWorkExperiences[msg.sender][id].isPendingVerification = true;    
+        } else { // Certification
+
+            require(
+                candidateCertifications[msg.sender].length > 0,
+                "No certifications to verify."
+            );
+
+            require(
+                candidateCertifications[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateCertifications[msg.sender][id].isPendingVerification = true;    
+        }
     }
 }

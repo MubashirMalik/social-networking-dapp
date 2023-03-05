@@ -12,9 +12,11 @@ import {
 } from '@mantine/core';
 import {useDisclosure} from "@mantine/hooks";
 import { useEffect } from 'react';
+import { useContext } from 'react';
 import { useState } from 'react';
-import { MONTH_NAMES } from '../../../../util';
-import { getUser } from '../../../../Web3Client';
+import { AuthenticationContext } from '../../../../context/authenticationContext';
+import { MONTH_NAMES, TOKEN_TOKEN_CERTIFICATION } from '../../../../util';
+import { getUser, requestVerification } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -36,10 +38,11 @@ const data = {
     "image": "https://ezbrt4adg6k.exactdn.com/wp-content/uploads/2021/04/unnamed.png",
 }
 
-export function CertificationCard({ certification }) {
+export function CertificationCard({ certification, id, setRefreshUserData }) {
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
     const [issuingOrganization, setIssuingOrganization] = useState()
+    const { providerStatus } = useContext(AuthenticationContext)
 
     useEffect(() => {
         getUser(certification.issuingOrganization)
@@ -49,6 +52,15 @@ export function CertificationCard({ certification }) {
             }
         })
     }, [certification.issuingOrganization])
+
+    const handleClick = () => {
+        requestVerification(providerStatus.connectedAccount, id, TOKEN_TOKEN_CERTIFICATION)
+        .then(res => {
+            if (res) {
+                setRefreshUserData(prevState => !prevState)
+            }
+        })
+    }
 
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
@@ -99,13 +111,18 @@ export function CertificationCard({ certification }) {
                         </Popover.Dropdown>
                     </Popover>
                 </Group>
-                { !certification.isVerified ?
+                { !certification.isVerified && !certification.isPendingVerification ?
                     <Flex justify={"flex-end"} mt="10px">
-                        <Button size="sm" compact uppercase>
+                        <Button size="sm" compact uppercase onClick={handleClick}>
                             Request Verification
                         </Button>
                     </Flex>
-                    : null
+                    : 
+                    <Flex justify={"flex-end"} mt="10px">
+                        <Button size="sm" compact uppercase color="yellow">
+                            Pending (Requested)
+                        </Button>
+                    </Flex>
                 }
             </div>
         </Group>

@@ -1,9 +1,11 @@
 import {createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button} from '@mantine/core';
 import {useDisclosure} from "@mantine/hooks";
 import { useState } from 'react';
+import { useContext } from 'react';
 import { useEffect } from 'react';
-import { MONTH_NAMES} from "../../../../util";
-import { getUser } from '../../../../Web3Client';
+import { AuthenticationContext } from '../../../../context/authenticationContext';
+import { MONTH_NAMES, TOKEN_TOKEN_EXPERIENCE} from "../../../../util";
+import { getUser, requestVerification } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -25,10 +27,11 @@ const data = {
     "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png",
 }
 
-export function ExperienceCard({ workExperience }) {
+export function ExperienceCard({ workExperience, id, setRefreshUserData }) {
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
     const [issuingOrganization, setIssuingOrganization] = useState()
+    const { providerStatus } = useContext(AuthenticationContext)
 
     useEffect(() => {
         getUser(workExperience.issuingOrganization)
@@ -38,6 +41,15 @@ export function ExperienceCard({ workExperience }) {
             }
         })
     }, [workExperience.issuingOrganization])
+
+    const handleClick = () => {
+        requestVerification(providerStatus.connectedAccount, id, TOKEN_TOKEN_EXPERIENCE)
+        .then(res => {
+            if (res) {
+                setRefreshUserData(prevState => !prevState)
+            }
+        })
+    }
 
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
@@ -89,13 +101,18 @@ export function ExperienceCard({ workExperience }) {
                         </Popover.Dropdown>
                     </Popover>
                 </Group>
-                { !workExperience.isVerified ?
+                { !workExperience.isVerified && !workExperience.isPendingVerification ?
                     <Flex justify={"flex-end"} mt="10px">
-                        <Button size="sm" compact uppercase>
+                        <Button size="sm" compact uppercase onClick={handleClick}>
                             Request Verification
                         </Button>
                     </Flex>
-                    : null
+                    : 
+                    <Flex justify={"flex-end"} mt="10px">
+                        <Button size="sm" compact uppercase color="yellow">
+                            Pending (Requested)
+                        </Button>
+                    </Flex>
                 }
             </div>
         </Group>

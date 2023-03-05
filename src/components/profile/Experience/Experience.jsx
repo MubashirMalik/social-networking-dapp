@@ -10,12 +10,16 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-export function Experience({ workExperiences }) {
+export function Experience({ workExperiences, setRefreshUserData }) {
     const {classes} = useStyles();
 
-    const items = workExperiences.map(workExperience => (
+    const items = workExperiences.map((workExperience, index) => (
         <Grid.Col span={6}>
-            <ExperienceCard workExperience={workExperience} />
+            <ExperienceCard 
+                workExperience={workExperience} 
+                id={index} 
+                setRefreshUserData={setRefreshUserData}    
+            />
         </Grid.Col>
     ));
 

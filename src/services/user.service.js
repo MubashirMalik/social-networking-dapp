@@ -1,4 +1,6 @@
+import axios from "axios";
 const BASE_URL = "http://localhost:3001/user/"
+const BASE_URL_RESUME = 'http://127.0.0.1:8000'
 
 export const registerUserToDatabase = async (walletAddress) => {
     try {
@@ -40,4 +42,13 @@ export const updateUserDetails = async (user) => {
     } catch (err) {
         console.log("Exception in updateUserDetails():", err);
     }
+}
+export const getResumeData = async (payload) => {
+    const axiosObject = axios.create({
+        baseURL: BASE_URL_RESUME,
+        timeout: 20000,
+       
+        method: "POST"
+    });
+    return axiosObject.post("/parse", payload);
 }

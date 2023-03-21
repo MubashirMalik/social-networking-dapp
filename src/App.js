@@ -11,7 +11,9 @@ import PostJob from "./components/job-marketplace/PostJob"
 import { initWeb3Client } from "./Web3Client";
 import { NotificationContainer } from "react-notifications";
 import Profile from "./components/profile/Profile";
-
+import { MantineProvider } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
+import { NotificationsProvider } from '@mantine/notifications';
 export default function App() {
     useEffect(() => {
         void initWeb3Client()
@@ -19,6 +21,9 @@ export default function App() {
 
 	return (
 		<div>
+			 <MantineProvider withGlobalStyles withNormalizeCSS>
+			 <ModalsProvider>
+				<NotificationsProvider>
 			<Navbar />
 			<Routes>
 				<Route exact path="/account/*" element={<CandidateProfile />} />
@@ -28,6 +33,9 @@ export default function App() {
 				{/* <Route path="*" element={ <PageNotFound />}/> */}
 			</Routes>
             <NotificationContainer />
+			</NotificationsProvider>
+			</ModalsProvider>
+			</MantineProvider>
     	</div>
   )
 }

@@ -82,6 +82,7 @@ function Navbar() {
                 </div>
             </div>
             <div className="Navbar-end">
+                <button onClick={() => navigate("/company-profile")}>Company</button>
                 <button onClick={() => navigate("/job/0")}>
                     Post a Job
                 </button>

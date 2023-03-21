@@ -13,8 +13,8 @@ export function Certification({ certifications, setRefreshUserData }) {
     const {classes} = useStyles();
 
     const items = certifications.map((certification, index) => (
-        <Grid.Col span={6}>
-            <CertificationCard 
+        <Grid.Col span={6} key={index}>
+            <CertificationCard
                 certification={certification}
                 id={index}
                 setRefreshUserData={setRefreshUserData}    

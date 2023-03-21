@@ -14,7 +14,7 @@ export function Experience({ workExperiences, setRefreshUserData }) {
     const {classes} = useStyles();
 
     const items = workExperiences.map((workExperience, index) => (
-        <Grid.Col span={6}>
+        <Grid.Col span={6} key={index}>
             <ExperienceCard 
                 workExperience={workExperience} 
                 id={index} 

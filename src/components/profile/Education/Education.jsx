@@ -13,7 +13,7 @@ export function Education({ degrees, setRefreshUserData }) {
     const {classes} = useStyles();
     
     const items = degrees.map((degree, index) => (
-        <Grid.Col span={6}>
+        <Grid.Col span={6} key={index}>
             <EducationCard 
                 degree={degree} 
                 id={index}   

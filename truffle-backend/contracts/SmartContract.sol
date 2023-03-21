@@ -13,6 +13,7 @@ contract SmartContract {
         address issuingOrganization;
         bool isVerified;
         bool isPendingVerification;
+        bool isRequestRejected;
     }
 
     struct Certification {
@@ -24,6 +25,7 @@ contract SmartContract {
         address issuingOrganization;
         bool isVerified;
         bool isPendingVerification;
+        bool isRequestRejected;
     }
 
     struct Degree {
@@ -35,6 +37,7 @@ contract SmartContract {
         address issuingOrganization;
         bool isVerified;
         bool isPendingVerification;
+        bool isRequestRejected;
     }
 
     struct User {
@@ -52,12 +55,19 @@ contract SmartContract {
     // Candidate => Work Experiences
     mapping(address => WorkExperience[]) candidateWorkExperiences;
     
+    // Candidate => Degrees
+    mapping(address => Degree[]) companyDegrees;
+    // Candidate => Certifications
+    mapping(address => Certification[]) companyCertifications;
+    // Candidate => Work Experiences
+    mapping(address => WorkExperience[]) companyWorkExperiences;
+
 
     /** @dev
      * This function is only for demo & should be removed before deployment on mainnet
      */ 
     function boostrap() private {
-        string[47] memory names = [
+        string[37] memory names = [
             // 10 Universities Below
             "University of Dubai",
             "American University in Dubai",
@@ -97,20 +107,10 @@ contract SmartContract {
             "Abu Dhabi Gas Liquefaction Company Limited (ADGAS)",
             "Abu Dhabi Oil Refining Company (ADOR)",
             "Dubai Oil Refining Company (DORC)",
-            "Emirates Group",
-            "Dubai Aluminum",
-            "Dubai Electricity and Water Authority (DEWA)",
-            "Dubai World Trade Centre",
-            "Dubai Airports",
-            "Dubai Silicon Oasis Authority",
-            "Dubai World",
-            "Dubai Industrial City",
-            "Dubai South",
-            "Dubai Holding",
-            "Dubai FDI"
+            "Emirates Group"
         ];
 
-        address[47] memory addresses = [
+        address[37] memory addresses = [
             0xbd909b88028445A706eB385FfE86aEd3dc859E63,
             0x720366A18a4aF591710204dC75AD3d67E090a6dB,
             0x579C26abF48abCC4BD12bdEf245CF75264c63cE5,
@@ -147,20 +147,10 @@ contract SmartContract {
             0xa13c1497f3A753754eE60D6a8834B4b6a282a702,
             0x0725675C6B734B94b362D48A5374f44985bB6613,
             0x71A519405224F9B4e5798E35aF62F0b7e2862eed,
-            0x3DE2bc4E3092eDA25936dBd99B18D765a834a7A6,
-            0x5aB347895E0E06812DdD75EB6C7105de059C4c29,
-            0x17025D0BC02c9DFC0E375fD92272f7278ff0d955,
-            0x32b42640aE11d8e6C57E275F470A2Cb69736e21b,
-            0x333b5462ca4eD82F26459E2fc4a539C11d741124,
-            0x4804B60Fd5F292D38022401c5B67673Bb6753ce8,
-            0xdc0db174f69eb7Be9Bc2068Ed21588f793a8db7D,
-            0xaa6850AE1cB621f64F754005C15abe98417fcC4b,
-            0x5aE20eb15636f5E9a51BCCFd90a194A14Fc1430B,
-            0xb07260C5760F02821e8796c434a2B94ab8A7CF91,
-            0xea8dd0978BB09d9BcA9E178984428514EB3aB630
+            0x3DE2bc4E3092eDA25936dBd99B18D765a834a7A6
         ];
 
-        for (uint i = 0; i < 47; i++) {
+        for (uint i = 0; i < 37; i++) {
             companyAddresses.push(addresses[i]);
             allUsers[addresses[i]] = User(names[i], true, true);
         }
@@ -199,7 +189,11 @@ contract SmartContract {
     ) public {
         // Only Registered Users Require
         candidateDegrees[msg.sender].push(
-            Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false)
+            Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
+        );
+
+        companyDegrees[issuingOrganization].push(
+            Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -213,7 +207,11 @@ contract SmartContract {
     ) public {
         // Only Registered Users Require
         candidateCertifications[msg.sender].push(
-            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false)
+            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false, false)
+        );
+
+        companyCertifications[issuingOrganization].push(
+            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -227,7 +225,11 @@ contract SmartContract {
     ) public {
         // Only Registered Users Require
         candidateWorkExperiences[msg.sender].push(
-            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false)
+            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
+        );
+
+        companyWorkExperiences[issuingOrganization].push(
+            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -247,6 +249,15 @@ contract SmartContract {
             candidateDegrees[msg.sender], 
             candidateCertifications[msg.sender], 
             candidateWorkExperiences[msg.sender]
+        );
+    }
+
+    // Get all data of a company
+    function getCompanyData() public view returns (Degree[] memory, Certification[] memory, WorkExperience[] memory) {
+        return (
+            companyDegrees[msg.sender], 
+            companyCertifications[msg.sender], 
+            companyWorkExperiences[msg.sender]
         );
     }
 
@@ -291,6 +302,65 @@ contract SmartContract {
             );
 
             candidateCertifications[msg.sender][id].isPendingVerification = true;    
+        }
+    }
+
+    function respondToVerificationRequest(uint8 id, uint8 tokenType, bool response) public {
+        if (tokenType == 1) { // Education
+
+            require(
+                candidateDegrees[msg.sender].length > 0,
+                "No degrees to verify."
+            );
+
+            require(
+                candidateDegrees[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateDegrees[msg.sender][id].isPendingVerification = false;   
+            if (response) { // Update candidate copy
+                candidateDegrees[msg.sender][id].isVerified = true;
+            } else {
+                candidateDegrees[msg.sender][id].isRequestRejected = true; 
+                // TODO: Remove from company list 
+            }
+        } else if (tokenType == 2) { // Work Experience
+
+            require(
+                candidateWorkExperiences[msg.sender].length > 0,
+                "No work experiences to verify."
+            );
+
+            require(
+                candidateWorkExperiences[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateWorkExperiences[msg.sender][id].isPendingVerification = false;
+            if (response) {
+                candidateWorkExperiences[msg.sender][id].isVerified = true;
+            } else {
+                candidateWorkExperiences[msg.sender][id].isRequestRejected = true;  
+            }    
+        } else { // Certification
+
+            require(
+                candidateCertifications[msg.sender].length > 0,
+                "No certifications to verify."
+            );
+
+            require(
+                candidateCertifications[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateCertifications[msg.sender][id].isPendingVerification = false;
+            if (response) {
+                candidateCertifications[msg.sender][id].isVerified = true;
+            } else {
+                candidateCertifications[msg.sender][id].isRequestRejected = true;  
+            }    
         }
     }
 }

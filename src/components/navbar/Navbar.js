@@ -37,7 +37,7 @@ function Navbar() {
                         message: "Connected wallet: " + addressFormatter(accounts[0]),
                         badgeColor: "green" 
                     }))
-
+console.log(accounts)
                     isRegistered(accounts[0])
                     .then(isRegistered => {
                         if (isRegistered !== null  && isRegistered === false) {
@@ -82,6 +82,9 @@ function Navbar() {
                 </div>
             </div>
             <div className="Navbar-end">
+            <button onClick={() => navigate("/insight")}>
+                   Insight
+                </button>
                 <button onClick={() => navigate("/job/0")}>
                     Post a Job
                 </button>

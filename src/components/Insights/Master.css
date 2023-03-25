@@ -1,0 +1,78 @@
+
+.header-back-icon{
+    margin-left: 20px;
+    margin-top: 33px;
+}
+
+.title {
+    padding-left: 30px;
+    padding-top: 24px;
+
+
+}
+.sub-title {
+    padding-top: 5px;
+    padding-bottom: 24px;
+    padding-left: 30px;
+
+}
+.master-add-btn{
+
+    /*margin: 33px 10px;*/
+    margin-top: 40px;
+    margin-right: 60px;
+    height: 29px;
+    float: right
+}
+
+.master-export-btn{
+
+    /*margin: 33px 10px;*/
+    margin-top: 40px;
+    margin-right: 10px;
+    height: 29px;
+    float: right
+}
+
+
+.header{
+    background-color: white;
+    /*width: 100vw;*/
+    justify-content: space-between;
+    display: flex;
+    flex-grow: 1;
+    /*margin-left: auto;*/
+}
+
+.master-filter-controls-view{
+    display: flex;
+    justify-content: space-between;
+}
+
+.master-search{
+    padding-top: 20px;
+    padding-left: 24px;
+    width: 75%;
+    /*padding-right: 30px;*/
+}
+
+.master-view-icon{
+    display: flex;
+    gap: 10px;
+    padding-top: 24px;
+    padding-left: 24px;
+    /*width: 5%;*/
+    padding-right: 30px;
+}
+
+.master-list-page {
+    height: 100vh;
+    overflow-x: hidden;
+    background-color: #f8f9fa;
+}
+
+.master-table{
+    /*padding-top: 24px;*/
+    padding-left: 24px;
+    padding-right: 24px;
+}

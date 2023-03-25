@@ -90,11 +90,11 @@ export function ExperienceCard({ workExperience }) {
                     </Popover>
                 </Group>
                 { !workExperience.isVerified ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase>
                             Request Verification
                         </Button>
-                    </Flex>
+                    </Group>
                     : null
                 }
             </div>

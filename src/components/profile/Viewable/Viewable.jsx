@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import {Card, createStyles, Flex, Title,Spoiler} from "@mantine/core";
+import {Card, createStyles, Flex, Title,Spoiler,Group} from "@mantine/core";
 import { Link } from "react-router-dom"
 import {FiEdit2} from "react-icons/fi";
 import { useEffect } from 'react';
@@ -32,10 +32,10 @@ function Viewable() {
 
     return (
         <Card  className={classes.card} withBorder radius={"md"} shadow={"sm"} pl={30} pr={30}>
-            <Flex mb={10} justify={"space-between"}>
+            <Group mb={10} justify={"space-between"}>
                 <Title size={20}>About</Title>
                 <Link to="/account/about"><FiEdit2 size={20}/></Link>
-            </Flex>
+            </Group>
             <Spoiler maxHeight={60} showLabel="Show more" hideLabel="Hide">
                 { providerStatus.userBio }
             </Spoiler>

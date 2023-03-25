@@ -100,11 +100,11 @@ export function CertificationCard({ certification }) {
                     </Popover>
                 </Group>
                 { !certification.isVerified ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase>
                             Request Verification
                         </Button>
-                    </Flex>
+                    </Group>
                     : null
                 }
             </div>

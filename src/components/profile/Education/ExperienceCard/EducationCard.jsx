@@ -85,11 +85,11 @@ export function EducationCard({ degree }) {
                     </Popover>
                 </Group>
                 { !degree.isVerified ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase>
                             Request Verification
                         </Button>
-                    </Flex>
+                    </Group>
                     : null
                 }
             </div>

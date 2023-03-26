@@ -189,3 +189,19 @@ export const requestVerification = async (connectedAccount, id, tokenType) => {
         return null;
     }
 }
+
+export const respondToVerificationRequest = async (connectedAccount, requester, tokenType, response) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        // const res = await smartContract.methods
+        // .respondToVerificationRequest(id, requester, tokenType, response)
+        // .send({ from: connectedAccount })
+        // return await res;
+    }  catch (e) {
+        console.log("[Solidity] respondToVerificationRequest(): ", e)
+        return null;
+    }
+}

@@ -8,7 +8,8 @@ function AuthenticationContextProvider(props) {
         message: "Detecting provider",
         connectedAccount: "",
         badgeColor: "red",
-        userName: ""
+        userName: "",
+        isCompany: false
     })
 
     useEffect(() => {

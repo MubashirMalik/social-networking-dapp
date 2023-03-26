@@ -1,4 +1,4 @@
-import {createStyles, Card, Title, Grid, Button, Box, Stack, Group} from '@mantine/core';
+import {createStyles, Card, Title, Grid, Box, Stack, Group} from '@mantine/core';
 import { TokenCard } from "./TokenCard/TokenCard.jsx";
 import {useEffect, useState} from "react";
 import CardHeading from '../profile/CardHeading/CardHeading.jsx';
@@ -6,6 +6,7 @@ import Viewable from '../profile/Viewable/Viewable.jsx';
 import { getCompanyData } from '../../Web3Client.js';
 import { AuthenticationContext } from '../../context/authenticationContext.js';
 import { useContext } from 'react';
+import { TOKEN_TYPE_CERTIFICATION, TOKEN_TYPE_EDUCATION, TOKEN_TYPE_EXPERIENCE } from '../../util.js';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -51,109 +52,37 @@ const useStyles = createStyles((theme) => ({
 export function CompanyProfile({}) {
     const {classes} = useStyles();
     const  { providerStatus } = useContext(AuthenticationContext)
-    const [allData, setAllData] = useState([])
 
-    const mainData = {
-        "title": "Experience",
-        "description": "",
-        "data": [
-            {
-                "image": "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-                "organization": "Facebook",
-                "title": "Software Engineer",
-                "from_date": "Feb 2019",
-                "to_date": "Feb 2021",
-                "address": "0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7",
-                "author": {
-                    "name": "Elsa Brown",
-                    "avatar": "https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-                }
-            }, {
-                "image": "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-                "organization": "Facebook",
-                "title": "Software Engineer",
-                "from_date": "Feb 2019",
-                "to_date": "Feb 2021",
-                "address": "0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7",
-                "author": {
-                    "name": "Elsa Brown",
-                    "avatar": "https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-                }
-            }, {
-                "image": "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-                "organization": "Facebook",
-                "title": "Software Engineer",
-                "from_date": "Feb 2019",
-                "to_date": "Feb 2021",
-                "address": "0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7",
-                "author": {
-                    "name": "Elsa Brown",
-                    "avatar": "https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-                }
-            }, {
-                "image": "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-                "organization": "Facebook",
-                "title": "Software Engineer",
-                "from_date": "Feb 2019",
-                "to_date": "Feb 2021",
-                "address": "0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7",
-                "author": {
-                    "name": "Elsa Brown",
-                    "avatar": "https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-                }
-            }, {
-                "image": "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-                "organization": "Facebook",
-                "title": "Software Engineer",
-                "from_date": "Feb 2019",
-                "to_date": "Feb 2021",
-                "address": "0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7",
-                "author": {
-                    "name": "Elsa Brown",
-                    "avatar": "https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-                }
-            }, {
-                "image": "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-                "organization": "Facebook",
-                "title": "Software Engineer",
-                "from_date": "Feb 2019",
-                "to_date": "Feb 2021",
-                "address": "0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7",
-                "author": {
-                    "name": "Elsa Brown",
-                    "avatar": "https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-                }
-            }, {
-                "image": "https://images.unsplash.com/photo-1602080858428-57174f9431cf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&q=80",
-                "organization": "Facebook",
-                "title": "Software Engineer",
-                "from_date": "Feb 2019",
-                "to_date": "Feb 2021",
-                "address": "0xb7bcfea0af6f76d5219d024bde453ccb102c47d18256efabbd4d5ea3471369b7",
-                "author": {
-                    "name": "Elsa Brown",
-                    "avatar": "https://images.unsplash.com/photo-1628890923662-2cb23c2e0cfe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80"
-                }
-            },
-
-
-        ]
-    }
-    const [data ,setData]= useState([...mainData.data].slice(0,4))
+    const [experiences, setExperiences] = useState([])
+    const [certifications, setCertifications] = useState([])
+    const [degrees, setDegrees] = useState([])
 
     useEffect(() => {
         getCompanyData(providerStatus.connectedAccount)
         .then(res => {
             if (res) {
-                console.log(res)
-                setData(res)
+                setExperiences(res[2])
+                setCertifications(res[1])
+                setDegrees(res[0])
             }
         })
-    }, [])
+    }, [providerStatus.connectedAccount])
 
-    const items = data.map((item) => (
+    const displayExperiences = experiences?.map(experience => (
         <Grid.Col span={6}>
-            <TokenCard data={item} verified={true}/>
+            <TokenCard data={experience} tokenType={TOKEN_TYPE_EXPERIENCE} />
+        </Grid.Col>
+    ));
+
+    const displayCertifications = certifications?.map(certification => (
+        <Grid.Col span={6}>
+            <TokenCard data={certification} tokenType={TOKEN_TYPE_CERTIFICATION} />
+        </Grid.Col>
+    ));
+
+    const displayDegrees = degrees?.map(degree => (
+        <Grid.Col span={6}>
+            <TokenCard data={degree} tokenType={TOKEN_TYPE_EDUCATION} />
         </Grid.Col>
     ));
 
@@ -164,37 +93,17 @@ export function CompanyProfile({}) {
             <Viewable/>
             <Card shadow={"md"} withBorder radius="md"  className={classes.card}>
                 <Stack spacing={15} >
-                    <Title size="xl" className={classes.title} weight={500}>
-                        {data.title}
+                    <Title size={20}>
+                        All Token Requests
                     </Title>
                     <Grid gutter={5} gutterXs="md" gutterMd="xl" gutterXl={15}>
-                        {items}
+                        { displayExperiences }
+                        { displayCertifications }
+                        { displayDegrees }
                     </Grid>
 
                     <Box className={classes.wrapper}>
-
-                        <Box className={classes.show}>
-
-                            {
-                                data.length===mainData.data.length?(
-                                    <Button fullWidth variant="light"  radius="md"
-
-                                            onClick={()=>{
-                                                setData(mainData.data.slice(0,4))
-                                            }
-                                            }>
-                                        CLick to see less
-                                    </Button>
-                                ):<Button fullWidth variant="light"  radius="md"
-
-                                        onClick={()=>{
-                                            setData(mainData.data)
-                                        }
-                                        }>
-                                    Click to see more
-                                </Button>
-                            }
-                        </Box>
+                        { degrees.length === 0 && certifications.length === 0 && experiences.length === 0 && "You have no pending requests." }
                     </Box>
                 </Stack>
             </Card>

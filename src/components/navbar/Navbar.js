@@ -43,14 +43,15 @@ function Navbar() {
                         if (isRegistered !== null  && isRegistered === false) {
                             setIsOpenModal(true)
                         } else {
-                            getUser(providerStatus.connectedAccount)
+                            getUser(accounts[0])
                             .then(res => {
                                 if (res) {
                                     setProviderStatus(prevProviderStatus => ({
                                         ...prevProviderStatus, 
-                                        userName: res[0] 
+                                        userName: res.fullName,
+                                        isCompany: res.isCompany
                                     }))
-                                    navigate("/profile")
+                                    !res.isCompany ? navigate("/profile") : navigate("/company-profile")
                                 }
                             })
                         }
@@ -82,16 +83,24 @@ function Navbar() {
                 </div>
             </div>
             <div className="Navbar-end">
-                <button onClick={() => navigate("/company-profile")}>Company</button>
-                <button onClick={() => navigate("/job/0")}>
-                    Post a Job
-                </button>
+                {
+                    providerStatus.isCompany && 
+                    <button onClick={() => navigate("/job/0")}>
+                        Post a Job
+                    </button>
+                }
                 <button onClick={() => navigate("/")}>Jobs<MdWork /></button>
                 { providerStatus.connectedAccount === "" ? 
                     <button onClick={connectWallet}>Connect</button> :
                     <>
-                        <button onClick={() => navigate("/account/about")}>Edit Profile <FaUserEdit /></button>
-                        <button onClick={() => navigate("/profile")}>View Profile</button>
+                        { !providerStatus.isCompany ?
+                            <>
+                                <button onClick={() => navigate("/account/about")}>Edit Profile <FaUserEdit /></button>
+                                <button onClick={() => navigate("/profile")}>View Profile</button>
+                            </>
+                            :
+                            <button onClick={() => navigate("/company-profile")}>View Profile</button>
+                        } 
                     </>
                 }
             </div>

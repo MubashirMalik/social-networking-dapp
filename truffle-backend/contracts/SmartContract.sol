@@ -192,8 +192,10 @@ contract SmartContract {
             Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
         );
 
+        /** @dev 
+        * issuingOrganization field contains address of person who requested token in company mapping */
         companyDegrees[issuingOrganization].push(
-            Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
+            Degree(title, fromMonth, fromYear, toMonth, toYear, msg.sender, false, false, false)
         );
     }
 
@@ -210,8 +212,10 @@ contract SmartContract {
             Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false, false)
         );
 
+        /** @dev 
+        * issuingOrganization field contains address of person who requested token in company mapping */
         companyCertifications[issuingOrganization].push(
-            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false, false)
+            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, msg.sender, false, false, false)
         );
     }
 
@@ -228,8 +232,10 @@ contract SmartContract {
             WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
         );
 
+        /** @dev 
+        * issuingOrganization field contains address of person who requested token in company mapping */
         companyWorkExperiences[issuingOrganization].push(
-            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
+            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, msg.sender, false, false, false)
         );
     }
 
@@ -305,61 +311,40 @@ contract SmartContract {
         }
     }
 
-    function respondToVerificationRequest(uint8 id, uint8 tokenType, bool response) public {
+    function respondToVerificationRequest(uint8 id, address requester, uint8 tokenType, bool response) public {
         if (tokenType == 1) { // Education
 
-            require(
-                candidateDegrees[msg.sender].length > 0,
-                "No degrees to verify."
-            );
+            // require(
+            //     candidateDegrees[msg.sender].length > 0,
+            //     "No degrees to verify."
+            // );
 
-            require(
-                candidateDegrees[msg.sender].length > id,
-                "Invalid id."
-            );
+            // require(
+            //     candidateDegrees[msg.sender].length > id,
+            //     "Invalid id."
+            // );
 
-            candidateDegrees[msg.sender][id].isPendingVerification = false;   
+            candidateDegrees[requester][id].isPendingVerification = false;   
             if (response) { // Update candidate copy
-                candidateDegrees[msg.sender][id].isVerified = true;
+                candidateDegrees[requester][id].isVerified = true;
             } else {
-                candidateDegrees[msg.sender][id].isRequestRejected = true; 
+                candidateDegrees[requester][id].isRequestRejected = true; 
                 // TODO: Remove from company list 
             }
         } else if (tokenType == 2) { // Work Experience
-
-            require(
-                candidateWorkExperiences[msg.sender].length > 0,
-                "No work experiences to verify."
-            );
-
-            require(
-                candidateWorkExperiences[msg.sender].length > id,
-                "Invalid id."
-            );
-
-            candidateWorkExperiences[msg.sender][id].isPendingVerification = false;
+            candidateWorkExperiences[requester][id].isPendingVerification = false;
             if (response) {
-                candidateWorkExperiences[msg.sender][id].isVerified = true;
+                candidateWorkExperiences[requester][id].isVerified = true;
             } else {
-                candidateWorkExperiences[msg.sender][id].isRequestRejected = true;  
+                candidateWorkExperiences[requester][id].isRequestRejected = true;  
             }    
         } else { // Certification
 
-            require(
-                candidateCertifications[msg.sender].length > 0,
-                "No certifications to verify."
-            );
-
-            require(
-                candidateCertifications[msg.sender].length > id,
-                "Invalid id."
-            );
-
-            candidateCertifications[msg.sender][id].isPendingVerification = false;
+            candidateCertifications[requester][id].isPendingVerification = false;
             if (response) {
-                candidateCertifications[msg.sender][id].isVerified = true;
+                candidateCertifications[requester][id].isVerified = true;
             } else {
-                candidateCertifications[msg.sender][id].isRequestRejected = true;  
+                candidateCertifications[requester][id].isRequestRejected = true;  
             }    
         }
     }

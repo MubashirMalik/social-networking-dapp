@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import { AuthenticationContext } from '../../../../context/authenticationContext';
-import { MONTH_NAMES, TOKEN_TOKEN_EXPERIENCE} from "../../../../util";
+import { MONTH_NAMES, TOKEN_TYPE_EXPERIENCE} from "../../../../util";
 import { getUser, requestVerification } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
@@ -43,7 +43,7 @@ export function ExperienceCard({ workExperience, id, setRefreshUserData }) {
     }, [workExperience.issuingOrganization])
 
     const handleClick = () => {
-        requestVerification(providerStatus.connectedAccount, id, TOKEN_TOKEN_EXPERIENCE)
+        requestVerification(providerStatus.connectedAccount, id, TOKEN_TYPE_EXPERIENCE)
         .then(res => {
             if (res) {
                 setRefreshUserData(prevState => !prevState)

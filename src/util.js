@@ -6,6 +6,6 @@ export const addressFormatter = (address) => {
     return address.substring(0, 6) + "..." + address.substring(address.length - 3, address.length)
 }
 
-export const TOKEN_TOKEN_EDUCATION = 1
-export const TOKEN_TOKEN_EXPERIENCE = 2
-export const TOKEN_TOKEN_CERTIFICATION = 3
+export const TOKEN_TYPE_EDUCATION = 1
+export const TOKEN_TYPE_EXPERIENCE = 2
+export const TOKEN_TYPE_CERTIFICATION = 3

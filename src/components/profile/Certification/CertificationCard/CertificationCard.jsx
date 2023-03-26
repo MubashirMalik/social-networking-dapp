@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 import { useContext } from 'react';
 import { useState } from 'react';
 import { AuthenticationContext } from '../../../../context/authenticationContext';
-import { MONTH_NAMES, TOKEN_TOKEN_CERTIFICATION } from '../../../../util';
+import { MONTH_NAMES, TOKEN_TYPE_CERTIFICATION } from '../../../../util';
 import { getUser, requestVerification } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
@@ -54,7 +54,7 @@ export function CertificationCard({ certification, id, setRefreshUserData }) {
     }, [certification.issuingOrganization])
 
     const handleClick = () => {
-        requestVerification(providerStatus.connectedAccount, id, TOKEN_TOKEN_CERTIFICATION)
+        requestVerification(providerStatus.connectedAccount, id, TOKEN_TYPE_CERTIFICATION)
         .then(res => {
             if (res) {
                 setRefreshUserData(prevState => !prevState)

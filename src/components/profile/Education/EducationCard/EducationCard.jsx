@@ -3,7 +3,7 @@ import {useDisclosure} from "@mantine/hooks";
 import { useContext, useState } from 'react';
 import { useEffect } from 'react';
 import { AuthenticationContext } from '../../../../context/authenticationContext';
-import {MONTH_NAMES, TOKEN_TOKEN_EDUCATION} from "../../../../util";
+import {MONTH_NAMES, TOKEN_TYPE_EDUCATION} from "../../../../util";
 import { getUser, requestVerification } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
@@ -42,7 +42,7 @@ export function EducationCard({ degree, id, setRefreshUserData }) {
     }, [degree.issuingOrganization])
 
     const handleClick = () => {
-        requestVerification(providerStatus.connectedAccount, id, TOKEN_TOKEN_EDUCATION)
+        requestVerification(providerStatus.connectedAccount, id, TOKEN_TYPE_EDUCATION)
         .then(res => {
             if (res) {
                 setRefreshUserData(prevState => !prevState)

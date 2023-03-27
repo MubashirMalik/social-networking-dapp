@@ -69,38 +69,7 @@ function Social() {
                     })}
                 >
 
-                    <TextInput
-                        m="sm"
-                        label="Linked In"
-                        placeholder="Linked In"
-                        {...form.getInputProps("linked_in")}
-                    />
-                    <TextInput
-                        m="sm"
-                        label="Github"
-                        placeholder="Github"
-                        {...form.getInputProps("github")}
-                    />
-                    <TextInput
-                        m="sm"
-                        label="Your Website/Portfolio"
-                        placeholder="Your Website/Portfolio"
-                        {...form.getInputProps("website_portfolio")}
-                    />
-                    <TextInput
-                        m="sm"
-                        label="Your Address"
-                        placeholder="Your Address"
-                        disabled={true}
-                        {...form.getInputProps("wallet_address")}
-                    />
-                    <Textarea
-                        m="sm"
-                        label="Bio"
-                        placeholder="Bio"
-                        withAsterisk
-                        {...form.getInputProps("bio")}
-                    />
+                   
 
                     <div
                         style={{
@@ -125,31 +94,7 @@ function Social() {
                     shadow="sm"
                     radius="md"
                 >
-                    <Text mt="md" weight={600} size={19}>
-                        Social Handles{" "}
-                    </Text>
-                    <Divider />
-
-                    <div style={{ display: "flex" }}>
-                        <Text weight={600} size={14}>
-                            Linked In: &nbsp;{" "} {form.values.linked_in}
-                        </Text>
-                        <Text size={14}> </Text>
-                    </div>
-                    <div style={{ display: "flex" }}>
-                        <Text weight={600} size={14}>
-                            Github: &nbsp;{" "} {form.values.github}
-                        </Text>
-
-
-                    </div>
-                    <Text weight={600} size={14}>
-                        Website: &nbsp;{" "} {form.values.website_portfolio}
-                    </Text>
-
-                    <Text weight={600} size={14} lineClamp={1} >
-                        Bio: &nbsp; {form.values.bio}
-                    </Text>
+                    
                 </Card>
 
             </Grid.Col>

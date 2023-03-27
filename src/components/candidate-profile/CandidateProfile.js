@@ -134,10 +134,10 @@ const CandidateProfile = () => {
   }, [currentSectionTargetRef]);
 
 
-/*   useEffect(() => {
-    form.setFieldValue('wallet_address', providerStatus.connectedAccount);
-  }, [providerStatus])
- */
+  /*   useEffect(() => {
+      form.setFieldValue('wallet_address', providerStatus.connectedAccount);
+    }, [providerStatus])
+   */
 
   return (
     <StyledCandidateProfile>
@@ -175,17 +175,7 @@ const CandidateProfile = () => {
                       >
                         Basic
                       </Tabs.Tab>
-                      <Tabs.Tab
-                        className="employee-creation-tab-list"
-                        onClick={() => {
 
-                          setCurrentSectionTargetRef(Section.Social);
-                        }}
-                        value="Social"
-                        style={Section.Social === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
-                      >
-                        Social
-                      </Tabs.Tab>
                       <Tabs.Tab
                         className="employee-creation-tab-list"
                         onClick={() => {
@@ -231,118 +221,102 @@ const CandidateProfile = () => {
                         Skills
                       </Tabs.Tab>
                     </Tabs.List>
-                   
-                      <Tabs.Panel value="Basic" pt="xs" style={{ width: "100%" }}>
 
-                        
-                       
-                       <Basic/>
-
-                      </Tabs.Panel>
-
-                      <Tabs.Panel value="Social" pt="xs">
-                        <Text
-                          ref={
-                            currentSectionTargetRef == Section.Social
-                              ? targetRef
-                              : null
-                          }
-                          style={{ textAlign: "center" }}
-                          mb="xs"
-                          size={16}
-                        >
-                          Add your social profiles so employers can see them when
-                          you apply
-                        </Text>
-                        <Divider size="xs" mb="xl" />
-                       <Social/>
-                      </Tabs.Panel>
-
-                      <Tabs.Panel value="Education" pt="xs">
-                        <Text
-                          ref={
-                            currentSectionTargetRef == Section.Experience
-                              ? targetRef
-                              : null
-                          }
-                          style={{ textAlign: "center" }}
-                          mb="xs"
-                          size={16}
-                        >
-                          Education
-                        </Text>
-                        <Divider size="xs" mb="xl" />
-                       
-                     <Education/>
-                      </Tabs.Panel>
-                      <Tabs.Panel value="Experience" pt="xs">
-                        <Text
-                          ref={
-                            currentSectionTargetRef == Section.Experience
-                              ? targetRef
-                              : null
-                          }
-                          style={{ textAlign: "center" }}
-                          mb="xs"
-                          size={16}
-                        >
-                          Experience
-                        </Text>
-                        <Divider size="xs" mb="xl" />
-                       
-                        <Experience/>
-                      </Tabs.Panel>
-
-                      <Tabs.Panel value="Certificate" pt="xs">
-                        <Text
-                          ref={
-                            currentSectionTargetRef == Section.Certificate
-                              ? targetRef
-                              : null
-                          }
-                          style={{ textAlign: "center" }}
-                          mb="xs"
-                          size={16}
-                        >
-                          Licenses & Certifications
-                        </Text>
-                        <Divider size="xs" mb="xl" />
+                    <Tabs.Panel value="Basic" pt="xs" style={{ width: "100%" }}>
 
 
-                        <Certificate/>
-                      </Tabs.Panel>
 
-                      <Tabs.Panel value="Skills" pt="xs" ml={10}>
-                        <Text
-                          ref={
-                            currentSectionTargetRef == Section.Other
-                              ? targetRef
-                              : null
-                          }
-                          style={{ textAlign: "center" }}
-                          mb="xs"
-                          size={16}
-                        >
-                          Skills
-                        </Text>
-                       <Skills/>
+                      <Basic />
 
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "right",
-                            gap: "10px",
-                            marginTop: "10px",
-                          }}
-                        >
-                          <Button className={classes.colorButton} mt="sm" type="submit">
-                            Save
-                          </Button>
+                    </Tabs.Panel>
 
-                        </div>
 
-                      </Tabs.Panel>
-               
+
+                    <Tabs.Panel value="Education" pt="xs">
+                      <Text
+                        ref={
+                          currentSectionTargetRef == Section.Experience
+                            ? targetRef
+                            : null
+                        }
+                        style={{ textAlign: "center" }}
+                        mb="xs"
+                        size={16}
+                      >
+                        Education
+                      </Text>
+                      <Divider size="xs" mb="xl" />
+
+                      <Education />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="Experience" pt="xs">
+                      <Text
+                        ref={
+                          currentSectionTargetRef == Section.Experience
+                            ? targetRef
+                            : null
+                        }
+                        style={{ textAlign: "center" }}
+                        mb="xs"
+                        size={16}
+                      >
+                        Experience
+                      </Text>
+                      <Divider size="xs" mb="xl" />
+
+                      <Experience />
+                    </Tabs.Panel>
+
+                    <Tabs.Panel value="Certificate" pt="xs">
+                      <Text
+                        ref={
+                          currentSectionTargetRef == Section.Certificate
+                            ? targetRef
+                            : null
+                        }
+                        style={{ textAlign: "center" }}
+                        mb="xs"
+                        size={16}
+                      >
+                        Licenses & Certifications
+                      </Text>
+                      <Divider size="xs" mb="xl" />
+
+
+                      <Certificate />
+                    </Tabs.Panel>
+
+                    <Tabs.Panel value="Skills" pt="xs" ml={10}>
+                      <Text
+                        ref={
+                          currentSectionTargetRef == Section.Other
+                            ? targetRef
+                            : null
+                        }
+                        style={{ textAlign: "center" }}
+                        mb="xs"
+                        size={16}
+                      >
+                        Skills
+                      </Text>
+                      <Skills />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "right",
+                          gap: "10px",
+                          marginTop: "10px",
+                        }}
+                      >
+                        <Button className={classes.colorButton} mt="sm" type="submit">
+                          Save
+                        </Button>
+
+                      </div>
+
+                    </Tabs.Panel>
+
                   </Tabs>
 
                   {/* <div
@@ -418,7 +392,7 @@ const CandidateProfile = () => {
             <Grid.Col span={5}>
               <Card
                 className="employee-creation-right-card"
-               
+
               >
                 {/* <Title order={2} weight={300}>
                   Profile Preview

@@ -1,4 +1,4 @@
-import { Button, createStyles, Grid, List, TextInput } from '@mantine/core'
+import { Button, createStyles, Grid, List, TextInput ,Card, Divider,Text} from '@mantine/core'
 import { useForm } from '@mantine/form';
 import React, { useState } from 'react'
 import { ImCancelCircle } from "react-icons/im";

@@ -127,104 +127,17 @@ const CandidateProfile = () => {
   const handleRemove = (skill) => {
     setSkills(skills.filter(sk => sk !== skill))
   }
-  const form = useForm({
-    initialValues: {
-      bio: null,
-      wallet_address: null,
-    
-      linked_in: null,
-      github: null,
-      website: null,
 
-      education: [
-        {
-          insititution: null,
-          degree: null,
-          from_month: null,
-          from_year: null,
-          to_month: null,
-          to_year: null
-        }
-      ],
-      experience: [{
-        insititution: null,
-        designation: null,
-        from_month: null,
-        from_year: null,
-        to_month: null,
-        to_year: null,
-        country: null,
-        city: null,
-        responcibilities: null,
-        currently_working: null,
-      }],
-      certifications: [
-        {
-          institution: null,
-          title: null,
-          issue_month: null,
-          issue_year: null,
-          exp_month: null,
-          exp_year: null,
-          expire: null,
-        }
-
-      ]
-      ,
-      skill: []
-
-    },
-
-    validate: {
-      headline: (value) => (value ? null : "headline must not be empty"),
-      full_name: (value) => (value ? null : "Full Name must not be empty"),
-      location: (value) => (value ? null : "Location must not be empty"),
-      nationality: (value) => (value ? null : "Nationality must not be empty"),
-      bio: (value) => (value ? null : "Bio must not be empty"),
-      education: {
-        insititution: (value) => (value ? null : "Institution Name must not be empty"),
-        degree: (value) => (value ? null : "Degree  must not be empty"),
-        from_month: (value) => (value ? null : "From Month  must not be empty"),
-        from_year: (value) => (value ? null : "From Year  must not be empty"),
-        to_month: (value) => (value ? null : "To Month  must not be empty"),
-        to_year: (value) => (value ? null : "To Year  must not be empty"),
-        city: (value) => (value ? null : "City must not be empty"),
-        country: (value) => (value ? null : "Country  must not be empty"),
-      },
-      experience: {
-        institution: (value) => (value ? null : "Insititution  must not be empty"),
-        designation: (value) => (value ? null : "Designation  must not be empty"),
-        from_month: (value) => (value ? null : "From Month  must not be empty"),
-        from_year: (value) => (value ? null : "From Year  must not be empty"),
-        to_month: (value) => (value ? null : "To Month  must not be empty"),
-        to_year: (value) => (value ? null : "To Year  must not be empty"),
-        country: (value) => (value ? null : "Country  must not be empty"),
-        city: (value) => (value ? null : "City  must not be empty"),
-        responcibilities: (value) => (value ? null : "Responcibilities  must not be empty"),
-        currently_working: (value) => (value ? null : "Currently Working  must not be empty"),
-      },
-      certifications: {
-        institution: (value) => (value ? null : "Insititution must not be empty"),
-        title: (value) => (value ? null : "Name must not be empty"),
-        issue_month: (value) => (value ? null : "Issue Month must not be empty"),
-        issue_year: (value) => (value ? null : "Issue Year must not be empty"),
-        exp_month: (value) => (value ? null : "Expiration Month must not be empty"),
-        exp_year: (value) => (value ? null : "Expiration Year must not be empty"),
-      }
-
-
-    },
-  });
   useEffect(() => {
     scrollIntoView();
   }, [currentSectionTargetRef]);
 
 
-  useEffect(() => {
+/*   useEffect(() => {
     form.setFieldValue('wallet_address', providerStatus.connectedAccount);
   }, [providerStatus])
+ */
 
-  console.log(form.values)
   return (
     <StyledCandidateProfile>
 
@@ -238,7 +151,7 @@ const CandidateProfile = () => {
         >
 
           <Grid>
-            <Grid.Col span={7}>
+            <Grid.Col span={12}>
               <Card withBorder>
                 <div style={{ display: "flex", width: "100%" }}>
                   <Tabs
@@ -320,20 +233,10 @@ const CandidateProfile = () => {
                    
                       <Tabs.Panel value="Basic" pt="xs" style={{ width: "100%" }}>
 
-                        <Text
-                          ref={
-                            currentSectionTargetRef === Section.Basic
-                              ? targetRef
-                              : null
-                          }
-                          style={{ textAlign: "center" }}
-                          mb="xs"
-                          size={16}
-                        >
-                          Basic
-                        </Text>
-                        <Divider size="xs" mb="xl" />
+                        
+                       
                        <Basic/>
+
                       </Tabs.Panel>
 
                       <Tabs.Panel value="Social" pt="xs">
@@ -531,11 +434,9 @@ const CandidateProfile = () => {
             <Grid.Col span={5}>
               <Card
                 className="employee-creation-right-card"
-                shadow="sm"
-                radius="md"
-                withBorder
+               
               >
-                <Title order={2} weight={300}>
+                {/* <Title order={2} weight={300}>
                   Profile Preview
                 </Title>
                 <Divider mt="xs" />
@@ -668,7 +569,7 @@ const CandidateProfile = () => {
                   </Text>
 
 
-                </div>
+                </div> */}
               </Card>
             </Grid.Col>
           </Grid>

@@ -1,4 +1,4 @@
-import { Button, createStyles, Textarea, TextInput } from '@mantine/core'
+import { Button, createStyles, Divider, Grid, Text, Card,Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import React from 'react'
 const useStyles = createStyles((theme) => ({
@@ -59,63 +59,102 @@ function Social() {
         },
     });
     return (
-        <form
-            style={{ width: "100%" }}
-            onSubmit={form.onSubmit((values, event) => {
-                console.log(values);
+        <Grid>
+            <Grid.Col span={6}>
+                <form
+                    style={{ width: "100%" }}
+                    onSubmit={form.onSubmit((values, event) => {
+                        console.log(values);
 
-            })}
-        >
+                    })}
+                >
 
-            <TextInput
-                m="sm"
-                label="Linked In"
-                placeholder="Linked In"
-                {...form.getInputProps("linked_in")}
-            />
-            <TextInput
-                m="sm"
-                label="Github"
-                placeholder="Github"
-                {...form.getInputProps("github")}
-            />
-            <TextInput
-                m="sm"
-                label="Your Website/Portfolio"
-                placeholder="Your Website/Portfolio"
-                {...form.getInputProps("website_portfolio")}
-            />
-            <TextInput
-                m="sm"
-                label="Your Address"
-                placeholder="Your Address"
-                disabled={true}
-                {...form.getInputProps("wallet_address")}
-            />
-            <Textarea
-                m="sm"
-                label="Bio"
-                placeholder="Bio"
-                withAsterisk
-                {...form.getInputProps("bio")}
-            />
+                    <TextInput
+                        m="sm"
+                        label="Linked In"
+                        placeholder="Linked In"
+                        {...form.getInputProps("linked_in")}
+                    />
+                    <TextInput
+                        m="sm"
+                        label="Github"
+                        placeholder="Github"
+                        {...form.getInputProps("github")}
+                    />
+                    <TextInput
+                        m="sm"
+                        label="Your Website/Portfolio"
+                        placeholder="Your Website/Portfolio"
+                        {...form.getInputProps("website_portfolio")}
+                    />
+                    <TextInput
+                        m="sm"
+                        label="Your Address"
+                        placeholder="Your Address"
+                        disabled={true}
+                        {...form.getInputProps("wallet_address")}
+                    />
+                    <Textarea
+                        m="sm"
+                        label="Bio"
+                        placeholder="Bio"
+                        withAsterisk
+                        {...form.getInputProps("bio")}
+                    />
 
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "right",
-                    gap: "10px",
-                    marginTop: "10px",
-                }}
-            >
-                <Button className={classes.colorButton} mt="sm" type="submit">
-                    Save
-                </Button>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "right",
+                            gap: "10px",
+                            marginTop: "10px",
+                        }}
+                    >
+                        <Button className={classes.colorButton} mt="sm" type="submit">
+                            Save
+                        </Button>
 
-            </div>
+                    </div>
 
 
-        </form>
+                </form>
+            </Grid.Col>
+            <Grid.Col span={6}>
+                <Card
+                    withBorder
+                    shadow="sm"
+                    radius="md"
+                >
+                    <Text mt="md" weight={600} size={19}>
+                        Social Handles{" "}
+                    </Text>
+                    <Divider />
+
+                    <div style={{ display: "flex" }}>
+                        <Text weight={600} size={14}>
+                            Linked In: &nbsp;{" "} {form.values.linked_in}
+                        </Text>
+                        <Text size={14}> </Text>
+                    </div>
+                    <div style={{ display: "flex" }}>
+                        <Text weight={600} size={14}>
+                            Github: &nbsp;{" "} {form.values.github}
+                        </Text>
+
+
+                    </div>
+                    <Text weight={600} size={14}>
+                        Website: &nbsp;{" "} {form.values.website_portfolio}
+                    </Text>
+
+                    <Text weight={600} size={14} lineClamp={1} >
+                        Bio: &nbsp; {form.values.bio}
+                    </Text>
+                </Card>
+
+            </Grid.Col>
+        </Grid>
+
     )
 }
 

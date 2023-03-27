@@ -136,7 +136,7 @@ function Basic() {
                shadow="sm"
                 radius="md"
                >
-               <Title mt="md" weight={700} size={19}>
+               <Title mt="md" weight={600} size={19}>
                     Basic{" "}
                 </Title>
                 <Divider />

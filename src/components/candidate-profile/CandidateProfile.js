@@ -33,17 +33,18 @@ import { Grid } from "@mantine/core";
 import { ArrowLeft, Trash, X } from "tabler-icons-react";
 import { useForm } from "@mantine/form";
 import ProfileHeader from "./ProfileHeader";
-import EditMenu from "./EditMenu";
-import EditSection from "./EditSection";
-import About from "./sections/About";
-import Education from "./sections/Education";
-import Experience from "./sections/Experience";
-import Certification from "./sections/Certification";
-import Skills from "./sections/Skills";
-import { Month } from '@mantine/dates';
+
 import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../../context/authenticationContext";
-import { getUserDetails } from "../../services/user.service";
+
+
+import { FlexRow, InputGroup, SkillItem } from "../styles/Section.styled"
+import { ImCancelCircle } from "react-icons/im";
+import Basic from "./CandidateProfileComponent/Basic";
+import Social from "./CandidateProfileComponent/Social";
+import Education from "./CandidateProfileComponent/Education";
+import Experience from "./CandidateProfileComponent/Experience";
+import Certificate from "./CandidateProfileComponent/Certificate";
 
 const Section = {
   Basic: 1,
@@ -110,25 +111,34 @@ const CandidateProfile = () => {
   const data = ['React', 'Angular', 'Svelte', 'Vue', 'Riot', 'Next.js', 'Blitz.js']
   console.log(value)
   const navigate = useNavigate();
+  const [newSkill, setNewSkill] = useState("")
+  const [skills, setSkills] = useState([])
+
+  const skillsList = skills.map((skill, idx) =>
+    <SkillItem key={idx}>{skill}<ImCancelCircle onClick={() => handleRemove(skill)} /></SkillItem>
+  )
+
+  const handleAdd = () => {
+    if (newSkill !== "") {
+      setSkills(prevSkills => [...prevSkills, newSkill])
+    }
+  }
+
+  const handleRemove = (skill) => {
+    setSkills(skills.filter(sk => sk !== skill))
+  }
   const form = useForm({
     initialValues: {
       bio: null,
       wallet_address: null,
-      headline: null,
-      full_name: null,
-      location: null,
-      city: null,
-      nationality: null,
+    
       linked_in: null,
       github: null,
       website: null,
 
       education: [
         {
-          insititution: {
-            name: "",
-            address: ""
-          },
+          insititution: null,
           degree: null,
           from_month: null,
           from_year: null,
@@ -137,10 +147,7 @@ const CandidateProfile = () => {
         }
       ],
       experience: [{
-        insititution: {
-          name: "",
-          address: ""
-        },
+        insititution: null,
         designation: null,
         from_month: null,
         from_year: null,
@@ -153,15 +160,12 @@ const CandidateProfile = () => {
       }],
       certifications: [
         {
-          insititution: {
-            name: "",
-            address: ""
-          },
-          degree: null,
-          from_month: null,
-          from_year: null,
-          to_month: null,
-          to_year: null,
+          institution: null,
+          title: null,
+          issue_month: null,
+          issue_year: null,
+          exp_month: null,
+          exp_year: null,
           expire: null,
         }
 
@@ -173,50 +177,40 @@ const CandidateProfile = () => {
 
     validate: {
       headline: (value) => (value ? null : "headline must not be empty"),
-      full_name: (value) => (value ? null : "Full name must not be empty"),
+      full_name: (value) => (value ? null : "Full Name must not be empty"),
       location: (value) => (value ? null : "Location must not be empty"),
       nationality: (value) => (value ? null : "Nationality must not be empty"),
-      bio:(value) => (value ? null : "Bio must not be empty"),
-      education:{
-        insititution: {
-          name: (value) => (value ? null : "Insitution Name must not be empty"),
-          address: (value) => (value ? null : "Address Name must not be empty")
-        },
-        degree: (value) => (value ? null : "Degree Name must not be empty"),
-        from_month: (value) => (value ? null : "From Month Name must not be empty"),
-        from_year: (value) => (value ? null : "From Year Name must not be empty"),
-        to_month: (value) => (value ? null : "To Month Name must not be empty"),
-        to_year: (value) => (value ? null : "To Year Name must not be empty"), 
+      bio: (value) => (value ? null : "Bio must not be empty"),
+      education: {
+        insititution: (value) => (value ? null : "Institution Name must not be empty"),
+        degree: (value) => (value ? null : "Degree  must not be empty"),
+        from_month: (value) => (value ? null : "From Month  must not be empty"),
+        from_year: (value) => (value ? null : "From Year  must not be empty"),
+        to_month: (value) => (value ? null : "To Month  must not be empty"),
+        to_year: (value) => (value ? null : "To Year  must not be empty"),
+        city: (value) => (value ? null : "City must not be empty"),
+        country: (value) => (value ? null : "Country  must not be empty"),
       },
-      experience:{
-        insititution: {
-          name: (value) => (value ? null : "Insitution Name must not be empty"),
-          address: (value) => (value ? null : "Address Name must not be empty")
-        },
-        designation: (value) => (value ? null : "Designation Name must not be empty"),
-        from_month: (value) => (value ? null : "From Month Name must not be empty"),
-        from_year: (value) => (value ? null : "From Year Name must not be empty"),
-        to_month: (value) => (value ? null : "To Month Name must not be empty"),
-        to_year: (value) => (value ? null : "To Year Name must not be empty"),
-        country: (value) => (value ? null : "Country Name must not be empty"),
-        city: (value) => (value ? null : "City Name must not be empty"),
-        responcibilities: (value) => (value ? null : "Responcibilities Name must not be empty"),
-        currently_working: (value) => (value ? null : "Currently Working Name must not be empty"),
+      experience: {
+        institution: (value) => (value ? null : "Insititution  must not be empty"),
+        designation: (value) => (value ? null : "Designation  must not be empty"),
+        from_month: (value) => (value ? null : "From Month  must not be empty"),
+        from_year: (value) => (value ? null : "From Year  must not be empty"),
+        to_month: (value) => (value ? null : "To Month  must not be empty"),
+        to_year: (value) => (value ? null : "To Year  must not be empty"),
+        country: (value) => (value ? null : "Country  must not be empty"),
+        city: (value) => (value ? null : "City  must not be empty"),
+        responcibilities: (value) => (value ? null : "Responcibilities  must not be empty"),
+        currently_working: (value) => (value ? null : "Currently Working  must not be empty"),
       },
-      certificaiton:{
-      
-          insititution: {
-            name: (value) => (value ? null : "Insitution Name must not be empty"),
-            address: (value) => (value ? null : "Address Name must not be empty")
-          },
-          title: (value) => (value ? null :  "Name must not be empty"),
-          issue_month: (value) => (value ? null : "Issue Month Name must not be empty"),
-          issue_year: (value) => (value ? null : "Issue Year Name must not be empty"),
-          exp_month: (value) => (value ? null : "Expiration Month Name must not be empty"),
-          exp_year: (value) => (value ? null : "Expiration Year Name must not be empty"), 
-        }
-      
-
+      certifications: {
+        institution: (value) => (value ? null : "Insititution must not be empty"),
+        title: (value) => (value ? null : "Name must not be empty"),
+        issue_month: (value) => (value ? null : "Issue Month must not be empty"),
+        issue_year: (value) => (value ? null : "Issue Year must not be empty"),
+        exp_month: (value) => (value ? null : "Expiration Month must not be empty"),
+        exp_year: (value) => (value ? null : "Expiration Year must not be empty"),
+      }
 
 
     },
@@ -233,8 +227,8 @@ const CandidateProfile = () => {
   console.log(form.values)
   return (
     <StyledCandidateProfile>
-   
-      
+
+
       <ProfileHeader />
       <ProfileBody>
 
@@ -242,6 +236,7 @@ const CandidateProfile = () => {
           className="employee-creation-bottom-section"
           style={{ width: "100%" }}
         >
+
           <Grid>
             <Grid.Col span={7}>
               <Card withBorder>
@@ -322,420 +317,145 @@ const CandidateProfile = () => {
                         Skills
                       </Tabs.Tab>
                     </Tabs.List>
+                   
+                      <Tabs.Panel value="Basic" pt="xs" style={{ width: "100%" }}>
 
-                    <Tabs.Panel value="Basic" pt="xs" style={{ width: "100%" }}>
+                        <Text
+                          ref={
+                            currentSectionTargetRef === Section.Basic
+                              ? targetRef
+                              : null
+                          }
+                          style={{ textAlign: "center" }}
+                          mb="xs"
+                          size={16}
+                        >
+                          Basic
+                        </Text>
+                        <Divider size="xs" mb="xl" />
+                       <Basic/>
+                      </Tabs.Panel>
 
-                      <Text
-                        ref={
-                          currentSectionTargetRef === Section.Basic
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Basic
-                      </Text>
-                      <Divider size="xs" mb="xl" />
-                      <TextInput
-                        m="sm"
-                        label="Headline"
-                        placeholder="Headline"
-                        withAsterisk
-                        {...form.getInputProps("headline")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Full Name"
-                        placeholder="Full Name"
-                        withAsterisk
-                        {...form.getInputProps("full_name")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Where do you live?"
-                        placeholder="Where do you live?"
-                        withAsterisk
-                        {...form.getInputProps("location")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="City"
-                        placeholder="City"
-                        {...form.getInputProps("city")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Your Nationality"
-                        placeholder="Your Nationality"
-                        withAsterisk
-                        {...form.getInputProps("nationality")}
-                      />
-                    </Tabs.Panel>
+                      <Tabs.Panel value="Social" pt="xs">
+                        <Text
+                          ref={
+                            currentSectionTargetRef == Section.Social
+                              ? targetRef
+                              : null
+                          }
+                          style={{ textAlign: "center" }}
+                          mb="xs"
+                          size={16}
+                        >
+                          Add your social profiles so employers can see them when
+                          you apply
+                        </Text>
+                        <Divider size="xs" mb="xl" />
+                       <Social/>
+                      </Tabs.Panel>
 
-                    <Tabs.Panel value="Social" pt="xs">
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Social
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Add your social profiles so employers can see them when
-                        you apply
-                      </Text>
-                      <Divider size="xs" mb="xl" />
-                      <TextInput
-                        m="sm"
-                        label="Linked In"
-                        placeholder="Linked In"
-                        {...form.getInputProps("linked_in")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Github"
-                        placeholder="Github"
-                        {...form.getInputProps("github")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Your Website/Portfolio"
-                        placeholder="Your Website/Portfolio"
-                        {...form.getInputProps("website_portfolio")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Your Address"
-                        placeholder="Your Address"
-                        disabled={true}
-                        {...form.getInputProps("wallet_address")}
-                      />
-                      <Textarea
-                        m="sm"
-                        label="Bio"
-                        placeholder="Bio"
-                        withAsterisk
-                        {...form.getInputProps("bio")}
-                      />
-                    </Tabs.Panel>
+                      <Tabs.Panel value="Education" pt="xs">
+                        <Text
+                          ref={
+                            currentSectionTargetRef == Section.Experience
+                              ? targetRef
+                              : null
+                          }
+                          style={{ textAlign: "center" }}
+                          mb="xs"
+                          size={16}
+                        >
+                          Education
+                        </Text>
+                        <Divider size="xs" mb="xl" />
+                       
+                     <Education/>
+                      </Tabs.Panel>
+                      <Tabs.Panel value="Experience" pt="xs">
+                        <Text
+                          ref={
+                            currentSectionTargetRef == Section.Experience
+                              ? targetRef
+                              : null
+                          }
+                          style={{ textAlign: "center" }}
+                          mb="xs"
+                          size={16}
+                        >
+                          Experience
+                        </Text>
+                        <Divider size="xs" mb="xl" />
+                       
+                        <Experience/>
+                      </Tabs.Panel>
 
-                    <Tabs.Panel value="Education" pt="xs">
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Experience
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Experience
-                      </Text>
-                      <Divider size="xs" mb="xl" />
-                      <Select
-                        m="sm"
-                        label="Institution(Name - Address)"
-                        placeholder="Institution(Name - Address)"
-                        withAsterisk
-                        data={[]}
-                        {...form.getInputProps("institution")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Degree/Diploma"
-                        placeholder="Degree/Diploma"
-                        withAsterisk
-                        {...form.getInputProps("degree")}
-                      />
-                      <Group>
-                        <Select
-                          m="sm"
-                          label="From Month"
-                          placeholder=" From Month"
-                          withAsterisk
-                          data={[]}
-                          {...form.getInputProps("from_month")}
-                        />
-                        <TextInput
-                          m="sm"
-                          label="From Year"
-                          placeholder="From Year"
-                          withAsterisk
-                          {...form.getInputProps("from_year")}
-                        />
-                      </Group>
-                      <Group>
-                        <Select
-                          m="sm"
-                          label="To Month"
-                          placeholder=" To Month"
-                          withAsterisk
-                          data={[]}
-                          {...form.getInputProps("to_month")}
-                        />
-                        <TextInput
-                          m="sm"
-                          label="To Year"
-                          placeholder="To Year"
-                          withAsterisk
-                          {...form.getInputProps("to_year")}
-                        />
-                      </Group>
+                      <Tabs.Panel value="Certificate" pt="xs">
+                        <Text
+                          ref={
+                            currentSectionTargetRef == Section.Certificate
+                              ? targetRef
+                              : null
+                          }
+                          style={{ textAlign: "center" }}
+                          mb="xs"
+                          size={16}
+                        >
+                          Licenses & Certifications
+                        </Text>
+                        <Divider size="xs" mb="xl" />
 
-                      <Select
-                        m="sm"
-                        label="Country"
-                        placeholder="Country"
-                        withAsterisk
-                        data={[]}
-                        {...form.getInputProps("country")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="City"
-                        placeholder="City"
-                        withAsterisk
-                        {...form.getInputProps("city")}
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "right",
-                          gap: "10px",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <Button className={classes.colorButton} mt="sm" type="submit">
-                          Add
-                        </Button>
 
-                      </div>
-                    </Tabs.Panel>
-                    <Tabs.Panel value="Experience" pt="xs">
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Experience
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Experience
-                      </Text>
-                      <Divider size="xs" mb="xl" />
-                      <Select
-                        m="sm"
-                        label="Compnay/Organization(Name - Address)"
-                        placeholder="Compnay/Organization(Name - Address)"
-                        withAsterisk
-                        data={[]}
-                        {...form.getInputProps("institution")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Designation/Job Title"
-                        placeholder="Designation/Title"
-                        withAsterisk
-                        {...form.getInputProps("degree")}
-                      />
-                      <Group>
-                        <Select
-                          m="sm"
-                          label="From Month"
-                          placeholder=" From Month"
-                          withAsterisk
-                          data={[]}
-                          {...form.getInputProps("from_month")}
-                        />
-                        <TextInput
-                          m="sm"
-                          label="From Year"
-                          placeholder="From Year"
-                          withAsterisk
-                          {...form.getInputProps("from_year")}
-                        />
-                      </Group>
-                      <Group>
-                        <Select
-                          m="sm"
-                          label="To Month"
-                          placeholder=" To Month"
-                          withAsterisk
-                          data={[]}
-                          {...form.getInputProps("to_month")}
-                        />
-                        <TextInput
-                          m="sm"
-                          label="To Year"
-                          placeholder="To Year"
-                          withAsterisk
-                          {...form.getInputProps("to_year")}
-                        />
-                      </Group>
+                        <Certificate/>
+                      </Tabs.Panel>
 
-                      <Select
-                        m="sm"
-                        label="Country"
-                        placeholder="Country"
-                        withAsterisk
-                        data={[]}
-                        {...form.getInputProps("country")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="City"
-                        placeholder="City"
-                        withAsterisk
-                        {...form.getInputProps("city")}
-                      />
-                      <Textarea
-                        m="sm"
-                        label="Responcibilites"
-                        placeholder="Responcibilites"
-                        withAsterisk
-                        {...form.getInputProps("responcibilities")}
-                      />
-                      <Switch
-                        m="md"
-                        label="Currently Working"
-                        onLabel="YES"
-                        offLabel="NO"
-                        size="sm"
-                        {...form.getInputProps("active_status")}
-                      />
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "right",
-                          gap: "10px",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <Button className={classes.colorButton} mt="sm" type="submit">
-                          Add
-                        </Button>
+                      <Tabs.Panel value="Skills" pt="xs" ml={10}>
+                        <Text
+                          ref={
+                            currentSectionTargetRef == Section.Other
+                              ? targetRef
+                              : null
+                          }
+                          style={{ textAlign: "center" }}
+                          mb="xs"
+                          size={16}
+                        >
+                          Skills
+                        </Text>
+                        <FlexRow>
+                          <InputGroup>
+                            <label>Example: Java, Python, Spanish, Excel</label>
+                            <input
+                              name="newSkill"
+                              value={newSkill}
+                              type="text"
+                              onChange={(event) => setNewSkill(event.target.value)}
+                            />
+                          </InputGroup>
+                        </FlexRow>
+                        <FlexRow>
+                          <button onClick={handleAdd}>Add</button>
+                          <button>Save</button>
+                        </FlexRow>
+                        <FlexRow>
+                          {skillsList}
+                        </FlexRow>
 
-                      </div>
-                    </Tabs.Panel>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "right",
+                            gap: "10px",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <Button className={classes.colorButton} mt="sm" type="submit">
+                            Submit
+                          </Button>
 
-                    <Tabs.Panel value="Certificate" pt="xs">
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Certificate
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Licenses & Certifications
-                      </Text>
-                      <Divider size="xs" mb="xl" />
-                      <Select
-                        m="sm"
-                        label="Institution(Name - Address)"
-                        placeholder="Institution(Name - Address)"
-                        withAsterisk
-                        data={[]}
-                        {...form.getInputProps("institution")}
-                      />
-                      <TextInput
-                        m="sm"
-                        label="Name"
-                        placeholder="Name"
-                        withAsterisk
-                        {...form.getInputProps("degree")}
-                      />
-                      <Group>
-                        <Select
-                          m="sm"
-                          label="Issue Month"
-                          placeholder=" Issue Month"
-                          withAsterisk
-                          data={[]}
-                          {...form.getInputProps("from_month")}
-                        />
-                        <TextInput
-                          m="sm"
-                          label="Issue Year"
-                          placeholder="Issue Year"
-                          withAsterisk
-                          {...form.getInputProps("from_year")}
-                        />
-                      </Group>
-                      <Group>
-                        <Select
-                          m="sm"
-                          label="Expiration Month"
-                          placeholder=" Expiration Month"
-                          withAsterisk
-                          data={[]}
-                          {...form.getInputProps("to_month")}
-                        />
-                        <TextInput
-                          m="sm"
-                          label="Expiration Year"
-                          placeholder="Expiration Year"
-                          withAsterisk
-                          {...form.getInputProps("to_year")}
-                        />
-                        <Switch
-                          m="md"
-                          label="The Certificate doesn't Expire"
-                          onLabel="YES"
-                          offLabel="NO"
-                          size="sm"
-                          {...form.getInputProps("expire")}
-                        />
+                        </div>
 
-                      </Group>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "right",
-                          gap: "10px",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <Button className={classes.colorButton} mt="sm" type="submit">
-                          Add
-                        </Button>
-
-                      </div>
-                    </Tabs.Panel>
-
-                    <Tabs.Panel value="Skills" pt="xs">
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Other
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Skills
-                      </Text>
-
-                      <MultiSelect
-                        data={data}
-                        label="Large data set"
-                        placeholder="Scroll to see all options"
-                        maxDropdownHeight={160}
-                      />
-
-                    </Tabs.Panel>
-
+                      </Tabs.Panel>
+               
                   </Tabs>
 
                   {/* <div
@@ -846,7 +566,7 @@ const CandidateProfile = () => {
 
                 </div>
                 <Text weight={600} size={14}>
-                  City: &nbsp;{" "}  {form.values.location}
+                  City: &nbsp;{" "}  {form.values.city}
                 </Text>
                 <Text weight={600} size={14}>
                   Nationality {" "} {form.values.nationality}
@@ -858,23 +578,23 @@ const CandidateProfile = () => {
 
                 <div style={{ display: "flex" }}>
                   <Text weight={600} size={14}>
-                    Linked In: &nbsp;{" "}
+                    Linked In: &nbsp;{" "} {form.values.linked_in}
                   </Text>
                   <Text size={14}> </Text>
                 </div>
                 <div style={{ display: "flex" }}>
                   <Text weight={600} size={14}>
-                    Github: &nbsp;{" "}
+                    Github: &nbsp;{" "} {form.values.github}
                   </Text>
 
 
                 </div>
                 <Text weight={600} size={14}>
-                  Website: &nbsp;{" "}
+                  Website: &nbsp;{" "} {form.values.website}
                 </Text>
 
-                <Text weight={600} size={14}>
-                  Bio: &nbsp;{" "}
+                <Text weight={600} size={14} lineClamp={1} >
+                  Bio: &nbsp {form.values.bio}
                 </Text>
 
                 <Text mt="md" weight={600} size={16}>

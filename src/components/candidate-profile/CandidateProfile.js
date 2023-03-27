@@ -45,6 +45,7 @@ import Social from "./CandidateProfileComponent/Social";
 import Education from "./CandidateProfileComponent/Education";
 import Experience from "./CandidateProfileComponent/Experience";
 import Certificate from "./CandidateProfileComponent/Certificate";
+import Skills from "./CandidateProfileComponent/Skills";
 
 const Section = {
   Basic: 1,
@@ -324,24 +325,7 @@ const CandidateProfile = () => {
                         >
                           Skills
                         </Text>
-                        <FlexRow>
-                          <InputGroup>
-                            <label>Example: Java, Python, Spanish, Excel</label>
-                            <input
-                              name="newSkill"
-                              value={newSkill}
-                              type="text"
-                              onChange={(event) => setNewSkill(event.target.value)}
-                            />
-                          </InputGroup>
-                        </FlexRow>
-                        <FlexRow>
-                          <button onClick={handleAdd}>Add</button>
-                          <button>Save</button>
-                        </FlexRow>
-                        <FlexRow>
-                          {skillsList}
-                        </FlexRow>
+                       <Skills/>
 
                         <div
                           style={{
@@ -352,7 +336,7 @@ const CandidateProfile = () => {
                           }}
                         >
                           <Button className={classes.colorButton} mt="sm" type="submit">
-                            Submit
+                            Save
                           </Button>
 
                         </div>

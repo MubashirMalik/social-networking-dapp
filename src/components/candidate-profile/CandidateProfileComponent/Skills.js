@@ -1,7 +1,8 @@
-import { Button, createStyles, TextInput } from '@mantine/core'
+import { Button, createStyles, Grid, List, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form';
-import React from 'react'
-
+import React, { useState } from 'react'
+import { ImCancelCircle } from "react-icons/im";
+import { Title, FlexRow, InputGroup, SkillItem } from "../../styles/Section.styled"
 function Skills() {
     const [newSkill, setNewSkill] = useState("")
     const [skills, setSkills] = useState([])
@@ -21,24 +22,51 @@ function Skills() {
     }
 
     return (
-        <> <FlexRow>
-            <InputGroup>
-                <label>Example: Java, Python, Spanish, Excel</label>
-                <input
-                    name="newSkill"
-                    value={newSkill}
-                    type="text"
-                    onChange={(event) => setNewSkill(event.target.value)}
-                />
-            </InputGroup>
-        </FlexRow>
-            <FlexRow>
-                <button onClick={handleAdd}>Add</button>
-                <button>Save</button>
+        <Grid>
+            <Grid.Col span={6}><FlexRow>
+                <InputGroup>
+                    <label>Example: Java, Python, Spanish, Excel</label>
+                    <input
+                        name="newSkill"
+                        value={newSkill}
+                        type="text"
+                        onChange={(event) => setNewSkill(event.target.value)}
+                    />
+                </InputGroup>
             </FlexRow>
-            <FlexRow>
-                {skillsList}
-            </FlexRow></>
+                <FlexRow>
+                    <button onClick={handleAdd}>Add</button>
+                    <button>Save</button>
+                </FlexRow>
+                <FlexRow>
+                    {skillsList}
+                </FlexRow>
+
+            </Grid.Col>
+            <Grid.Col span={6}>
+                <Card
+                    withBorder
+                    shadow="sm"
+                    radius="md"
+                >
+                    <Text mt="md" weight={600} size={19}>
+                        Certificate{" "}
+                    </Text>
+                    <Divider />
+                    <List>
+                        <List.Item>React</List.Item>
+                        <List.Item>GIT</List.Item>
+                        <List.Item>Vanilla JS</List.Item>
+                        <List.Item>Next JS</List.Item>
+                        <List.Item>Python</List.Item>
+                    </List>
+                </Card>
+
+            </Grid.Col>
+
+
+
+        </Grid>
 
 
 

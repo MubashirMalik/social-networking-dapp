@@ -1,4 +1,4 @@
-import { Button, createStyles, Group, Select, Switch, Textarea, TextInput } from '@mantine/core'
+import { Button, createStyles, Group, Select, Switch, Textarea,Grid,Card,Text,Divider,Alert,Box, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import React from 'react'
 
@@ -67,87 +67,118 @@ function Certificate() {
         },
     });
     return (
-        <form
-            style={{ width: "100%" }}
-            onSubmit={form.onSubmit((values, event) => {
-                console.log(values);
+        <Grid>
+            <Grid.Col span={6}>   <form
+                style={{ width: "100%" }}
+                onSubmit={form.onSubmit((values, event) => {
+                    console.log(values);
 
-            })}
-        >
-            <TextInput
-                m="sm"
-                label="Institution(Name - Address)"
-                placeholder="Institution(Name - Address)"
-                withAsterisk
-                {...form.getInputProps(`institution`)}
-            />
-            <TextInput
-                m="sm"
-                label="Name"
-                placeholder="Name"
-                withAsterisk
-                {...form.getInputProps(`title`)}
-            />
-            <Group>
-                <TextInput
-                    m="sm"
-                    label="Issue Month"
-                    placeholder=" Issue Month"
-                    withAsterisk
-
-                    {...form.getInputProps(`issue_month`)}
-                />
-                <TextInput
-                    m="sm"
-                    label="Issue Year"
-                    placeholder="Issue Year"
-                    withAsterisk
-                    {...form.getInputProps(`issue_year`)}
-                />
-            </Group>
-            <Group>
-                <Select
-                    m="sm"
-                    label="Expiration Month"
-                    placeholder=" Expiration Month"
-                    withAsterisk
-                    data={[]}
-                    {...form.getInputProps(`exp_month`)}
-                />
-                <TextInput
-                    m="sm"
-                    label="Expiration Year"
-                    placeholder="Expiration Year"
-                    withAsterisk
-                    {...form.getInputProps(`exp_year`)}
-
-                />
-                <Switch
-                    m="md"
-                    label="The Certificate doesn't Expire"
-                    onLabel="YES"
-                    offLabel="NO"
-                    size="sm"
-                    {...form.getInputProps(`expire`)}
-                />
-
-            </Group>
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "right",
-                    gap: "10px",
-                    marginTop: "10px",
-                }}
+                })}
             >
-                <Button className={classes.colorButton} mt="sm" type="submit">
-                    Save
-                </Button>
+                <TextInput
+                    m="sm"
+                    label="Institution(Name - Address)"
+                    placeholder="Institution(Name - Address)"
+                    withAsterisk
+                    {...form.getInputProps(`institution`)}
+                />
+                <TextInput
+                    m="sm"
+                    label="Name"
+                    placeholder="Name"
+                    withAsterisk
+                    {...form.getInputProps(`title`)}
+                />
+                <Group>
+                    <TextInput
+                        m="sm"
+                        label="Issue Month"
+                        placeholder=" Issue Month"
+                        withAsterisk
 
-            </div>
+                        {...form.getInputProps(`issue_month`)}
+                    />
+                    <TextInput
+                        m="sm"
+                        label="Issue Year"
+                        placeholder="Issue Year"
+                        withAsterisk
+                        {...form.getInputProps(`issue_year`)}
+                    />
+                </Group>
+                <Group>
+                    <Select
+                        m="sm"
+                        label="Expiration Month"
+                        placeholder=" Expiration Month"
+                        withAsterisk
+                        data={[]}
+                        {...form.getInputProps(`exp_month`)}
+                    />
+                    <TextInput
+                        m="sm"
+                        label="Expiration Year"
+                        placeholder="Expiration Year"
+                        withAsterisk
+                        {...form.getInputProps(`exp_year`)}
+
+                    />
+                    <Switch
+                        m="md"
+                        label="The Certificate doesn't Expire"
+                        onLabel="YES"
+                        offLabel="NO"
+                        size="sm"
+                        {...form.getInputProps(`expire`)}
+                    />
+
+                </Group>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "right",
+                        gap: "10px",
+                        marginTop: "10px",
+                    }}
+                >
+                    <Button className={classes.colorButton} mt="sm" type="submit">
+                        Save
+                    </Button>
+
+                </div>
 
 
-        </form>
+            </form></Grid.Col>
+            <Grid.Col span={6}>
+                <Card
+                    withBorder
+                    shadow="sm"
+                    radius="md"
+                >
+                    <Text mt="md" weight={600} size={19}>
+                        Certificate{" "}
+                    </Text>
+                    <Divider />
+                    <div style={{ width: "100%" }}>
+                        <Alert
+
+                            m={10}
+                            title={`Front End Developer`} >
+                            <Box>
+                                <Text tt="uppercase">Nustac</Text>
+                                <Group><Text>Jan 2021</Text> <Text>Feb 2023</Text></Group>
+                                <Group><Text>Lahore</Text> <Text>Pakistan</Text></Group>
+                                <Text>The moon was a silver disc hanging in the inky blackness of the sky.</Text>
+                            </Box>
+
+                        </Alert>
+
+                    </div>
+                </Card>
+
+            </Grid.Col>
+        </Grid>
+
     )
 }
 

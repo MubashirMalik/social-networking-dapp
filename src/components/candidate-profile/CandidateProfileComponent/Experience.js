@@ -1,4 +1,4 @@
-import { Button, createStyles, Group, Select, Switch, Textarea, TextInput } from '@mantine/core'
+import { Button, createStyles, Group, Select, Switch,Grid,Text,Divider,Card,Alert,Box, Textarea, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import React from 'react'
 const useStyles = createStyles((theme) => ({
@@ -73,113 +73,144 @@ function Experience() {
         },
     });
     return (
-        <form
-            style={{ width: "100%" }}
-            onSubmit={form.onSubmit((values, event) => {
-                console.log(values);
+        <Grid>
+            <Grid.Col span={6}>
+                <form
+                    style={{ width: "100%" }}
+                    onSubmit={form.onSubmit((values, event) => {
+                        console.log(values);
 
-            })}
-        >
-            <TextInput
-                m="sm"
-                label="Compnay/Organization(Name - Address)"
-                placeholder="Compnay/Organization(Name - Address)"
-                withAsterisk
-                {...form.getInputProps(`institution`)}
+                    })}
+                >
+                    <TextInput
+                        m="sm"
+                        label="Compnay/Organization(Name - Address)"
+                        placeholder="Compnay/Organization(Name - Address)"
+                        withAsterisk
+                        {...form.getInputProps(`institution`)}
 
-            />
-            <TextInput
-                m="sm"
-                label="Designation/Job Title"
-                placeholder="Designation/Title"
-                withAsterisk
-                {...form.getInputProps(`designation`)}
+                    />
+                    <TextInput
+                        m="sm"
+                        label="Designation/Job Title"
+                        placeholder="Designation/Title"
+                        withAsterisk
+                        {...form.getInputProps(`designation`)}
 
-            />
-            <Group>
-                <TextInput
-                    m="sm"
-                    label="From Month"
-                    placeholder=" From Month"
-                    withAsterisk
-                    data={[]}
-                    {...form.getInputProps(`from_month`)}
-                />
-                <TextInput
-                    m="sm"
-                    label="From Year"
-                    placeholder="From Year"
-                    withAsterisk
-                    {...form.getInputProps(`from_year`)}
-                />
-            </Group>
-            <Group>
-                <TextInput
-                    m="sm"
-                    label="To Month"
-                    placeholder=" To Month"
-                    withAsterisk
-            
-                    {...form.getInputProps(`to_month`)}
-                />
-                <TextInput
-                    m="sm"
-                    label="To Year"
-                    placeholder="To Year"
-                    withAsterisk
-                    {...form.getInputProps(`to_year`)}
-                />
-            </Group>
+                    />
+                    <Group>
+                        <TextInput
+                            m="sm"
+                            label="From Month"
+                            placeholder=" From Month"
+                            withAsterisk
+                            data={[]}
+                            {...form.getInputProps(`from_month`)}
+                        />
+                        <TextInput
+                            m="sm"
+                            label="From Year"
+                            placeholder="From Year"
+                            withAsterisk
+                            {...form.getInputProps(`from_year`)}
+                        />
+                    </Group>
+                    <Group>
+                        <TextInput
+                            m="sm"
+                            label="To Month"
+                            placeholder=" To Month"
+                            withAsterisk
 
-            <TextInput
-                m="sm"
-                label="Country"
-                placeholder="Country"
-                withAsterisk
+                            {...form.getInputProps(`to_month`)}
+                        />
+                        <TextInput
+                            m="sm"
+                            label="To Year"
+                            placeholder="To Year"
+                            withAsterisk
+                            {...form.getInputProps(`to_year`)}
+                        />
+                    </Group>
 
-                {...form.getInputProps(`country`)}
-            />
-            <TextInput
-                m="sm"
-                label="City"
-                placeholder="City"
-                withAsterisk
-                {...form.getInputProps(`city`)}
-            />
-            <Textarea
-                m="sm"
-                label="Responcibilites"
-                placeholder="Responcibilites"
-                withAsterisk
-                {...form.getInputProps(`responcibilities`)}
+                    <TextInput
+                        m="sm"
+                        label="Country"
+                        placeholder="Country"
+                        withAsterisk
 
-
-            />
-            <Switch
-                m="md"
-                label="Currently Working"
-                onLabel="YES"
-                offLabel="NO"
-                size="sm"
-                {...form.getInputProps(`active_status`)}
-            />
-
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "right",
-                    gap: "10px",
-                    marginTop: "10px",
-                }}
-            >
-                <Button className={classes.colorButton} mt="sm" type="submit">
-                    Save
-                </Button>
-
-            </div>
+                        {...form.getInputProps(`country`)}
+                    />
+                    <TextInput
+                        m="sm"
+                        label="City"
+                        placeholder="City"
+                        withAsterisk
+                        {...form.getInputProps(`city`)}
+                    />
+                    <Textarea
+                        m="sm"
+                        label="Responcibilites"
+                        placeholder="Responcibilites"
+                        withAsterisk
+                        {...form.getInputProps(`responcibilities`)}
 
 
-        </form>
+                    />
+                    <Switch
+                        m="md"
+                        label="Currently Working"
+                        onLabel="YES"
+                        offLabel="NO"
+                        size="sm"
+                        {...form.getInputProps(`active_status`)}
+                    />
+
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "right",
+                            gap: "10px",
+                            marginTop: "10px",
+                        }}
+                    >
+                        <Button className={classes.colorButton} mt="sm" type="submit">
+                            Save
+                        </Button>
+
+                    </div>
+
+
+                </form>
+            </Grid.Col>
+            <Grid.Col span={6}>
+                <Card
+                    withBorder
+                    shadow="sm"
+                    radius="md"
+                >
+                    <Text mt="md" weight={600} size={19}>
+                        Experience{" "}
+                    </Text>
+                    <Divider />
+                    <div style={{ width: "100%" }}>
+                        <Alert
+
+                            m={10}
+                            title={`Front End Developer`} >
+                            <Box>
+                                <Text tt="uppercase">Nustac</Text>
+                                <Group><Text>Jan 2021</Text> <Text>Feb 2023</Text></Group>
+                                <Group><Text>Lahore</Text> <Text>Pakistan</Text></Group>
+                                <Text>The moon was a silver disc hanging in the inky blackness of the sky.</Text>
+                            </Box>
+
+                        </Alert>
+
+                    </div>
+                </Card>
+            </Grid.Col>
+        </Grid>
     )
 }
 

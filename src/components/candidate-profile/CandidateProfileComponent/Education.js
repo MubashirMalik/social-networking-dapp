@@ -2,7 +2,10 @@ import { Alert, Box, Button, createStyles, Group, TextInput } from '@mantine/cor
 import { Divider, Grid, Text, Card, Textarea } from '@mantine/core'
 
 import { useForm } from '@mantine/form';
-import React from 'react'
+import { showNotification } from '@mantine/notifications';
+import axios from 'axios';
+import React, { useContext } from 'react'
+import { AuthenticationContext } from '../../../context/authenticationContext';
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -43,9 +46,10 @@ const useStyles = createStyles((theme) => ({
 }));
 function Education() {
     const { classes, theme } = useStyles();
+    const { providerStatus } = useContext(AuthenticationContext)
     const form = useForm({
         initialValues: {
-            insititution: null,
+            institution: null,
             degree: null,
             from_month: null,
             from_year: null,
@@ -56,7 +60,7 @@ function Education() {
         },
 
         validate: {
-            insititution: (value) => (value ? null : "Institution Name must not be empty"),
+            institution: (value) => (value ? null : "Institution Name must not be empty"),
             degree: (value) => (value ? null : "Degree  must not be empty"),
             from_month: (value) => (value ? null : "From Month  must not be empty"),
             from_year: (value) => (value ? null : "From Year  must not be empty"),
@@ -70,12 +74,39 @@ function Education() {
 
         },
     });
+    const handleSubmit = (payload) => {
+        const data = { ...payload, walletAddress: providerStatus.connectedAccount }
+        console.log(data)
+        axios.post('http://localhost:3001/user/create-user-education', data)
+            .then(response => {
+
+                if (response.status === 200) {
+                    console.log('User Education Added !');
+                    console.log('Response:', response.data);
+                    showNotification({
+                        title: 'User Education',
+                        message: "User Education Added Successfully",
+                    })
+
+                } else {
+                    console.error('Failed to add user education:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                showNotification({
+                    title: 'User Education not Added Successfully',
+                    message: JSON.stringify(error.response.data),
+                })
+                console.error('Error creating user:', error);
+            });
+    }
     return (
         <Grid>
             <Grid.Col span={6}>   <form
                 style={{ width: "100%" }}
                 onSubmit={form.onSubmit((values, event) => {
-                    console.log(values);
+                    handleSubmit(values)
 
                 })}
             >
@@ -85,7 +116,7 @@ function Education() {
                     label="Institution(Name - Address)"
                     placeholder="Institution(Name - Address)"
                     withAsterisk
-                    {...form.getInputProps(`insititution`)}
+                    {...form.getInputProps(`institution`)}
                 />
                 <TextInput
                     m="sm"
@@ -178,12 +209,12 @@ function Education() {
                         <Alert
 
                             m={10}
-                            title={`Front End Developer`} >
+                            title={`${form.values.degree?form.values.degree:""}`} >
                             <Box>
-                                <Text tt="uppercase">Nustac</Text>
-                                <Group><Text>Jan 2021</Text> <Text>Feb 2023</Text></Group>
-                                <Group><Text>Lahore</Text> <Text>Pakistan</Text></Group>
-                                <Text>The moon was a silver disc hanging in the inky blackness of the sky.</Text>
+                                <Text tt="uppercase">{form.values.insititution}</Text>
+                                <Group><Text>{form.values.from_month}</Text><Text> {form.values.from_year}</Text> <Text>{form.values.to_month}</Text> <Text>{form.values.to_year}</Text></Group>
+                                <Group><Text>{form.values.city}</Text> <Text>{form.values.country}</Text></Group>
+                                
                             </Box>
 
                         </Alert>

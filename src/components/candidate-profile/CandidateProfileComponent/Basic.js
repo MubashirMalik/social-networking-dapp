@@ -92,7 +92,7 @@ function Basic() {
             .catch(error => {
                 showNotification({
                     title: 'User Creation not Successfull',
-                    message: JSON.stringify(error),
+                    message: JSON.stringify(error.response.data),
                 })
                 console.error('Error creating user:', error);
             });

@@ -1,8 +1,10 @@
-import {createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button} from '@mantine/core';
-import {useDisclosure} from "@mantine/hooks";
-import { useState } from 'react';
+import { createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button } from '@mantine/core';
+import { useDisclosure } from "@mantine/hooks";
+import { useContext, useState } from 'react';
 import { useEffect } from 'react';
-import { MONTH_NAMES} from "../../../../util";
+import { AuthenticationContext } from '../../../../context/authenticationContext';
+import { getUserExperienceDetails } from '../../../../services/user.service';
+import { MONTH_NAMES } from "../../../../util";
 import { getUser } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
@@ -26,26 +28,33 @@ const data = {
 }
 
 export function ExperienceCard({ workExperience }) {
-    const [opened, {close, open}] = useDisclosure(false);
-    const {classes} = useStyles();
+    const [opened, { close, open }] = useDisclosure(false);
+    const { classes } = useStyles();
     const [issuingOrganization, setIssuingOrganization] = useState()
-
+    const { providerStatus, setProviderStatus } = useContext(AuthenticationContext)
+    const [experienceData, setexperienceData] = useState([])
     useEffect(() => {
         getUser(workExperience.issuingOrganization)
-        .then(res => {
-            if (res) {
-                setIssuingOrganization(res)
-            }
+            .then(res => {
+                if (res) {
+                    setIssuingOrganization(res)
+                }
+            })
+
+        getUserExperienceDetails(providerStatus.connectedAccount).then(res => {
+            setexperienceData([...res])
+        }).catch(err => {
+            console.log(err)
         })
-    }, [workExperience.issuingOrganization])
+    }, [workExperience.issuingOrganization, providerStatus.connectedAccount])
 
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
-            <Image src={data.image} height={100} width={100} radius={"md"}/>
+            <Image src={data.image} height={100} width={100} radius={"md"} />
             <div className={classes.body}>
                 <Box className={classes.box}>
                     <Text className={classes.title} mt="sm">
-                        { workExperience.designation }
+                        {workExperience.designation}
                     </Text>
                     {
                         workExperience.isVerified ?
@@ -61,35 +70,35 @@ export function ExperienceCard({ workExperience }) {
 
                 <Group noWrap spacing="xs">
                     <Text size="sm" color="dimmed" weight={700}>
-                        { MONTH_NAMES[workExperience.fromMonth-1] + " " + workExperience.fromYear }
+                        {MONTH_NAMES[workExperience.fromMonth - 1] + " " + workExperience.fromYear}
                     </Text>
                     -
                     <Text size="sm" color="dimmed" weight={700}>
                         {
                             (Number(workExperience.toYear) === 0) || (Number(workExperience.toMonth) === 0) ? "Present" :
-                            MONTH_NAMES[workExperience.toMonth-1]  + " " +
-                            workExperience.toYear
+                                MONTH_NAMES[workExperience.toMonth - 1] + " " +
+                                workExperience.toYear
                         }
                     </Text>
                 </Group>
                 <Text transform="uppercase" weight={700} size="sm">
-                    { issuingOrganization?.fullName }
+                    {issuingOrganization?.fullName}
                 </Text>
                 <Group spacing="xs" width={300}>
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>
                         <Popover.Target>
                             <Text size="sm" color="dimmed" truncate onMouseEnter={open} onMouseLeave={close}>
-                                { workExperience.issuingOrganization }
+                                {workExperience.issuingOrganization}
                             </Text>
                         </Popover.Target>
-                        <Popover.Dropdown sx={{pointerEvents: 'none'}}>
+                        <Popover.Dropdown sx={{ pointerEvents: 'none' }}>
                             <Text size="sm" color="dimmed" truncate>
-                                { workExperience.issuingOrganization }
+                                {workExperience.issuingOrganization}
                             </Text>
                         </Popover.Dropdown>
                     </Popover>
                 </Group>
-                { !workExperience.isVerified ?
+                {!workExperience.isVerified ?
                     <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase>
                             Request Verification

@@ -52,3 +52,23 @@ export const getResumeData = async (payload) => {
     });
     return axiosObject.post("/parse", payload);
 }
+
+export const getUserDataDetails = async (walletAddress) => {
+    try {
+        const url = BASE_URL + `/get-user-data?walletAddress=${walletAddress}`
+        const response = await fetch(url);
+        return await response.json();
+    } catch (err) {
+        console.log("Exception in getUserDetails():", err);
+    }
+}
+
+export const getUserExperienceDetails = async (walletAddress) => {
+    try {
+        const url = BASE_URL + `/get-user-experience?walletAddress=${walletAddress}`
+        const response = await fetch(url);
+        return await response.json();
+    } catch (err) {
+        console.log("Exception in getUserDetails():", err);
+    }
+}

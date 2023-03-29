@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import {
 	Route,
 	Routes
- } from "react-router-dom";
+} from "react-router-dom";
 
 import CandidateProfile from "./components/candidate-profile/CandidateProfile";
 import JobMarketplace from "./components/job-marketplace/JobMarketplace";
@@ -17,28 +17,28 @@ import { NotificationsProvider } from '@mantine/notifications';
 import Insight from "./components/Insights/Insight";
 
 export default function App() {
-    useEffect(() => {
-        void initWeb3Client()
-    }, [])
+	useEffect(() => {
+		void initWeb3Client()
+	}, [])
 
 	return (
 		<div>
-			 <MantineProvider withGlobalStyles withNormalizeCSS>
-			 <ModalsProvider>
-				<NotificationsProvider>
-			<Navbar />
-			<Routes>
-				<Route exact path="/account/*" element={<CandidateProfile />} />
-				<Route exact path="/" element={<JobMarketplace />} />
-                <Route exact path="/job/:jobId" element={<PostJob /> } />
-                <Route exact path="/profile" element={<Profile />} />
-				<Route exact path="/insight" element={<Insight />} />
-				{/* <Route path="*" element={ <PageNotFound />}/> */}
-			</Routes>
-            <NotificationContainer />
-			</NotificationsProvider>
-			</ModalsProvider>
+			<MantineProvider withGlobalStyles withNormalizeCSS>
+				<ModalsProvider>
+					<NotificationsProvider>
+						<Navbar />
+						<Routes>
+							<Route exact path="/account/*" element={<CandidateProfile />} />
+							<Route exact path="/" element={<JobMarketplace />} />
+							<Route exact path="/job/:jobId" element={<PostJob />} />
+							<Route exact path="/profile" element={<Profile />} />
+							<Route exact path="/insight" element={<Insight />} />
+							{/* <Route path="*" element={ <PageNotFound />}/> */}
+						</Routes>
+						<NotificationContainer />
+					</NotificationsProvider>
+				</ModalsProvider>
 			</MantineProvider>
-    	</div>
-  )
+		</div>
+	)
 }

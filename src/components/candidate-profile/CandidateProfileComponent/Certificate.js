@@ -1,6 +1,10 @@
-import { Button, createStyles, Group, Select, Switch, Textarea,Grid,Card,Text,Divider,Alert,Box, TextInput } from '@mantine/core'
+import { Button, createStyles, Group, Select, Switch, Textarea, Grid, Badge,Card, Text, Divider, Alert, Box, TextInput } from '@mantine/core'
 import { useForm } from '@mantine/form';
+import { showNotification } from '@mantine/notifications';
+import axios from 'axios';
 import React from 'react'
+import { useContext } from 'react';
+import { AuthenticationContext } from '../../../context/authenticationContext';
 
 const useStyles = createStyles((theme) => ({
     button: {
@@ -42,6 +46,8 @@ const useStyles = createStyles((theme) => ({
 }));
 function Certificate() {
     const { classes, theme } = useStyles();
+    const { providerStatus } = useContext(AuthenticationContext)
+
     const form = useForm({
         initialValues: {
             institution: null,
@@ -66,12 +72,39 @@ function Certificate() {
 
         },
     });
+    const handleSubmit = (payload) => {
+        const data = { ...payload, walletAddress: providerStatus.connectedAccount }
+        console.log(data)
+        axios.post('http://localhost:3001/user/create-user-certificate', data)
+            .then(response => {
+
+                if (response.status === 200) {
+                    console.log('User Certificate Added !');
+                    console.log('Response:', response.data);
+                    showNotification({
+                        title: 'User Certificate',
+                        message: "User Certificate Added Successfully",
+                    })
+
+                } else {
+                    console.error('Failed to add user Certificate:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                showNotification({
+                    title: 'User Certificate not Added Successfully',
+                    message: JSON.stringify(error.response.data),
+                })
+                console.error('Error creating user Certificate:', error);
+            });
+    }
     return (
         <Grid>
             <Grid.Col span={6}>   <form
                 style={{ width: "100%" }}
                 onSubmit={form.onSubmit((values, event) => {
-                    console.log(values);
+                    handleSubmit(values)
 
                 })}
             >
@@ -107,12 +140,12 @@ function Certificate() {
                     />
                 </Group>
                 <Group>
-                    <Select
+                    <TextInput
                         m="sm"
                         label="Expiration Month"
                         placeholder=" Expiration Month"
                         withAsterisk
-                        data={[]}
+                  
                         {...form.getInputProps(`exp_month`)}
                     />
                     <TextInput
@@ -163,12 +196,16 @@ function Certificate() {
                         <Alert
 
                             m={10}
-                            title={`Front End Developer`} >
+                            title={`${form.values.title ? form.values.title : ""}`} >
                             <Box>
-                                <Text tt="uppercase">Nustac</Text>
-                                <Group><Text>Jan 2021</Text> <Text>Feb 2023</Text></Group>
-                                <Group><Text>Lahore</Text> <Text>Pakistan</Text></Group>
-                                <Text>The moon was a silver disc hanging in the inky blackness of the sky.</Text>
+                                <Text tt="uppercase">{form.values.institution}</Text>
+                                <Group><Text>{form.values.issue_month}</Text><Text> {form.values.issue_year}</Text> </Group>
+                                <Group><Text>{form.values.exp_month}</Text> <Text>{form.values.exp_year}</Text></Group>
+                                {!(form.values.expire) ? <Badge size="lg" radius="xl" color="red" >
+                                    Will Expire
+                                </Badge> : <Badge size="lg" radius="xl" color="teal" >
+                                    Never Expire
+                                </Badge>}
                             </Box>
 
                         </Alert>

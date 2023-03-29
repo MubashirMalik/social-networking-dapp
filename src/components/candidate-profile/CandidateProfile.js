@@ -300,21 +300,6 @@ const CandidateProfile = () => {
                         Skills
                       </Text>
                       <Skills />
-
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "right",
-                          gap: "10px",
-                          marginTop: "10px",
-                        }}
-                      >
-                        <Button className={classes.colorButton} mt="sm" type="submit">
-                          Save
-                        </Button>
-
-                      </div>
-
                     </Tabs.Panel>
 
                   </Tabs>

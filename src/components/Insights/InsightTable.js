@@ -6,6 +6,7 @@ import {
     useMantineTheme,
     TextInput,
     Button,
+    Menu,
 } from "@mantine/core";
 import './Master.css'
 import { DataTable } from "mantine-datatable";
@@ -13,29 +14,17 @@ import { useState } from "react";
 import * as React from "react";
 import { useEffect } from "react";
 import { useDebouncedState } from "@mantine/hooks";
-
+import {
+    AiOutlineMenu,
+} from "react-icons/ai";
 import { DatePicker } from "@mantine/dates";
 import { AuthenticationContext } from "../../context/authenticationContext";
 import { useContext } from "react";
-import { getUserJobApplication } from "../../services/job.service";
+import { getUserJobApplication, updateUserJobApplication } from "../../services/job.service";
+import { showNotification } from "@mantine/notifications";
 
 const PAGE_SIZE = 50;
-const Data = [{
-    id: 1,
-    job_title: "Front End Developer",
-    date_applied: "10-2-2022",
-    status: "Applied",
-    applicant_name: "Saboor",
-    job_cat: "IT"
-},
-{
-    id: 2,
-    job_title: "Backend End Developer",
-    date_applied: "10-3-2022",
-    status: "Rejected",
-    applicant_name: "Maaz",
-    job_cat: "IT"
-}]
+
 function InsightTable(props) {
     const { providerStatus } = useContext(AuthenticationContext)
     const [selectedRecords, setSelectedRecords] = useState([]);
@@ -43,8 +32,8 @@ function InsightTable(props) {
     const [isFetching, setisFetching] = useState(false);
     const [opened, setOpened] = useState(false);
     const [editRow, setEditRow] = useState({});
-    
 
+    const [row, setrow] = useState({})
     // Top section filters
     const [search, setSearch] = useDebouncedState("", 500);
     const [fromVouDate, setFromVouDate] = useState();
@@ -64,18 +53,18 @@ function InsightTable(props) {
     const aboveXsMediaQuery = `(min-width: ${xsBreakpoint}px)`;
 
     useEffect(() => {
-        getUserJobApplication("0x123").then(res=>{
+        getUserJobApplication("0x123").then(res => {
             setTableData(res)
-        }).catch(err=>{
+        }).catch(err => {
             console.log(err)
         })
-     
-    }, [providerStatus.connectedAccount])
+
+    }, [providerStatus.connectedAccount,row])
 
     return (
         <Box sx={{ height: "65vh" }}>
             <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-      {/*           <TextInput
+                {/*           <TextInput
                     className="alloc-search"
                     placeholder="Search by any field"
                     mb="md"
@@ -147,7 +136,7 @@ function InsightTable(props) {
                         // textAlignment: "right",
                         // width: 300,
                         sortable: true,
-                        render:  ({ jobId }) => jobId.type,
+                        render: ({ jobId }) => jobId.type,
                     },
                     {
                         accessor: "Date Applied",
@@ -184,8 +173,70 @@ function InsightTable(props) {
                         accessor: "actions",
                         textAlignment: "left",
                         render: (rowPayload) => {
+                            console.log(rowPayload)
                             return (
                                 <Group>
+                                    <Menu width={200} shadow="md">
+                                        <Menu.Target>
+
+                                            <ActionIcon
+                                                color="dark"
+                                                variant="subtle"
+                                            >
+                                                <AiOutlineMenu size={20} />
+
+                                            </ActionIcon>
+                                        </Menu.Target>
+
+                                        <Menu.Dropdown>
+                                            <Menu.Item onClick={() => {
+                                                updateUserJobApplication({ _id: rowPayload._id, status: "Approved" }).then(res => {
+                                                    setrow(res)
+                                                    showNotification({
+                                                        color: "green",
+                                                        title: 'Approval Success',
+                                                        message: "Approved Successfully",
+                                                    })
+                                                }).catch(err => {
+                                                    showNotification({
+                                                        color: "red",
+                                                        title: 'Approval Success',
+                                                        message: "Approval Not Successfull",
+                                                    })
+                                                })
+
+                                            }}
+                                                color={"green"}
+                                            >
+                                                Approve
+                                            </Menu.Item>
+                                            <Menu.Item
+                                                color={
+                                                    "red"
+                                                }
+                                                onClick={() => {
+                                                    updateUserJobApplication({ _id: rowPayload._id, status: "Rejected" }).then(res => {
+                                                        setrow(res)
+                                                        showNotification({
+                                                            color: "green",
+                                                            title: 'Rejection Success',
+                                                            message: "Rejected Successfully",
+                                                        })
+                                                    }).catch(err => {
+                                                        showNotification({
+                                                            color: "red",
+                                                            title: 'Rejection Success',
+                                                            message: "Rejection Not Successfull",
+                                                        })
+                                                    })
+
+                                                }}
+                                            >
+                                                Rejected
+                                            </Menu.Item>
+
+                                        </Menu.Dropdown>
+                                    </Menu>
 
                                 </Group>
                             );

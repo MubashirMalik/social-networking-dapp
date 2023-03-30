@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const BASE_URL = "http://localhost:3001/job/"
 
 export const getJobs = async () => {
@@ -13,12 +15,12 @@ export const getJobs = async () => {
 export const postJob = async (job) => {
     try {
         const url = BASE_URL + "post-job"
-        const response = await fetch(url, { 
+        const response = await fetch(url, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({job})
+            body: JSON.stringify({ job })
         });
         return await response.json();
     } catch (err) {
@@ -44,7 +46,7 @@ export const updateJob = async (job) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({job})
+            body: JSON.stringify({ job })
         });
         return await response.json();
     } catch (err) {
@@ -56,6 +58,22 @@ export const getUserJobApplication = async (walletAddress) => {
         const url = BASE_URL + `/get-job-application?posterAddress=${walletAddress}`
         const response = await fetch(url);
         return await response.json();
+    } catch (err) {
+        console.log("Exception in getUserDetails():", err);
+    }
+}
+
+export const updateUserJobApplication = async (payload) => {
+    try {
+
+        const axiosObject = axios.create({
+            baseURL: BASE_URL,
+            timeout: 20000,
+
+            method: "POST"
+        });
+        return axiosObject.patch(
+            `/update-job-status`, payload);
     } catch (err) {
         console.log("Exception in getUserDetails():", err);
     }

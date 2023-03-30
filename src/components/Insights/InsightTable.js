@@ -15,6 +15,9 @@ import { useEffect } from "react";
 import { useDebouncedState } from "@mantine/hooks";
 
 import { DatePicker } from "@mantine/dates";
+import { AuthenticationContext } from "../../context/authenticationContext";
+import { useContext } from "react";
+import { getUserJobApplication } from "../../services/job.service";
 
 const PAGE_SIZE = 50;
 const Data = [{
@@ -22,23 +25,25 @@ const Data = [{
     job_title: "Front End Developer",
     date_applied: "10-2-2022",
     status: "Applied",
-    applicant_name:"Saboor",
-    job_cat:"IT"
+    applicant_name: "Saboor",
+    job_cat: "IT"
 },
 {
     id: 2,
     job_title: "Backend End Developer",
     date_applied: "10-3-2022",
     status: "Rejected",
-    applicant_name:"Maaz",
-    job_cat:"IT"
+    applicant_name: "Maaz",
+    job_cat: "IT"
 }]
 function InsightTable(props) {
+    const { providerStatus } = useContext(AuthenticationContext)
     const [selectedRecords, setSelectedRecords] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [isFetching, setisFetching] = useState(false);
     const [opened, setOpened] = useState(false);
     const [editRow, setEditRow] = useState({});
+    
 
     // Top section filters
     const [search, setSearch] = useDebouncedState("", 500);
@@ -58,11 +63,19 @@ function InsightTable(props) {
     } = useMantineTheme();
     const aboveXsMediaQuery = `(min-width: ${xsBreakpoint}px)`;
 
+    useEffect(() => {
+        getUserJobApplication("0x123").then(res=>{
+            setTableData(res)
+        }).catch(err=>{
+            console.log(err)
+        })
+     
+    }, [providerStatus.connectedAccount])
 
     return (
         <Box sx={{ height: "65vh" }}>
-            <div style={{ display: "flex", gap: "10px" ,marginTop:"20px" }}>
-                <TextInput
+            <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+      {/*           <TextInput
                     className="alloc-search"
                     placeholder="Search by any field"
                     mb="md"
@@ -85,7 +98,7 @@ function InsightTable(props) {
                     value={toVouDate}
                     onChange={setToVouDate}
 
-                />
+                /> */}
                 {/*<Button*/}
                 {/*  color="red"*/}
                 {/*  className="alloc-delete"*/}
@@ -109,15 +122,15 @@ function InsightTable(props) {
                         title: "Id",
                         sortable: true,
                         visibleMediaQuery: aboveXsMediaQuery,
-                        render: ({ id }) => id,
+                        render: ({ _id }) => _id,
                     },
                     {
-                        accessor: "Applicant Name",
-                        title: "Applicant Name",
+                        accessor: "Applicant Address",
+                        title: "Applicant Address",
                         // width: 300,
                         sortable: true,
                         visibleMediaQuery: aboveXsMediaQuery,
-                        render: ({ applicant_name }) => applicant_name,
+                        render: ({ applicantAddress }) => applicantAddress,
                     },
                     {
                         accessor: "Job Title",
@@ -125,18 +138,16 @@ function InsightTable(props) {
                         // width: 300,
                         sortable: true,
                         visibleMediaQuery: aboveXsMediaQuery,
-                        render: ({ job_title }) => job_title,
+                        render: ({ jobId }) => jobId.title,
                     },
 
                     {
-                        accessor: "Job Category",
-                        title: "Job Category",
+                        accessor: "Job Type",
+                        title: "Job Type",
                         // textAlignment: "right",
                         // width: 300,
                         sortable: true,
-                        render: ({ job_cat }) => {
-                            return job_cat;
-                        },
+                        render:  ({ jobId }) => jobId.type,
                     },
                     {
                         accessor: "Date Applied",
@@ -144,8 +155,8 @@ function InsightTable(props) {
                         // textAlignment: "right",
                         // width: 300,
                         sortable: true,
-                        render: ({ date_applied }) => {
-                            return date_applied;
+                        render: ({ jobId }) => {
+                            return jobId.datePosted;
                         },
                     },
 
@@ -182,7 +193,7 @@ function InsightTable(props) {
                     },
                 ]}
                 sortStatus={sortStatus}
-                records={Data}
+                records={tableData}
                 onSortStatusChange={setSortStatus}
                 totalRecords={totalRecords}
                 page={page}

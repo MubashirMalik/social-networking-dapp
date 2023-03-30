@@ -72,3 +72,4 @@ export const getUserExperienceDetails = async (walletAddress) => {
         console.log("Exception in getUserDetails():", err);
     }
 }
+

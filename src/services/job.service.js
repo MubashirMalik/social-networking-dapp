@@ -51,3 +51,12 @@ export const updateJob = async (job) => {
         console.log("Exception in updateJob():", err);
     }
 }
+export const getUserJobApplication = async (walletAddress) => {
+    try {
+        const url = BASE_URL + `/get-job-application?posterAddress=${walletAddress}`
+        const response = await fetch(url);
+        return await response.json();
+    } catch (err) {
+        console.log("Exception in getUserDetails():", err);
+    }
+}

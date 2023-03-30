@@ -10,12 +10,12 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-export function Experience({ workExperiences }) {
+export function Experience({ workExperiences,experiences }) {
     const {classes} = useStyles();
 
-    const items = workExperiences.map(workExperience => (
+    const items = experiences.map((exprience ,id)=> (
         <Grid.Col span={6}>
-            <ExperienceCard workExperience={workExperience} />
+            <ExperienceCard workExperience={workExperiences[id]} experiences={exprience} />
         </Grid.Col>
     ));
 
@@ -25,7 +25,7 @@ export function Experience({ workExperiences }) {
                 <Title size={20}>
                     Experience
                 </Title>
-                { workExperiences.length > 0 ?
+                { experiences.length > 0 ?
                     <Grid gutter={5} gutterXs="md" gutterMd="xl" gutterXl={15}>{ items } </Grid> :
                     <NoRecordAlert
                         section="experiences"

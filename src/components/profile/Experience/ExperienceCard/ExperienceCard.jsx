@@ -27,26 +27,23 @@ const data = {
     "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png",
 }
 
-export function ExperienceCard({ workExperience }) {
+export function ExperienceCard({ workExperience,experiences }) {
+    console.log(experiences)
     const [opened, { close, open }] = useDisclosure(false);
     const { classes } = useStyles();
     const [issuingOrganization, setIssuingOrganization] = useState()
     const { providerStatus, setProviderStatus } = useContext(AuthenticationContext)
     const [experienceData, setexperienceData] = useState([])
     useEffect(() => {
-        getUser(workExperience.issuingOrganization)
+        getUser(workExperience?.issuingOrganization)
             .then(res => {
                 if (res) {
                     setIssuingOrganization(res)
                 }
             })
 
-        getUserExperienceDetails(providerStatus.connectedAccount).then(res => {
-            setexperienceData([...res])
-        }).catch(err => {
-            console.log(err)
-        })
-    }, [workExperience.issuingOrganization, providerStatus.connectedAccount])
+      
+    }, [workExperience?.issuingOrganization])
 
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
@@ -54,9 +51,9 @@ export function ExperienceCard({ workExperience }) {
             <div className={classes.body}>
                 <Box className={classes.box}>
                     <Text className={classes.title} mt="sm">
-                        {workExperience.designation}
+                        {experiences.designation}
                     </Text>
-                    {
+                   {/*  {
                         workExperience.isVerified ?
                             <Badge size="lg" radius="xl" color="teal">
                                 verified
@@ -65,47 +62,52 @@ export function ExperienceCard({ workExperience }) {
                             <Badge size="lg" radius="xl" color="red">
                                 not verified
                             </Badge>
-                    }
+                    } */}
                 </Box>
 
                 <Group noWrap spacing="xs">
                     <Text size="sm" color="dimmed" weight={700}>
-                        {MONTH_NAMES[workExperience.fromMonth - 1] + " " + workExperience.fromYear}
+                        {/*  {MONTH_NAMES[workExperience.fromMonth - 1] + " " + workExperience.fromYear} */}
+                        {experiences.from_month + " " + experiences.from_year}
                     </Text>
                     -
                     <Text size="sm" color="dimmed" weight={700}>
-                        {
+                        {/*  {
                             (Number(workExperience.toYear) === 0) || (Number(workExperience.toMonth) === 0) ? "Present" :
                                 MONTH_NAMES[workExperience.toMonth - 1] + " " +
                                 workExperience.toYear
-                        }
+                        } */}
+
+                        {(experiences.to_year).length === 0 || ((experiences.to_month).length === 0) ? "Present" :
+                            experiences.to_month + " " + experiences.to_year}
+
                     </Text>
                 </Group>
                 <Text transform="uppercase" weight={700} size="sm">
-                    {issuingOrganization?.fullName}
+                    {experiences?.institution}
                 </Text>
                 <Group spacing="xs" width={300}>
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>
                         <Popover.Target>
                             <Text size="sm" color="dimmed" truncate onMouseEnter={open} onMouseLeave={close}>
-                                {workExperience.issuingOrganization}
+                                {experiences.institution}
                             </Text>
                         </Popover.Target>
                         <Popover.Dropdown sx={{ pointerEvents: 'none' }}>
                             <Text size="sm" color="dimmed" truncate>
-                                {workExperience.issuingOrganization}
+                                {experiences.institution}
                             </Text>
                         </Popover.Dropdown>
                     </Popover>
                 </Group>
-                {!workExperience.isVerified ?
+                {/* {!workExperience.isVerified ?
                     <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase>
                             Request Verification
                         </Button>
                     </Group>
                     : null
-                }
+                } */}
             </div>
         </Group>
     </Card>);

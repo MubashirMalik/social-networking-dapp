@@ -117,12 +117,13 @@ export function CertificationCard({ certification, id, setRefreshUserData }) {
                             Request Verification
                         </Button>
                     </Flex>
-                    : 
+                   : certification.isPendingVerification ?
                     <Flex justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase color="yellow">
                             Pending (Requested)
                         </Button>
                     </Flex>
+                   : null
                 }
             </div>
         </Group>

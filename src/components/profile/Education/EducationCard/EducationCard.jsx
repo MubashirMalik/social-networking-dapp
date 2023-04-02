@@ -101,12 +101,13 @@ export function EducationCard({ degree, id, setRefreshUserData }) {
                             Request Verification
                         </Button>
                     </Flex>
-                    : 
+                    : degree.isPendingVerification ?
                     <Flex justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase color="yellow">
                             Pending (Requested)
                         </Button>
                     </Flex>
+                    : null
                 }
             </div>
         </Group>

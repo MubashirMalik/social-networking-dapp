@@ -24,7 +24,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-export function TokenCard({ data, tokenType }) {
+export function TokenCard({ data, tokenType, setTrigger }) {
     const { providerStatus } = useContext(AuthenticationContext)
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
@@ -73,7 +73,10 @@ export function TokenCard({ data, tokenType }) {
                         color={"teal"} 
                         variant={"light"} 
                         radius={"sm"}
-                        onClick={() => respondToVerificationRequest(providerStatus.connectedAccount, data.id, data.issuingOrganization, tokenType, true)}
+                        onClick={async () => { 
+                            await respondToVerificationRequest(providerStatus.connectedAccount, data.id, data.issuingOrganization, tokenType, true) 
+                            setTrigger(prevTrigger => !prevTrigger)
+                        }}
                     >
                         Accept
                     </Button>
@@ -82,7 +85,10 @@ export function TokenCard({ data, tokenType }) {
                         radius={"sm"} 
                         color={"red"} 
                         variant={"outline"}
-                        onClick={() => respondToVerificationRequest(providerStatus.connectedAccount, data.id, data.issuingOrganization, tokenType, false)}
+                        onClick={async () =>  {
+                            await respondToVerificationRequest(providerStatus.connectedAccount, data.id, data.issuingOrganization, tokenType, false)
+                            setTrigger(prevTrigger => !prevTrigger)
+                        }}
                     >
                         Reject
                     </Button>

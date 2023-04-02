@@ -56,6 +56,7 @@ export function CompanyProfile({}) {
     const [experiences, setExperiences] = useState([])
     const [certifications, setCertifications] = useState([])
     const [degrees, setDegrees] = useState([])
+    const [trigger, setTrigger] = useState()
 
     useEffect(() => {
         getCompanyData(providerStatus.connectedAccount)
@@ -66,23 +67,23 @@ export function CompanyProfile({}) {
                 setDegrees(res[0])
             }
         })
-    }, [providerStatus.connectedAccount])
+    }, [providerStatus.connectedAccount, trigger])
 
     const displayExperiences = experiences?.map(experience => (
         <Grid.Col span={6}>
-            <TokenCard data={experience} tokenType={TOKEN_TYPE_EXPERIENCE} />
+            <TokenCard data={experience} tokenType={TOKEN_TYPE_EXPERIENCE} setTrigger={setTrigger} />
         </Grid.Col>
     ));
 
     const displayCertifications = certifications?.map(certification => (
         <Grid.Col span={6}>
-            <TokenCard data={certification} tokenType={TOKEN_TYPE_CERTIFICATION} />
+            <TokenCard data={certification} tokenType={TOKEN_TYPE_CERTIFICATION} setTrigger={setTrigger} />
         </Grid.Col>
     ));
 
     const displayDegrees = degrees?.map(degree => (
         <Grid.Col span={6}>
-            <TokenCard data={degree} tokenType={TOKEN_TYPE_EDUCATION} />
+            <TokenCard data={degree} tokenType={TOKEN_TYPE_EDUCATION} setTrigger={setTrigger} />
         </Grid.Col>
     ));
 

@@ -5,6 +5,7 @@ pragma experimental ABIEncoderV2;
 contract SmartContract {
 
     struct WorkExperience {
+        uint id;
         string designation;
         uint8 fromMonth;
         uint16 fromYear;
@@ -17,6 +18,7 @@ contract SmartContract {
     }
 
     struct Certification {
+        uint id;
         string name;
         uint8 issueMonth;
         uint16 issueYear;
@@ -29,6 +31,7 @@ contract SmartContract {
     }
 
     struct Degree {
+        uint id;
         string title;
         uint8 fromMonth;
         uint16 fromYear;
@@ -55,11 +58,11 @@ contract SmartContract {
     // Candidate => Work Experiences
     mapping(address => WorkExperience[]) candidateWorkExperiences;
     
-    // Candidate => Degrees
+    // Company => Degrees
     mapping(address => Degree[]) companyDegrees;
-    // Candidate => Certifications
+    // Company => Certifications
     mapping(address => Certification[]) companyCertifications;
-    // Candidate => Work Experiences
+    // Company => Work Experiences
     mapping(address => WorkExperience[]) companyWorkExperiences;
 
 
@@ -67,7 +70,7 @@ contract SmartContract {
      * This function is only for demo & should be removed before deployment on mainnet
      */ 
     function boostrap() private {
-        string[37] memory names = [
+        string[32] memory names = [
             // 10 Universities Below
             "University of Dubai",
             "American University in Dubai",
@@ -102,15 +105,10 @@ contract SmartContract {
             "Dubai Supply Authority (DUSUP)",
             "Abu Dhabi National Oil Company (ADNOC)",
             "Abu Dhabi Oil Refining Company (TAKREER)",
-            "Dubai Natural Gas Company Limited (DUGAS)",
-            "Abu Dhabi Gas Industries Limited (GASCO)",
-            "Abu Dhabi Gas Liquefaction Company Limited (ADGAS)",
-            "Abu Dhabi Oil Refining Company (ADOR)",
-            "Dubai Oil Refining Company (DORC)",
-            "Emirates Group"
+            "Dubai Natural Gas Company Limited (DUGAS)"
         ];
 
-        address[37] memory addresses = [
+        address[32] memory addresses = [
             0xbd909b88028445A706eB385FfE86aEd3dc859E63,
             0x720366A18a4aF591710204dC75AD3d67E090a6dB,
             0x579C26abF48abCC4BD12bdEf245CF75264c63cE5,
@@ -142,15 +140,10 @@ contract SmartContract {
             0x4763aCfD72FB8FeE0AD93c3A1dF5F95B34366Cd1,
             0xeD8c2904d28A41D7ad999E399D0c36E6EcC616cb,
             0xfC0943d3cbfc82b1389e24e1E367f8381c89D4A7,
-            0xC1DEd051E5BA5A0D78a97298F7507E3CeE05b5Ef,
-            0x1485EfD3069a47c061e8ee4f368d0c281EE5d072,
-            0xa13c1497f3A753754eE60D6a8834B4b6a282a702,
-            0x0725675C6B734B94b362D48A5374f44985bB6613,
-            0x71A519405224F9B4e5798E35aF62F0b7e2862eed,
-            0x3DE2bc4E3092eDA25936dBd99B18D765a834a7A6
+            0xC1DEd051E5BA5A0D78a97298F7507E3CeE05b5Ef
         ];
 
-        for (uint i = 0; i < 37; i++) {
+        for (uint i = 0; i < 32; i++) {
             companyAddresses.push(addresses[i]);
             allUsers[addresses[i]] = User(names[i], true, true);
         }
@@ -187,15 +180,10 @@ contract SmartContract {
         uint16 toYear,
         address issuingOrganization
     ) public {
+        uint id = candidateDegrees[msg.sender].length;
         // Only Registered Users Require
         candidateDegrees[msg.sender].push(
-            Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
-        );
-
-        /** @dev 
-        * issuingOrganization field contains address of person who requested token in company mapping */
-        companyDegrees[issuingOrganization].push(
-            Degree(title, fromMonth, fromYear, toMonth, toYear, msg.sender, false, false, false)
+            Degree(id, title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -207,15 +195,10 @@ contract SmartContract {
         uint16 expirationYear,
         address issuingOrganization
     ) public {
+        uint id = candidateCertifications[msg.sender].length;
         // Only Registered Users Require
         candidateCertifications[msg.sender].push(
-            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false, false)
-        );
-
-        /** @dev 
-        * issuingOrganization field contains address of person who requested token in company mapping */
-        companyCertifications[issuingOrganization].push(
-            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, msg.sender, false, false, false)
+            Certification(id, name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -227,15 +210,10 @@ contract SmartContract {
         uint16 toYear,
         address issuingOrganization
     ) public {
+        uint id = candidateWorkExperiences[msg.sender].length;
         // Only Registered Users Require
         candidateWorkExperiences[msg.sender].push(
-            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
-        );
-
-        /** @dev 
-        * issuingOrganization field contains address of person who requested token in company mapping */
-        companyWorkExperiences[issuingOrganization].push(
-            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, msg.sender, false, false, false)
+            WorkExperience(id, designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -281,7 +259,23 @@ contract SmartContract {
                 "Invalid id."
             );
 
-            candidateDegrees[msg.sender][id].isPendingVerification = true;    
+            candidateDegrees[msg.sender][id].isPendingVerification = true;
+            /** @dev 
+            * issuingOrganization field contains address of person who requested token in company mapping */
+            companyDegrees[ candidateDegrees[msg.sender][id].issuingOrganization ].push(
+                Degree(
+                    candidateDegrees[msg.sender][id].id, 
+                    candidateDegrees[msg.sender][id].title, 
+                    candidateDegrees[msg.sender][id].fromMonth, 
+                    candidateDegrees[msg.sender][id].fromYear, 
+                    candidateDegrees[msg.sender][id].toMonth, 
+                    candidateDegrees[msg.sender][id].toYear, 
+                    msg.sender, 
+                    false, 
+                    true, 
+                    false
+                )
+            );    
         } else if (tokenType == 2) { // Work Experience
 
             require(
@@ -294,7 +288,24 @@ contract SmartContract {
                 "Invalid id."
             );
 
-            candidateWorkExperiences[msg.sender][id].isPendingVerification = true;    
+            candidateWorkExperiences[msg.sender][id].isPendingVerification = true;  
+
+            /** @dev 
+            * issuingOrganization field contains address of person who requested token in company mapping */
+            companyWorkExperiences[ candidateWorkExperiences[msg.sender][id].issuingOrganization ].push(
+                WorkExperience(
+                    candidateWorkExperiences[msg.sender][id].id, 
+                    candidateWorkExperiences[msg.sender][id].designation, 
+                    candidateWorkExperiences[msg.sender][id].fromMonth, 
+                    candidateWorkExperiences[msg.sender][id].fromYear, 
+                    candidateWorkExperiences[msg.sender][id].toMonth, 
+                    candidateWorkExperiences[msg.sender][id].toYear, 
+                    msg.sender, 
+                    false, 
+                    true, 
+                    false
+                )
+            );    
         } else { // Certification
 
             require(
@@ -308,6 +319,23 @@ contract SmartContract {
             );
 
             candidateCertifications[msg.sender][id].isPendingVerification = true;    
+
+            /** @dev 
+            * issuingOrganization field contains address of person who requested token in company mapping */
+            companyCertifications[ candidateCertifications[msg.sender][id].issuingOrganization ].push(
+                Certification(
+                    candidateCertifications[msg.sender][id].id, 
+                    candidateCertifications[msg.sender][id].name, 
+                    candidateCertifications[msg.sender][id].issueMonth, 
+                    candidateCertifications[msg.sender][id].issueYear, 
+                    candidateCertifications[msg.sender][id].expirationMonth, 
+                    candidateCertifications[msg.sender][id].expirationYear, 
+                    msg.sender, 
+                    false, 
+                    true, 
+                    false
+                )
+            );    
         }
     }
 
@@ -329,8 +357,18 @@ contract SmartContract {
                 candidateDegrees[requester][id].isVerified = true;
             } else {
                 candidateDegrees[requester][id].isRequestRejected = true; 
-                // TODO: Remove from company list 
             }
+
+            // Remove token from company list
+            uint total = companyDegrees[msg.sender].length;
+            for (uint i = 0; i < total; i++) {
+                if (companyDegrees[msg.sender][i].id == id && companyDegrees[msg.sender][i].issuingOrganization == requester) {
+                    companyDegrees[msg.sender][i] = companyDegrees[msg.sender][total-1];
+                    companyDegrees[msg.sender].pop();
+                    break;
+                }
+            }
+
         } else if (tokenType == 2) { // Work Experience
             candidateWorkExperiences[requester][id].isPendingVerification = false;
             if (response) {
@@ -338,6 +376,16 @@ contract SmartContract {
             } else {
                 candidateWorkExperiences[requester][id].isRequestRejected = true;  
             }    
+
+            // Remove token from company list
+            uint total = companyWorkExperiences[msg.sender].length;
+            for (uint i = 0; i < total; i++) {
+                if (companyWorkExperiences[msg.sender][i].id == id && companyWorkExperiences[msg.sender][i].issuingOrganization == requester) {
+                    companyWorkExperiences[msg.sender][i] = companyWorkExperiences[msg.sender][total-1];
+                    companyWorkExperiences[msg.sender].pop();
+                    break;
+                }
+            }
         } else { // Certification
 
             candidateCertifications[requester][id].isPendingVerification = false;
@@ -346,6 +394,16 @@ contract SmartContract {
             } else {
                 candidateCertifications[requester][id].isRequestRejected = true;  
             }    
+
+            // Remove token from company list
+            uint total = companyCertifications[msg.sender].length;
+            for (uint i = 0; i < total; i++) {
+                if (companyCertifications[msg.sender][i].id == id && companyCertifications[msg.sender][i].issuingOrganization == requester) {
+                    companyCertifications[msg.sender][i] = companyCertifications[msg.sender][total-1];
+                    companyCertifications[msg.sender].pop();
+                    break;
+                }
+            }
         }
     }
 }

@@ -35,7 +35,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = {
-    "image": "https://ezbrt4adg6k.exactdn.com/wp-content/uploads/2021/04/unnamed.png",
+    "image": "https://cdn-icons-png.flaticon.com/512/3000/3000777.png",
 }
 
 export function CertificationCard({ certification, id, setRefreshUserData }) {

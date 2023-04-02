@@ -24,7 +24,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = {
-    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png",
+    "image": "https://cdn-icons-png.flaticon.com/512/993/993854.png",
 }
 
 export function ExperienceCard({ workExperience, id, setRefreshUserData }) {

@@ -37,7 +37,7 @@ function Viewable() {
                 <Link to="/account/about"><FiEdit2 size={20}/></Link>
             </Flex>
             <Spoiler maxHeight={60} showLabel="Show more" hideLabel="Hide">
-                { providerStatus.userBio }
+                { !providerStatus.userBio ? "Add short bio/summary..." : providerStatus.userBio }
             </Spoiler>
         </Card>
     );

@@ -1,6 +1,6 @@
 import {createStyles, Card, Text, Group, Box, Popover, Button} from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext } from 'react';
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { MONTH_NAMES, TOKEN_TYPE_CERTIFICATION, TOKEN_TYPE_EDUCATION, TOKEN_TYPE_EXPERIENCE } from '../../../util';
@@ -28,6 +28,7 @@ export function TokenCard({ data, tokenType }) {
     const { providerStatus } = useContext(AuthenticationContext)
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
+
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <div className={classes.body}>
             <Box className={classes.box}>
@@ -72,7 +73,7 @@ export function TokenCard({ data, tokenType }) {
                         color={"teal"} 
                         variant={"light"} 
                         radius={"sm"}
-                        onClick={() => respondToVerificationRequest(providerStatus.connectedAccount, data.issuingOrganization, tokenType, true)}
+                        onClick={() => respondToVerificationRequest(providerStatus.connectedAccount, data.id, data.issuingOrganization, tokenType, true)}
                     >
                         Accept
                     </Button>
@@ -81,7 +82,7 @@ export function TokenCard({ data, tokenType }) {
                         radius={"sm"} 
                         color={"red"} 
                         variant={"outline"}
-                        onClick={() => respondToVerificationRequest(providerStatus.connectedAccount, data.issuingOrganization, tokenType, false)}
+                        onClick={() => respondToVerificationRequest(providerStatus.connectedAccount, data.id, data.issuingOrganization, tokenType, false)}
                     >
                         Reject
                     </Button>

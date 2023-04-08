@@ -61,7 +61,8 @@ function InsightTable(props) {
         }).catch(err => {
             console.log(err)
         }) */
-        getPosterJobs("0x123").then(res => {
+        console.log(providerStatus.connectedAccount)
+        getPosterJobs(providerStatus.connectedAccount).then(res => {
             console.log(res)
             const parsedValues = res.posterJobs.map(item => (
                 {
@@ -81,7 +82,12 @@ function InsightTable(props) {
 
     useEffect(() => {
         if(selectedJob){
-
+            console.log(selectedJob)
+            getUserJobApplication(selectedJob).then(res => {
+                setTableData(res)
+            }).catch(err => {
+                console.log(err)
+            })
         }
     
     }, [selectedJob])
@@ -97,31 +103,9 @@ function InsightTable(props) {
                     onChange={setselectedJob}
                     mb={10}
                     mt={10}
+                    searchable
+                    nothingFound="No options"
                 />
-                {/*           
-                <TextInput
-                    className="alloc-search"
-                    placeholder="Search by any field"
-                    mb="md"
-                    defaultValue={search}
-                    onChange={(event) => setSearch(event.currentTarget.value)}
-
-                />
-                <DatePicker
-                    className="alloc-date-filter"
-                    inputFormat="DD/MM/YYYY"
-                    value={fromVouDate}
-                    onChange={setFromVouDate}
-                    placeholder="From"
-                />
-                */}
-                {/*<Button*/}
-                {/*  color="red"*/}
-                {/*  className="alloc-delete"*/}
-                {/*  disabled={selectedRecords.length === 0}*/}
-                {/*>*/}
-                {/*  Delete*/}
-                {/*</Button>*/}
             </div>
 
             <DataTable
@@ -138,7 +122,7 @@ function InsightTable(props) {
                         title: "Id",
                         sortable: true,
                         visibleMediaQuery: aboveXsMediaQuery,
-                        render: ({ _id }) => _id,
+                        render: ({ applicantId }) => applicantId._id,
                     },
                     {
                         accessor: "Applicant Address",

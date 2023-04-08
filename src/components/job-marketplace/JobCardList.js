@@ -6,6 +6,7 @@ import JobCard from "./JobCard"
 const JobCardList = ({ jobList }) => {
    
     const { providerStatus } = useContext(AuthenticationContext)
+    console.log(providerStatus)
     const [applicantData, setapplicantData] = useState({})
     useEffect(() => {
         getUserDataDetails(providerStatus.connectedAccount).then(res => {

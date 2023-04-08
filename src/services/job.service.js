@@ -53,9 +53,9 @@ export const updateJob = async (job) => {
         console.log("Exception in updateJob():", err);
     }
 }
-export const getUserJobApplication = async (walletAddress) => {
+export const getUserJobApplication = async (jobId) => {
     try {
-        const url = BASE_URL + `/get-job-application?posterAddress=${walletAddress}`
+        const url = BASE_URL + `/get-job-application?jobId=${jobId}`
         const response = await fetch(url);
         return await response.json();
     } catch (err) {

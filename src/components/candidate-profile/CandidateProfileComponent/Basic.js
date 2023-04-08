@@ -77,12 +77,13 @@ function Basic() {
     useEffect(() => {
        
             form.setValues({
-                full_name:context.resumeData.name
+                full_name:context.resumeData.name,
+                wallet_address:providerStatus.connectedAccount
             })
           
         
 
-    }, [context.resumeData])
+    }, [context.resumeData,providerStatus.connectedAccount])
 
     
 

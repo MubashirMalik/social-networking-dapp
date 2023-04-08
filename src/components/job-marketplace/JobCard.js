@@ -32,11 +32,14 @@ const JobCard = (props) => {
             })
         } else {
             context.resumeRankingKeywords.map(keyword => {
-                const regex = new RegExp(`\\b${keyword?.toLowerCase()}\\b`, "gi"); // create a regular expression to match whole words only
-                const found = description.toLowerCase().match(regex);
+                if (keyword) {
+                    const regex = new RegExp(`\\b${keyword?.toLowerCase()}\\b`, "gi"); // create a regular expression to match whole words only
+                    const found = description.toLowerCase().match(regex);
 
-                if (found) {
-                    ranking = ranking + 0.5
+                    if (found) {
+                        ranking = ranking + 0.5
+                    }
+
                 }
 
 
@@ -48,6 +51,20 @@ const JobCard = (props) => {
             "updateValue": { "ranking": ranking }
         }
 
+        axios.put("http://localhost:3001/user/update-user", rankingPayload).then((response) => {
+
+            showNotification({
+                color: "green",
+                title: 'Appliction Ranking',
+                message: "Appliction Ranked Successfully",
+            })
+        }).catch((err) => {
+            showNotification({
+                color: "red",
+                title: 'Appliction Ranking',
+                message: "Appliction Ranked Unsuccessfully",
+            })
+        })
 
 
         axios.post('http://localhost:3001/job/create-application', data)
@@ -57,20 +74,6 @@ const JobCard = (props) => {
 
                 if (response.status === 200) {
 
-                    axios.put("http://localhost:3001/user/update-user", rankingPayload).then((response) => {
-
-                        showNotification({
-                            color: "green",
-                            title: 'Appliction Ranking',
-                            message: "Appliction Ranked Successfully",
-                        })
-                    }).catch((err) => {
-                        showNotification({
-                            color: "red",
-                            title: 'Appliction Ranking',
-                            message: "Appliction Ranked Unsuccessfully",
-                        })
-                    })
 
 
 

@@ -62,7 +62,7 @@ function InsightTable(props) {
             console.log(err)
         }) */
         console.log(providerStatus.connectedAccount)
-        getPosterJobs(providerStatus.connectedAccount).then(res => {
+        getPosterJobs("0x123").then(res => {
             console.log(res)
             const parsedValues = res.posterJobs.map(item => (
                 {
@@ -157,6 +157,17 @@ function InsightTable(props) {
                         sortable: true,
                         render: ({ jobId }) => {
                             return jobId.datePosted;
+                        },
+                    },
+                    
+                    {
+                        accessor: "Ranking",
+                        title: "Ranking",
+                        // textAlignment: "right",
+                        // width: 300,
+                        sortable: true,
+                        render: ({ applicantId }) => {
+                            return applicantId.ranking;
                         },
                     },
 

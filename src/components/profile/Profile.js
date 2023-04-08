@@ -33,7 +33,9 @@ function Profile() {
             console.log(err)
         })
     }, [providerStatus.connectedAccount])
-
+console.log(workExperiences)
+console.log(certifications)
+console.log(degrees)
     return (
         <Group ml={180} mr={180} mb={80}>
             <CardHeading />

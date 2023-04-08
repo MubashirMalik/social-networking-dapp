@@ -33,6 +33,9 @@ import { openConfirmModal } from "@mantine/modals";
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { getResumeData } from "../../services/user.service";
 import { showNotification } from '@mantine/notifications';
+import  {ResumeContext } from "../../context/resumeContext";
+import calculateRanking from "../../services/resumeRanking";
+
 const StyledProfileHeader = styled.div`
   display: flex;
   column-gap: 20px;
@@ -114,9 +117,10 @@ const useStyles = createStyles((theme) => ({
 
 const ProfileHeader = () => {
   const { providerStatus } = useContext(AuthenticationContext);
+  const  context  = useContext(ResumeContext)
   const { classes, theme } = useStyles();
   const [file, setfile] = useState(null);
-  console.log(file);
+  console.log(context);
   const [opened, setOpened] = useState(false);
 
   return (
@@ -211,7 +215,9 @@ const ProfileHeader = () => {
                 const formData =new  FormData();
                 formData.append("filename", file);
                 getResumeData(formData).then((res) => {
-                  console.log(res.data);
+                 context.update(res.data)
+                 console.log(calculateRanking(res.data.data))
+                 context.updateresumeWords(res.data.data)
                   setOpened(false)
                   setfile(null)
                   showNotification({
@@ -219,8 +225,8 @@ const ProfileHeader = () => {
                     message: 'Resume Parsing Successfully',
                     styles: (theme) => ({
                       root: {
-                        backgroundColor: "green",
-                        borderColor: "green",
+                        backgroundColor: "teal",
+                        borderColor: "teal",
         
                         '&::before': { backgroundColor: theme.white },
                       },
@@ -235,6 +241,7 @@ const ProfileHeader = () => {
                   })
                 
                 }).catch(error=>{
+                  console.log(error)
                     showNotification({
                         title: 'Resume Parse',
                         message: 'Resume Parsing not Successfull',

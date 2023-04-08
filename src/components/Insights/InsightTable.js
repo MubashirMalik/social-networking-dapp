@@ -7,6 +7,7 @@ import {
     TextInput,
     Button,
     Menu,
+    Select,
 } from "@mantine/core";
 import './Master.css'
 import { DataTable } from "mantine-datatable";
@@ -20,7 +21,7 @@ import {
 import { DatePicker } from "@mantine/dates";
 import { AuthenticationContext } from "../../context/authenticationContext";
 import { useContext } from "react";
-import { getUserJobApplication, updateUserJobApplication } from "../../services/job.service";
+import { getPosterJobs, getUserJobApplication, updateUserJobApplication } from "../../services/job.service";
 import { showNotification } from "@mantine/notifications";
 
 const PAGE_SIZE = 50;
@@ -32,7 +33,8 @@ function InsightTable(props) {
     const [isFetching, setisFetching] = useState(false);
     const [opened, setOpened] = useState(false);
     const [editRow, setEditRow] = useState({});
-
+    const [posterJobs, setposterJobs] = useState([])
+    const [selectedJob, setselectedJob] = useState();
     const [row, setrow] = useState({})
     // Top section filters
     const [search, setSearch] = useDebouncedState("", 500);
@@ -53,18 +55,51 @@ function InsightTable(props) {
     const aboveXsMediaQuery = `(min-width: ${xsBreakpoint}px)`;
 
     useEffect(() => {
-        getUserJobApplication("0x123").then(res => {
+        /* getUserJobApplication("0x123").then(res => {
+
             setTableData(res)
+        }).catch(err => {
+            console.log(err)
+        }) */
+        getPosterJobs("0x123").then(res => {
+            console.log(res)
+            const parsedValues = res.posterJobs.map(item => (
+                {
+                    value: item._id,
+                    label: item.title
+                }
+            ))
+            console.log(parsedValues)
+            setposterJobs(parsedValues)
         }).catch(err => {
             console.log(err)
         })
 
-    }, [providerStatus.connectedAccount,row])
+    }, [providerStatus.connectedAccount, row])
 
+
+
+    useEffect(() => {
+        if(selectedJob){
+
+        }
+    
+    }, [selectedJob])
+    
     return (
         <Box sx={{ height: "65vh" }}>
             <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
-                {/*           <TextInput
+                <Select
+                    label="Select Job"
+                    placeholder="Jobs"
+                    data={posterJobs}
+                    value={selectedJob}
+                    onChange={setselectedJob}
+                    mb={10}
+                    mt={10}
+                />
+                {/*           
+                <TextInput
                     className="alloc-search"
                     placeholder="Search by any field"
                     mb="md"
@@ -77,17 +112,9 @@ function InsightTable(props) {
                     inputFormat="DD/MM/YYYY"
                     value={fromVouDate}
                     onChange={setFromVouDate}
-
                     placeholder="From"
                 />
-                <DatePicker
-                    className="alloc-date-filter"
-                    inputFormat="DD/MM/YYYY"
-                    placeholder="To"
-                    value={toVouDate}
-                    onChange={setToVouDate}
-
-                /> */}
+                */}
                 {/*<Button*/}
                 {/*  color="red"*/}
                 {/*  className="alloc-delete"*/}

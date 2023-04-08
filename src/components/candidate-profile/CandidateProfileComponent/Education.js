@@ -4,8 +4,9 @@ import { Divider, Grid, Text, Card, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import axios from 'axios';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AuthenticationContext } from '../../../context/authenticationContext';
+import { ResumeContext } from '../../../context/resumeContext';
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -47,6 +48,8 @@ const useStyles = createStyles((theme) => ({
 function Education() {
     const { classes, theme } = useStyles();
     const { providerStatus } = useContext(AuthenticationContext)
+    const context = useContext(ResumeContext)
+    console.log(context.resumeData)
     const form = useForm({
         initialValues: {
             institution: null,
@@ -74,6 +77,17 @@ function Education() {
 
         },
     });
+    useEffect(() => {
+
+        form.setValues({
+            institution: context.resumeData?.college_name,
+            degree: context.resumeData?.degree,
+          
+        })
+
+
+
+    }, [context.resumeData])
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }
         console.log(data)
@@ -202,19 +216,19 @@ function Education() {
                     radius="md"
                 >
                     <Text mt="md" weight={600} size={19}>
-                  Education{" "}
-                </Text>
-                <Divider />
+                        Education{" "}
+                    </Text>
+                    <Divider />
                     <div style={{ width: "100%" }}>
                         <Alert
 
                             m={10}
-                            title={`${form.values.degree?form.values.degree:""}`} >
+                            title={`${form.values.degree ? form.values.degree : ""}`} >
                             <Box>
                                 <Text tt="uppercase">{form.values.insititution}</Text>
                                 <Group><Text>{form.values.from_month}</Text><Text> {form.values.from_year}</Text> <Text>{form.values.to_month}</Text> <Text>{form.values.to_year}</Text></Group>
                                 <Group><Text>{form.values.city}</Text> <Text>{form.values.country}</Text></Group>
-                                
+
                             </Box>
 
                         </Alert>

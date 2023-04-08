@@ -62,6 +62,15 @@ export const getUserJobApplication = async (walletAddress) => {
         console.log("Exception in getUserDetails():", err);
     }
 }
+export const getPosterJobs = async (walletAddress) => {
+    try {
+        const url = BASE_URL + `/get-poster-jobs?posterAddress=${walletAddress}`
+        const response = await fetch(url);
+        return await response.json();
+    } catch (err) {
+        console.log("Exception in getUserDetails():", err);
+    }
+}
 
 export const updateUserJobApplication = async (payload) => {
     try {

@@ -1,10 +1,11 @@
 import { Button, createStyles, Divider, Text, TextInput, Title, Box, Grid, Card, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import axios from 'axios';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useContext } from 'react';
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { showNotification } from '@mantine/notifications';
+import  {ResumeContext}  from '../../../context/resumeContext';
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -46,6 +47,8 @@ const useStyles = createStyles((theme) => ({
 function Basic() {
     const { classes, theme } = useStyles();
     const { providerStatus } = useContext(AuthenticationContext)
+    const  context  = useContext(ResumeContext)
+    console.log(context)
     const form = useForm({
         initialValues: {
             headline: null,
@@ -71,6 +74,17 @@ function Basic() {
         },
     });
 
+    useEffect(() => {
+       
+            form.setValues({
+                full_name:context.resumeData.name
+            })
+          
+        
+
+    }, [context.resumeData])
+
+    
 
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }

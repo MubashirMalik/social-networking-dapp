@@ -12,18 +12,24 @@ import App from './App';
 
 // Assets
 import './index.css';
+import { ResumeContextProvider } from './context/resumeContext';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-	<React.StrictMode>
-		<BrowserRouter>
-            <AuthenticationContextProvider>
-                <ContractCompaniesContextProvider>
-                    <MantineProvider theme={{fontFamily: 'Inter'}}>
-			            <App />
-                    </MantineProvider>
-                </ContractCompaniesContextProvider>
-            </AuthenticationContextProvider>
-		</ BrowserRouter>
-	</React.StrictMode>
+    <React.StrictMode>
+        <BrowserRouter>
+            <ResumeContextProvider>
+                <AuthenticationContextProvider>
+                    <ContractCompaniesContextProvider>
+
+                        <MantineProvider theme={{ fontFamily: 'Inter' }}>
+                            <App />
+                        </MantineProvider>
+
+                    </ContractCompaniesContextProvider>
+                </AuthenticationContextProvider>
+            </ResumeContextProvider>
+        </ BrowserRouter>
+    </React.StrictMode>
 );

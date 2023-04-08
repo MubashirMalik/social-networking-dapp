@@ -2,8 +2,9 @@ import { Button, createStyles, Group, Select, Switch, Grid, Text, Divider, Card,
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import axios from 'axios';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AuthenticationContext } from '../../../context/authenticationContext';
+import { ResumeContext } from '../../../context/resumeContext';
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -45,6 +46,8 @@ const useStyles = createStyles((theme) => ({
 function Experience() {
     const { classes, theme } = useStyles();
     const { providerStatus } = useContext(AuthenticationContext)
+    const context = useContext(ResumeContext)
+
     const form = useForm({
         initialValues: {
             institution: null,
@@ -72,6 +75,17 @@ function Experience() {
             currently_working: (value) => (value ? null : "Currently Working  must not be empty"),
         },
     });
+    useEffect(() => {
+       
+        form.setValues({
+            designation:context.resumeData?.experience,
+            institution:context.resumeData?.company_names
+
+        })
+      
+    
+
+}, [context.resumeData])
 
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }

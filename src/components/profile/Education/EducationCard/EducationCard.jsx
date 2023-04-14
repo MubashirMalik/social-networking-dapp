@@ -96,17 +96,17 @@ export function EducationCard({ degree, id, setRefreshUserData }) {
                     </Popover>
                 </Group>
                 { !degree.isVerified && !degree.isPendingVerification ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase onClick={handleClick}>
                             Request Verification
                         </Button>
-                    </Flex>
+                    </Group>
                     : degree.isPendingVerification ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase color="yellow">
                             Pending (Requested)
                         </Button>
-                    </Flex>
+                    </Group>
                     : null
                 }
             </div>

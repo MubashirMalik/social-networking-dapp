@@ -3,7 +3,7 @@ import { Card, createStyles, Flex, Title, Spoiler, Group } from "@mantine/core";
 import { Link } from "react-router-dom"
 import { FiEdit2 } from "react-icons/fi";
 import { useEffect } from 'react';
-import { getUserDetails } from '../../../services/user.service';
+import {getUserDataDetails, getUserDetails} from '../../../services/user.service';
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { useState } from 'react';
 

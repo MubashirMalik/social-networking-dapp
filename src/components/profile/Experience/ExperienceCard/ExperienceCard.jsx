@@ -1,16 +1,9 @@
 import { createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button } from '@mantine/core';
 import { useDisclosure } from "@mantine/hooks";
 import { useContext, useState } from 'react';
-import {createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button} from '@mantine/core';
-import {useDisclosure} from "@mantine/hooks";
-import { useState } from 'react';
-import { useContext } from 'react';
 import { useEffect } from 'react';
 import { AuthenticationContext } from '../../../../context/authenticationContext';
 import { getUserExperienceDetails } from '../../../../services/user.service';
-import { MONTH_NAMES } from "../../../../util";
-import { getUser } from '../../../../Web3Client';
-import { AuthenticationContext } from '../../../../context/authenticationContext';
 import { MONTH_NAMES, TOKEN_TYPE_EXPERIENCE} from "../../../../util";
 import { getUser, requestVerification } from '../../../../Web3Client';
 
@@ -111,17 +104,17 @@ export function ExperienceCard({ workExperience, id, setRefreshUserData }) {
                     </Popover>
                 </Group>
                 { !workExperience.isVerified && !workExperience.isPendingVerification ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase onClick={handleClick}>
                             Request Verification
                         </Button>
-                    </Flex>
+                    </Group>
                     : workExperience.isPendingVerification ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase color="yellow">
                             Pending (Requested)
                         </Button>
-                    </Flex>
+                    </Group>
                     : null
                 }
             </div>

@@ -12,6 +12,10 @@ import { initWeb3Client } from "./Web3Client";
 import { NotificationContainer } from "react-notifications";
 import Profile from "./components/profile/Profile";
 import { CompanyProfile } from "./components/company-profile/CompanyProfile";
+import {ModalsProvider} from "@mantine/modals";
+import {MantineProvider} from "@mantine/core";
+import {NotificationsProvider} from "@mantine/notifications";
+import Insight from "./components/Insights/Insight";
 
 export default function App() {
 	useEffect(() => {

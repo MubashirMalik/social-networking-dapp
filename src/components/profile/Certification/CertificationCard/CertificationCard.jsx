@@ -112,17 +112,17 @@ export function CertificationCard({ certification, id, setRefreshUserData }) {
                     </Popover>
                 </Group>
                 { !certification.isVerified && !certification.isPendingVerification ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase onClick={handleClick}>
                             Request Verification
                         </Button>
-                    </Flex>
+                    </Group>
                    : certification.isPendingVerification ?
-                    <Flex justify={"flex-end"} mt="10px">
+                    <Group justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase color="yellow">
                             Pending (Requested)
                         </Button>
-                    </Flex>
+                    </Group>
                    : null
                 }
             </div>

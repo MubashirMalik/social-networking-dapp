@@ -5,6 +5,7 @@ import axios from 'axios';
 import React, { useContext, useEffect } from 'react'
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { ResumeContext } from '../../../context/resumeContext';
+import { addWorkExperience } from '../../../Web3Client';
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -88,6 +89,20 @@ function Experience() {
 
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }
+const contractData ={
+    issuingOrganization:payload.institution,
+    designation:payload.designation,
+    fromMonth: parseInt(payload.from_month),
+    fromYear:parseInt(payload.from_year),
+    toMonth:parseInt(payload.to_month),
+    toYear:parseInt(payload.to_year),
+    isCurrentJob:payload.currently_working
+
+}
+console.log(contractData)
+        addWorkExperience(providerStatus.connectedAccount,contractData ).then(res=>{
+            console.log(res)
+        })
         console.log(data)
         axios.post('http://localhost:3001/user/create-user-experience', data)
             .then(response => {

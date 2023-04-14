@@ -7,7 +7,7 @@ let smartContract = null;
 
 export const initWeb3Client = async () => {
     try {
-        web3 = new Web3("http://127.0.0.1:7545")
+        web3 = new Web3(window.ethereum)
         console.log(web3.eth.net.getId())
         const networkId = await web3.eth.net.getId()
         console.log(networkId)

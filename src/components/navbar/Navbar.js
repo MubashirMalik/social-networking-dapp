@@ -37,11 +37,10 @@ function Navbar() {
                         message: "Connected wallet: " + addressFormatter(accounts[0]),
                         badgeColor: "green" 
                     }))
-console.log(accounts)
+
                     isRegistered(accounts[0])
                     .then(isRegistered => {
-                        console.log(isRegistered)
-                        if (isRegistered === null  || isRegistered === false) {
+                        if (isRegistered !== null  && isRegistered === false) {
                             setIsOpenModal(true)
                         } else {
                             getUser(accounts[0])
@@ -49,9 +48,10 @@ console.log(accounts)
                                 if (res) {
                                     setProviderStatus(prevProviderStatus => ({
                                         ...prevProviderStatus, 
-                                        userName: res[0] 
+                                        userName: res.fullName,
+                                        isCompany: res.isCompany
                                     }))
-                                    navigate("/profile")
+                                    !res.isCompany ? navigate("/profile") : navigate("/company-profile")
                                 }
                             }).catch(err=>{
                                 console.log(err)
@@ -85,18 +85,24 @@ console.log(accounts)
                 </div>
             </div>
             <div className="Navbar-end">
-            <button onClick={() => navigate("/insight")}>
-                   Insight
-                </button>
-                <button onClick={() => navigate("/job/0")}>
-                    Post a Job
-                </button>
+                {
+                    providerStatus.isCompany &&
+                    <button onClick={() => navigate("/job/0")}>
+                        Post a Job
+                    </button>
+                }
                 <button onClick={() => navigate("/")}>Jobs<MdWork /></button>
                 { providerStatus.connectedAccount === "" ? 
                     <button onClick={connectWallet}>Connect</button> :
                     <>
-                        <button onClick={() => navigate("/account/about")}>Edit Profile <FaUserEdit /></button>
-                        <button onClick={() => navigate("/profile")}>View Profile</button>
+                        { !providerStatus.isCompany ?
+                            <>
+                                <button onClick={() => navigate("/account/about")}>Edit Profile <FaUserEdit /></button>
+                                <button onClick={() => navigate("/profile")}>View Profile</button>
+                            </>
+                            :
+                            <button onClick={() => navigate("/company-profile")}>View Profile</button>
+                        }
                     </>
                 }
             </div>

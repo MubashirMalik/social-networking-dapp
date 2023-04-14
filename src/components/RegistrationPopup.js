@@ -53,7 +53,8 @@ const RegistrationPopup = ({ isOpenModal, handleClose }) => {
                     if (res) {
                         setProviderStatus(prevProviderStatus => ({
                             ...prevProviderStatus, 
-                            userName: res[0] 
+                            userName: res.fullName,
+                            isCompany: res.isCompany
                         }))
                         navigate("/account/about")
                     }

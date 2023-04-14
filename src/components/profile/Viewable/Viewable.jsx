@@ -3,7 +3,7 @@ import { Card, createStyles, Flex, Title, Spoiler, Group } from "@mantine/core";
 import { Link } from "react-router-dom"
 import { FiEdit2 } from "react-icons/fi";
 import { useEffect } from 'react';
-import { getUserDataDetails, getUserDetails } from '../../../services/user.service';
+import { getUserDetails } from '../../../services/user.service';
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { useState } from 'react';
 
@@ -45,7 +45,7 @@ function Viewable() {
                 <Link to="/account/about"><FiEdit2 size={20} /></Link>
             </Group>
             <Spoiler maxHeight={60} showLabel="Show more" hideLabel="Hide">
-                {userData.bio}
+                { !userData.bio ? "Add short bio/summary..." : providerStatus.userBio }
             </Spoiler>
         </Card>
     );

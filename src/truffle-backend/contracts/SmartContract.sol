@@ -5,6 +5,7 @@ pragma experimental ABIEncoderV2;
 contract SmartContract {
 
     struct WorkExperience {
+        uint id;
         string designation;
         uint8 fromMonth;
         uint16 fromYear;
@@ -12,9 +13,12 @@ contract SmartContract {
         uint16 toYear;
         address issuingOrganization;
         bool isVerified;
+        bool isPendingVerification;
+        bool isRequestRejected;
     }
 
     struct Certification {
+        uint id;
         string name;
         uint8 issueMonth;
         uint16 issueYear;
@@ -22,9 +26,12 @@ contract SmartContract {
         uint16 expirationYear; // 0 if doesn't expire
         address issuingOrganization;
         bool isVerified;
+        bool isPendingVerification;
+        bool isRequestRejected;
     }
 
     struct Degree {
+        uint id;
         string title;
         uint8 fromMonth;
         uint16 fromYear;
@@ -32,6 +39,8 @@ contract SmartContract {
         uint16 toYear;
         address issuingOrganization;
         bool isVerified;
+        bool isPendingVerification;
+        bool isRequestRejected;
     }
 
     struct User {
@@ -49,12 +58,19 @@ contract SmartContract {
     // Candidate => Work Experiences
     mapping(address => WorkExperience[]) candidateWorkExperiences;
     
+    // Company => Degrees
+    mapping(address => Degree[]) companyDegrees;
+    // Company => Certifications
+    mapping(address => Certification[]) companyCertifications;
+    // Company => Work Experiences
+    mapping(address => WorkExperience[]) companyWorkExperiences;
+
 
     /** @dev
      * This function is only for demo & should be removed before deployment on mainnet
      */ 
     function boostrap() private {
-        string[47] memory names = [
+        string[32] memory names = [
             // 10 Universities Below
             "University of Dubai",
             "American University in Dubai",
@@ -89,25 +105,10 @@ contract SmartContract {
             "Dubai Supply Authority (DUSUP)",
             "Abu Dhabi National Oil Company (ADNOC)",
             "Abu Dhabi Oil Refining Company (TAKREER)",
-            "Dubai Natural Gas Company Limited (DUGAS)",
-            "Abu Dhabi Gas Industries Limited (GASCO)",
-            "Abu Dhabi Gas Liquefaction Company Limited (ADGAS)",
-            "Abu Dhabi Oil Refining Company (ADOR)",
-            "Dubai Oil Refining Company (DORC)",
-            "Emirates Group",
-            "Dubai Aluminum",
-            "Dubai Electricity and Water Authority (DEWA)",
-            "Dubai World Trade Centre",
-            "Dubai Airports",
-            "Dubai Silicon Oasis Authority",
-            "Dubai World",
-            "Dubai Industrial City",
-            "Dubai South",
-            "Dubai Holding",
-            "Dubai FDI"
+            "Dubai Natural Gas Company Limited (DUGAS)"
         ];
 
-        address[47] memory addresses = [
+        address[32] memory addresses = [
             0xbd909b88028445A706eB385FfE86aEd3dc859E63,
             0x720366A18a4aF591710204dC75AD3d67E090a6dB,
             0x579C26abF48abCC4BD12bdEf245CF75264c63cE5,
@@ -139,25 +140,10 @@ contract SmartContract {
             0x4763aCfD72FB8FeE0AD93c3A1dF5F95B34366Cd1,
             0xeD8c2904d28A41D7ad999E399D0c36E6EcC616cb,
             0xfC0943d3cbfc82b1389e24e1E367f8381c89D4A7,
-            0xC1DEd051E5BA5A0D78a97298F7507E3CeE05b5Ef,
-            0x1485EfD3069a47c061e8ee4f368d0c281EE5d072,
-            0xa13c1497f3A753754eE60D6a8834B4b6a282a702,
-            0x0725675C6B734B94b362D48A5374f44985bB6613,
-            0x71A519405224F9B4e5798E35aF62F0b7e2862eed,
-            0x3DE2bc4E3092eDA25936dBd99B18D765a834a7A6,
-            0x5aB347895E0E06812DdD75EB6C7105de059C4c29,
-            0x17025D0BC02c9DFC0E375fD92272f7278ff0d955,
-            0x32b42640aE11d8e6C57E275F470A2Cb69736e21b,
-            0x333b5462ca4eD82F26459E2fc4a539C11d741124,
-            0x4804B60Fd5F292D38022401c5B67673Bb6753ce8,
-            0xdc0db174f69eb7Be9Bc2068Ed21588f793a8db7D,
-            0xaa6850AE1cB621f64F754005C15abe98417fcC4b,
-            0x5aE20eb15636f5E9a51BCCFd90a194A14Fc1430B,
-            0xb07260C5760F02821e8796c434a2B94ab8A7CF91,
-            0xea8dd0978BB09d9BcA9E178984428514EB3aB630
+            0xC1DEd051E5BA5A0D78a97298F7507E3CeE05b5Ef
         ];
 
-        for (uint i = 0; i < 47; i++) {
+        for (uint i = 0; i < 32; i++) {
             companyAddresses.push(addresses[i]);
             allUsers[addresses[i]] = User(names[i], true, true);
         }
@@ -194,9 +180,10 @@ contract SmartContract {
         uint16 toYear,
         address issuingOrganization
     ) public {
+        uint id = candidateDegrees[msg.sender].length;
         // Only Registered Users Require
         candidateDegrees[msg.sender].push(
-            Degree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false)
+            Degree(id, title, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -208,9 +195,10 @@ contract SmartContract {
         uint16 expirationYear,
         address issuingOrganization
     ) public {
+        uint id = candidateCertifications[msg.sender].length;
         // Only Registered Users Require
         candidateCertifications[msg.sender].push(
-            Certification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false)
+            Certification(id, name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -222,9 +210,10 @@ contract SmartContract {
         uint16 toYear,
         address issuingOrganization
     ) public {
+        uint id = candidateWorkExperiences[msg.sender].length;
         // Only Registered Users Require
         candidateWorkExperiences[msg.sender].push(
-            WorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false)
+            WorkExperience(id, designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization, false, false, false)
         );
     }
 
@@ -245,5 +234,176 @@ contract SmartContract {
             candidateCertifications[msg.sender], 
             candidateWorkExperiences[msg.sender]
         );
+    }
+
+    // Get all data of a company
+    function getCompanyData() public view returns (Degree[] memory, Certification[] memory, WorkExperience[] memory) {
+        return (
+            companyDegrees[msg.sender], 
+            companyCertifications[msg.sender], 
+            companyWorkExperiences[msg.sender]
+        );
+    }
+
+    // Request verification from company
+    function requestVerification(uint8 id, uint8 tokenType) public { 
+        if (tokenType == 1) { // Education
+
+            require(
+                candidateDegrees[msg.sender].length > 0,
+                "No degrees to verify."
+            );
+
+            require(
+                candidateDegrees[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateDegrees[msg.sender][id].isPendingVerification = true;
+            /** @dev 
+            * issuingOrganization field contains address of person who requested token in company mapping */
+            companyDegrees[ candidateDegrees[msg.sender][id].issuingOrganization ].push(
+                Degree(
+                    candidateDegrees[msg.sender][id].id, 
+                    candidateDegrees[msg.sender][id].title, 
+                    candidateDegrees[msg.sender][id].fromMonth, 
+                    candidateDegrees[msg.sender][id].fromYear, 
+                    candidateDegrees[msg.sender][id].toMonth, 
+                    candidateDegrees[msg.sender][id].toYear, 
+                    msg.sender, 
+                    false, 
+                    true, 
+                    false
+                )
+            );    
+        } else if (tokenType == 2) { // Work Experience
+
+            require(
+                candidateWorkExperiences[msg.sender].length > 0,
+                "No work experiences to verify."
+            );
+
+            require(
+                candidateWorkExperiences[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateWorkExperiences[msg.sender][id].isPendingVerification = true;  
+
+            /** @dev 
+            * issuingOrganization field contains address of person who requested token in company mapping */
+            companyWorkExperiences[ candidateWorkExperiences[msg.sender][id].issuingOrganization ].push(
+                WorkExperience(
+                    candidateWorkExperiences[msg.sender][id].id, 
+                    candidateWorkExperiences[msg.sender][id].designation, 
+                    candidateWorkExperiences[msg.sender][id].fromMonth, 
+                    candidateWorkExperiences[msg.sender][id].fromYear, 
+                    candidateWorkExperiences[msg.sender][id].toMonth, 
+                    candidateWorkExperiences[msg.sender][id].toYear, 
+                    msg.sender, 
+                    false, 
+                    true, 
+                    false
+                )
+            );    
+        } else { // Certification
+
+            require(
+                candidateCertifications[msg.sender].length > 0,
+                "No certifications to verify."
+            );
+
+            require(
+                candidateCertifications[msg.sender].length > id,
+                "Invalid id."
+            );
+
+            candidateCertifications[msg.sender][id].isPendingVerification = true;    
+
+            /** @dev 
+            * issuingOrganization field contains address of person who requested token in company mapping */
+            companyCertifications[ candidateCertifications[msg.sender][id].issuingOrganization ].push(
+                Certification(
+                    candidateCertifications[msg.sender][id].id, 
+                    candidateCertifications[msg.sender][id].name, 
+                    candidateCertifications[msg.sender][id].issueMonth, 
+                    candidateCertifications[msg.sender][id].issueYear, 
+                    candidateCertifications[msg.sender][id].expirationMonth, 
+                    candidateCertifications[msg.sender][id].expirationYear, 
+                    msg.sender, 
+                    false, 
+                    true, 
+                    false
+                )
+            );    
+        }
+    }
+
+    function respondToVerificationRequest(uint8 id, address requester, uint8 tokenType, bool response) public {
+        if (tokenType == 1) { // Education
+
+            // require(
+            //     candidateDegrees[msg.sender].length > 0,
+            //     "No degrees to verify."
+            // );
+
+            // require(
+            //     candidateDegrees[msg.sender].length > id,
+            //     "Invalid id."
+            // );
+
+            candidateDegrees[requester][id].isPendingVerification = false;   
+            if (response) { // Update candidate copy
+                candidateDegrees[requester][id].isVerified = true;
+            } else {
+                candidateDegrees[requester][id].isRequestRejected = true; 
+            }
+
+            // Remove token from company list
+            uint total = companyDegrees[msg.sender].length;
+            for (uint i = 0; i < total; i++) {
+                if (companyDegrees[msg.sender][i].id == id && companyDegrees[msg.sender][i].issuingOrganization == requester) {
+                    companyDegrees[msg.sender][i] = companyDegrees[msg.sender][total-1];
+                    companyDegrees[msg.sender].pop();
+                    break;
+                }
+            }
+
+        } else if (tokenType == 2) { // Work Experience
+            candidateWorkExperiences[requester][id].isPendingVerification = false;
+            if (response) {
+                candidateWorkExperiences[requester][id].isVerified = true;
+            } else {
+                candidateWorkExperiences[requester][id].isRequestRejected = true;  
+            }    
+
+            // Remove token from company list
+            uint total = companyWorkExperiences[msg.sender].length;
+            for (uint i = 0; i < total; i++) {
+                if (companyWorkExperiences[msg.sender][i].id == id && companyWorkExperiences[msg.sender][i].issuingOrganization == requester) {
+                    companyWorkExperiences[msg.sender][i] = companyWorkExperiences[msg.sender][total-1];
+                    companyWorkExperiences[msg.sender].pop();
+                    break;
+                }
+            }
+        } else { // Certification
+
+            candidateCertifications[requester][id].isPendingVerification = false;
+            if (response) {
+                candidateCertifications[requester][id].isVerified = true;
+            } else {
+                candidateCertifications[requester][id].isRequestRejected = true;  
+            }    
+
+            // Remove token from company list
+            uint total = companyCertifications[msg.sender].length;
+            for (uint i = 0; i < total; i++) {
+                if (companyCertifications[msg.sender][i].id == id && companyCertifications[msg.sender][i].issuingOrganization == requester) {
+                    companyCertifications[msg.sender][i] = companyCertifications[msg.sender][total-1];
+                    companyCertifications[msg.sender].pop();
+                    break;
+                }
+            }
+        }
     }
 }

@@ -9,8 +9,8 @@ import {
     Title,
 } from '@mantine/core';
 
-import image from '../../assets/60111.jpg'
 import { AuthenticationContext } from '../../../context/authenticationContext';
+import dummyAvatar from '../../../images/dummy-avatar.png'
 
 const useStyles = createStyles(() => ({
     card: {
@@ -65,14 +65,15 @@ function CardHeading() {
         >
             <Box className={classes.headerIconBox}>
                 <Box>
-                    <Avatar radius={100} src={image} sx={{width: "150px", height: "150px"}}/>
+                    <Avatar radius={100} src={dummyAvatar} sx={{width: "150px", height: "150px"}}/>
                 </Box>
             </Box>
             <Box display={"flex"} direction={"row"} className={classes.wrapper}>
                 <Box className={classes.titleBox}>
                     <Title>{ providerStatus.userName }</Title>
-                    <Text>{ 
-                        providerStatus.userHeadline }</Text>
+                    <Text>
+                        { !providerStatus.userHeadline ? "Add Headline" : providerStatus.userHeadline }
+                    </Text>
                 </Box>
                 <Box className={classes.button}>
                     <Button  radius={"lg"}>Open to</Button>

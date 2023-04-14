@@ -56,15 +56,13 @@ export const getUser = async (connectedAccount) => {
     if (smartContract === null) {
         return null
     }
-    
 
     try {
-        
         const res = await smartContract.methods
-            .getUser()
-            .call({ from: connectedAccount })
-        return  res;
-    } catch (e) {
+        .getUser()
+        .call({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
         console.log("[Solidity] getUser(): ", e)
         return null;
     }
@@ -78,10 +76,10 @@ export const addDegree = async (connectedAccount, formData) => {
     try {
         const { title, fromMonth, fromYear, toMonth, toYear, issuingOrganization } = formData
         const res = await smartContract.methods
-            .addDegree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization)
-            .send({ from: connectedAccount })
+        .addDegree(title, fromMonth, fromYear, toMonth, toYear, issuingOrganization)
+        .send({ from: connectedAccount })
         return await res;
-    } catch (e) {
+    }  catch (e) {
         console.log("[Solidity] addDegree(): ", e)
         return null;
     }
@@ -101,10 +99,10 @@ export const addCertification = async (connectedAccount, formData) => {
         }
 
         const res = await smartContract.methods
-            .addCertification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization)
-            .send({ from: connectedAccount })
+        .addCertification(name, issueMonth, issueYear, expirationMonth, expirationYear, issuingOrganization)
+        .send({ from: connectedAccount })
         return await res;
-    } catch (e) {
+    }  catch (e) {
         console.log("[Solidity] addCertification(): ", e)
         return null;
     }
@@ -124,10 +122,10 @@ export const addWorkExperience = async (connectedAccount, formData) => {
         }
 
         const res = await smartContract.methods
-            .addWorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization)
-            .send({ from: connectedAccount })
+        .addWorkExperience(designation, fromMonth, fromYear, toMonth, toYear, issuingOrganization)
+        .send({ from: connectedAccount })
         return await res;
-    } catch (e) {
+    }  catch (e) {
         console.log("[Solidity] addWorkExperience(): ", e)
         return null;
     }
@@ -142,10 +140,10 @@ export const getAllCompanies = async () => {
     try {
         const accounts = await web3.eth.getAccounts();
         const res = await smartContract.methods
-            .getAllCompanies()
-            .call({ from: accounts[0] })
+        .getAllCompanies()
+        .call({ from: accounts[0] })
         return await res;
-    } catch (e) {
+    }  catch (e) {
         console.log("[Solidity] getAllCompanies(): ", e)
         return null;
     }
@@ -158,11 +156,59 @@ export const getUserData = async (connectedAccount) => {
 
     try {
         const res = await smartContract.methods
-            .getUserData()
-            .call({ from: connectedAccount })
+        .getUserData()
+        .call({ from: connectedAccount })
         return await res;
-    } catch (e) {
+    }  catch (e) {
         console.log("[Solidity] getUserData(): ", e)
+        return null;
+    }
+}
+
+export const getCompanyData = async (connectedAccount) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        const res = await smartContract.methods
+        .getCompanyData()
+        .call({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] getCompanyData(): ", e)
+        return null;
+    }
+}
+
+export const requestVerification = async (connectedAccount, id, tokenType) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        const res = await smartContract.methods
+        .requestVerification(id, tokenType)
+        .send({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] requestVerification(): ", e)
+        return null;
+    }
+}
+
+export const respondToVerificationRequest = async (connectedAccount, id, requester, tokenType, response) => {
+    if (smartContract === null) {
+        return null
+    }
+
+    try {
+        const res = await smartContract.methods
+        .respondToVerificationRequest(id, requester, tokenType, response)
+        .send({ from: connectedAccount })
+        return await res;
+    }  catch (e) {
+        console.log("[Solidity] respondToVerificationRequest(): ", e)
         return null;
     }
 }

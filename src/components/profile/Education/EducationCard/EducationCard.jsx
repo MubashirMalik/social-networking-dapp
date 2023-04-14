@@ -1,21 +1,9 @@
-import {
-    createStyles,
-    Card,
-    Image,
-    Text,
-    Group,
-    Badge,
-    Box,
-    Popover,
-    Button,
-    Flex,
-} from '@mantine/core';
+import {createStyles, Card, Image, Text, Group, Badge, Box, Popover, Flex, Button } from '@mantine/core';
 import {useDisclosure} from "@mantine/hooks";
+import { useContext, useState } from 'react';
 import { useEffect } from 'react';
-import { useContext } from 'react';
-import { useState } from 'react';
 import { AuthenticationContext } from '../../../../context/authenticationContext';
-import { MONTH_NAMES, TOKEN_TYPE_CERTIFICATION } from '../../../../util';
+import {MONTH_NAMES, TOKEN_TYPE_EDUCATION} from "../../../../util";
 import { getUser, requestVerification } from '../../../../Web3Client';
 
 const useStyles = createStyles((theme) => ({
@@ -35,26 +23,26 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const data = {
-    "image": "https://cdn-icons-png.flaticon.com/512/3000/3000777.png",
+    "image": "https://cdn-icons-png.flaticon.com/512/2231/2231492.png"
 }
 
-export function CertificationCard({ certification, id, setRefreshUserData }) {
+export function EducationCard({ degree, id, setRefreshUserData }) {
     const [opened, {close, open}] = useDisclosure(false);
     const {classes} = useStyles();
     const [issuingOrganization, setIssuingOrganization] = useState()
     const { providerStatus } = useContext(AuthenticationContext)
 
     useEffect(() => {
-        getUser(certification.issuingOrganization)
+        getUser(degree.issuingOrganization)
         .then(res => {
             if (res) {
                 setIssuingOrganization(res)
             }
         })
-    }, [certification.issuingOrganization])
+    }, [degree.issuingOrganization])
 
     const handleClick = () => {
-        requestVerification(providerStatus.connectedAccount, id, TOKEN_TYPE_CERTIFICATION)
+        requestVerification(providerStatus.connectedAccount, id, TOKEN_TYPE_EDUCATION)
         .then(res => {
             if (res) {
                 setRefreshUserData(prevState => !prevState)
@@ -64,18 +52,18 @@ export function CertificationCard({ certification, id, setRefreshUserData }) {
 
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
-            <Image src={data.image} height={100} width={100} radius={"md"} />
+            <Image src={data.image} height={100} width={100} radius={"md"}/>
             <div className={classes.body}>
                 <Box className={classes.box}>
                     <Text className={classes.title} mt="sm">
-                        {certification.name}
+                        { degree.title }
                     </Text>
                     {
-                        certification.isVerified ?
+                        degree.isVerified ? 
                             <Badge size="lg" radius="xl" color="teal">
                                 verified
-                            </Badge>
-                            :
+                            </Badge>   
+                        :
                             <Badge size="lg" radius="xl" color="red">
                                 not verified
                             </Badge>
@@ -83,15 +71,11 @@ export function CertificationCard({ certification, id, setRefreshUserData }) {
                 </Box>
                 <Group noWrap spacing="xs">
                     <Text size="sm" color="dimmed" weight={700}>
-                        { MONTH_NAMES[certification.issueMonth-1] + " " + certification.issueYear }
+                        { MONTH_NAMES[degree.fromMonth-1] + " " + degree.fromYear }
                     </Text>
                     -
                     <Text size="sm" color="dimmed" weight={700}>
-                        {
-                            (Number(certification.expirationMonth) === 0) || (Number(certification.expirationYear) === 0) ? "Doesn't expire" :
-                                MONTH_NAMES[certification.expirationMonth-1]  + " " +
-                                certification.expirationYear
-                        }
+                        { MONTH_NAMES[degree.toMonth-1] + " " + degree.toYear }
                     </Text>
                 </Group>
                 <Text transform="uppercase" weight={700} size="sm">
@@ -101,29 +85,29 @@ export function CertificationCard({ certification, id, setRefreshUserData }) {
                     <Popover withinPortal position="bottom" withArrow shadow="md" opened={opened}>
                         <Popover.Target>
                             <Text size="sm" color="dimmed" truncate onMouseEnter={open} onMouseLeave={close}>
-                                { certification.issuingOrganization }
+                               { degree.issuingOrganization }
                             </Text>
                         </Popover.Target>
                         <Popover.Dropdown sx={{pointerEvents: 'none'}}>
                             <Text size="sm" color="dimmed" truncate>
-                                { certification.issuingOrganization }
+                               { degree.issuingOrganization }
                             </Text>
                         </Popover.Dropdown>
                     </Popover>
                 </Group>
-                { !certification.isVerified && !certification.isPendingVerification ?
+                { !degree.isVerified && !degree.isPendingVerification ?
                     <Flex justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase onClick={handleClick}>
                             Request Verification
                         </Button>
                     </Flex>
-                   : certification.isPendingVerification ?
+                    : degree.isPendingVerification ?
                     <Flex justify={"flex-end"} mt="10px">
                         <Button size="sm" compact uppercase color="yellow">
                             Pending (Requested)
                         </Button>
                     </Flex>
-                   : null
+                    : null
                 }
             </div>
         </Group>

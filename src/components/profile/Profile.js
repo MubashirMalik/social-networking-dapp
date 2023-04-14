@@ -3,7 +3,7 @@ import CardHeading from "./CardHeading/CardHeading.jsx";
 import Viewable from "./Viewable/Viewable.jsx";
 import { Experience } from "./Experience/Experience.jsx";
 import { Education } from "./Education/Education.jsx";
-import { Certification } from "./Certification/CertificationCard.jsx"
+import { Certification } from "./Certification/Certification.jsx"
 import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../context/authenticationContext.js";
 import { getUserData } from "../../Web3Client.js";
@@ -11,10 +11,12 @@ import { NotificationManager } from 'react-notifications';
 import { getUserExperienceDetails } from "../../services/user.service.js";
 
 function Profile() {
-    const { providerStatus } = useContext(AuthenticationContext)
+    const  { providerStatus } = useContext(AuthenticationContext)
     const [degrees, setDegrees] = useState([])
     const [certifications, setCertifications] = useState([])
     const [workExperiences, setWorkExperiences] = useState([])
+    const [refreshUserData, setRefreshUserData] = useState(false)
+
     const [experiences, setexperiences] = useState([])
     useEffect(() => {
         getUserData(providerStatus.connectedAccount)
@@ -32,17 +34,17 @@ function Profile() {
         }).catch(err => {
             console.log(err)
         })
-    }, [providerStatus.connectedAccount])
+    }, [providerStatus.connectedAccount,refreshUserData])
 console.log(workExperiences)
 console.log(certifications)
 console.log(degrees)
     return (
         <Group ml={180} mr={180} mb={80}>
-            <CardHeading />
-            <Viewable />
-            <Experience workExperiences={workExperiences} experiences={experiences} />
-            <Education degrees={degrees} />
-            <Certification certifications={certifications} />
+            <CardHeading/>
+            <Viewable/>
+            <Experience workExperiences={workExperiences} setRefreshUserData={setRefreshUserData} />
+            <Education degrees={degrees} setRefreshUserData={setRefreshUserData}/>
+            <Certification certifications={certifications} setRefreshUserData={setRefreshUserData} />
         </Group>
     )
 }

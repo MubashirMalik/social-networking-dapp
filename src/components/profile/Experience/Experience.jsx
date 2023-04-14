@@ -10,12 +10,16 @@ const useStyles = createStyles((theme) => ({
 }));
 
 
-export function Experience({ workExperiences,experiences }) {
+export function Experience({ workExperiences, setRefreshUserData }) {
     const {classes} = useStyles();
 
-    const items = experiences.map((exprience ,id)=> (
-        <Grid.Col span={6}>
-            <ExperienceCard workExperience={workExperiences[id]} experiences={exprience} />
+    const items = workExperiences.map((workExperience, index) => (
+        <Grid.Col span={6} key={index}>
+            <ExperienceCard
+                workExperience={workExperience}
+                id={index}
+                setRefreshUserData={setRefreshUserData}
+            />
         </Grid.Col>
     ));
 
@@ -25,7 +29,7 @@ export function Experience({ workExperiences,experiences }) {
                 <Title size={20}>
                     Experience
                 </Title>
-                { experiences.length > 0 ?
+                { workExperiences.length > 0 ?
                     <Grid gutter={5} gutterXs="md" gutterMd="xl" gutterXl={15}>{ items } </Grid> :
                     <NoRecordAlert
                         section="experiences"

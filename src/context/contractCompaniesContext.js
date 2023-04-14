@@ -14,7 +14,7 @@ function ContractCompaniesContextProvider(props) {
             getAllCompanies()
             .then(res => {
                 if (!res){
-                    NotificationManager.error("Something went wrong", "Loading companies failed")
+                    //NotificationManager.error("Something went wrong", "Loading companies failed")
                 } else {
                     const addresses = res[0]
                     const names = res[1]

@@ -44,7 +44,7 @@ console.log(accounts)
                         if (isRegistered === null  || isRegistered === false) {
                             setIsOpenModal(true)
                         } else {
-                            getUser(providerStatus.connectedAccount)
+                            getUser(accounts[0])
                             .then(res => {
                                 if (res) {
                                     setProviderStatus(prevProviderStatus => ({

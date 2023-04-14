@@ -14,14 +14,18 @@ function Skills() {
     const { providerStatus } = useContext(AuthenticationContext)
     const context = useContext(ResumeContext)
     const skillsList = skills?.map((skill, idx) =>
-        <SkillItem 
-       
-        key={idx}>{skill}<ImCancelCircle onClick={() => handleRemove(skill)} /></SkillItem>
+        <SkillItem
+
+            key={idx}>{skill}<ImCancelCircle onClick={() => handleRemove(skill)} /></SkillItem>
     )
 
     const handleAdd = () => {
-        if (newSkill !== "") {
-            setSkills(prevSkills => [...prevSkills, newSkill])
+        console.log(newSkill)
+        if (newSkill != "") {
+            setSkills(prevSkills => {
+                console.log(prevSkills)
+                return [...prevSkills, newSkill]
+            })
 
         }
     }
@@ -30,8 +34,13 @@ function Skills() {
         setSkills(skills.filter(sk => sk !== skill))
     }
     useEffect(() => {
+        
+        if (context.resumeData.skills) {
+          
+            setSkills(context.resumeData.skills)
+        }
 
-        setSkills(context.resumeData.skills)
+
 
 
     }, [context.resumeData])
@@ -66,7 +75,7 @@ function Skills() {
         <Grid>
             <Grid.Col span={6}>
                 <FlexRow
-                style={{width:"50%"}}
+                    style={{ width: "50%" }}
                 >
                     <InputGroup>
                         <label>Example: Java, Python, Spanish, Excel</label>
@@ -82,11 +91,11 @@ function Skills() {
                     <button onClick={handleAdd}>Add</button>
                     <button onClick={() => { handleSubmit() }}>Save</button>
                 </FlexRow>
-                <FlexRow 
-                style={{
-                    flexWrap:"wrap",
-                    gap:"20px"
-                }}
+                <FlexRow
+                    style={{
+                        flexWrap: "wrap",
+                        gap: "20px"
+                    }}
                 >
                     {skillsList}
                 </FlexRow>

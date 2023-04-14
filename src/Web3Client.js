@@ -21,11 +21,11 @@ export const initWeb3Client = async () => {
     }
 }
 
-export const isRegistered =  (connectedAccount) => {
+export const isRegistered =async  (connectedAccount)  => {
     console.log(connectedAccount)
     try {
         console.log(smartContract)
-        const res =  smartContract.methods
+        const res = await smartContract.methods
             .isRegistered()
             .call({ from: connectedAccount })
         console.log(res)
@@ -56,12 +56,14 @@ export const getUser = async (connectedAccount) => {
     if (smartContract === null) {
         return null
     }
+    
 
     try {
+        
         const res = await smartContract.methods
             .getUser()
             .call({ from: connectedAccount })
-        return await res;
+        return  res;
     } catch (e) {
         console.log("[Solidity] getUser(): ", e)
         return null;

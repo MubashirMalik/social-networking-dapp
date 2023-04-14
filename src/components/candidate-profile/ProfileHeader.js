@@ -35,6 +35,8 @@ import { getResumeData } from "../../services/user.service";
 import { showNotification } from '@mantine/notifications';
 import  {ResumeContext } from "../../context/resumeContext";
 import calculateRanking from "../../services/resumeRanking";
+import { useEffect } from "react";
+import { getUserData } from "../../Web3Client";
 
 const StyledProfileHeader = styled.div`
   display: flex;
@@ -122,7 +124,17 @@ const ProfileHeader = () => {
   const [file, setfile] = useState(null);
   console.log(context);
   const [opened, setOpened] = useState(false);
+  console.log(providerStatus.connectedAccount)
 
+  useEffect(() => {
+    getUserData(providerStatus.connectedAccount).then(res=>{
+
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+    })
+  }, [providerStatus.connectedAccount])
+  
   return (
     <>
       <Modal

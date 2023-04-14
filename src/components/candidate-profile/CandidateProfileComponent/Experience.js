@@ -59,7 +59,7 @@ function Experience() {
             country: null,
             city: null,
             responsibilities: null,
-            currently_working: null,
+            currently_working: false,
         },
 
         validate: {
@@ -72,7 +72,6 @@ function Experience() {
             country: (value) => (value ? null : "Country  must not be empty"),
             city: (value) => (value ? null : "City  must not be empty"),
             responsibilities: (value) => (value ? null : "Responcibilities  must not be empty"),
-            currently_working: (value) => (value ? null : "Currently Working  must not be empty"),
         },
     });
     useEffect(() => {

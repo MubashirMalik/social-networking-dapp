@@ -11,7 +11,7 @@ function Skills() {
 	)
 
     const handleAdd = () => {
-        if (newSkill !== "") {
+        if (newSkill != "") {
             setSkills(prevSkills => [...prevSkills, newSkill])
         }
     }

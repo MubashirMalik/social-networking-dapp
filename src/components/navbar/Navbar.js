@@ -40,7 +40,8 @@ function Navbar() {
 console.log(accounts)
                     isRegistered(accounts[0])
                     .then(isRegistered => {
-                        if (isRegistered !== null  && isRegistered === false) {
+                        console.log(isRegistered)
+                        if (isRegistered === null  || isRegistered === false) {
                             setIsOpenModal(true)
                         } else {
                             getUser(providerStatus.connectedAccount)
@@ -52,6 +53,8 @@ console.log(accounts)
                                     }))
                                     navigate("/profile")
                                 }
+                            }).catch(err=>{
+                                console.log(err)
                             })
                         }
                     })

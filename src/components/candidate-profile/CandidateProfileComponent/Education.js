@@ -7,6 +7,7 @@ import axios from 'axios';
 import React, { useContext, useEffect } from 'react'
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { ResumeContext } from '../../../context/resumeContext';
+import {addDegree} from "../../../Web3Client";
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -91,29 +92,43 @@ function Education() {
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }
         console.log(data)
-        axios.post('http://localhost:3001/user/create-user-education', data)
-            .then(response => {
+        const contractData = {
+            issuingOrganization: payload.institution,
+            title: payload.degree,
+            fromMonth: parseInt(payload.from_month),
+            fromYear: parseInt(payload.from_month),
+            toMonth: parseInt(payload.to_month),
+            toYear: parseInt(payload.to_year),
+        }
+        addDegree(providerStatus.connectedAccount, contractData).then(res=>{
+            axios.post('http://localhost:3001/user/create-user-education', data)
+                .then(response => {
 
-                if (response.status === 200) {
-                    console.log('User Education Added !');
-                    console.log('Response:', response.data);
-                    showNotification({
-                        title: 'User Education',
-                        message: "User Education Added Successfully",
-                    })
+                    if (response.status === 200) {
+                        console.log('User Education Added !');
+                        console.log('Response:', response.data);
+                        showNotification({
+                            title: 'User Education',
+                            message: "User Education Added Successfully",
+                        })
 
-                } else {
-                    console.error('Failed to add user education:', response.statusText);
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                showNotification({
-                    title: 'User Education not Added Successfully',
-                    message: JSON.stringify(error.response.data),
+                    } else {
+                        console.error('Failed to add user education:', response.statusText);
+                    }
                 })
-                console.error('Error creating user:', error);
-            });
+                .catch(error => {
+                    console.log(error)
+                    showNotification({
+                        title: 'User Education not Added Successfully',
+                        message: JSON.stringify(error.response.data),
+                    })
+                    console.error('Error creating user:', error);
+                });
+        }).catch(err=>{
+            console.log(err)
+        })
+
+
     }
     return (
         <Grid>

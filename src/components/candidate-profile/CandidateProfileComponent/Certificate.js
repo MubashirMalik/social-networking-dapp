@@ -5,6 +5,7 @@ import axios from 'axios';
 import React from 'react'
 import { useContext } from 'react';
 import { AuthenticationContext } from '../../../context/authenticationContext';
+import {addCertification} from "../../../Web3Client";
 
 const useStyles = createStyles((theme) => ({
     button: {
@@ -75,29 +76,44 @@ function Certificate() {
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }
         console.log(data)
-        axios.post('http://localhost:3001/user/create-user-certificate', data)
-            .then(response => {
 
-                if (response.status === 200) {
-                    console.log('User Certificate Added !');
-                    console.log('Response:', response.data);
-                    showNotification({
-                        title: 'User Certificate',
-                        message: "User Certificate Added Successfully",
-                    })
+        const contractData = {
+            issuingOrganization: payload.institution,
+            name: payload.title,
+            issueMonth: parseInt(payload.issue_month),
+            issueYear: parseInt(payload.issue_year),
+            expirationMonth: parseInt(payload.exp_month),
+            expirationYear: parseInt(payload.exp_year),
+            hasExpirationDate: payload.expire
+        }
+        addCertification(providerStatus.connectedAccount, contractData).then(res=>{
+            axios.post('http://localhost:3001/user/create-user-certificate', data)
+                .then(response => {
 
-                } else {
-                    console.error('Failed to add user Certificate:', response.statusText);
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                showNotification({
-                    title: 'User Certificate not Added Successfully',
-                    message: JSON.stringify(error.response.data),
+                    if (response.status === 200) {
+                        console.log('User Certificate Added !');
+                        console.log('Response:', response.data);
+                        showNotification({
+                            title: 'User Certificate',
+                            message: "User Certificate Added Successfully",
+                        })
+
+                    } else {
+                        console.error('Failed to add user Certificate:', response.statusText);
+                    }
                 })
-                console.error('Error creating user Certificate:', error);
-            });
+                .catch(error => {
+                    console.log(error)
+                    showNotification({
+                        title: 'User Certificate not Added Successfully',
+                        message: JSON.stringify(error.response.data),
+                    })
+                    console.error('Error creating user Certificate:', error);
+                });
+        }).catch(err=>{
+            console.log(err)
+        })
+
     }
     return (
         <Grid>

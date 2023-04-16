@@ -8,6 +8,7 @@ import React, { useContext, useEffect } from 'react'
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { ResumeContext } from '../../../context/resumeContext';
 import {addDegree} from "../../../Web3Client";
+import {ContractCompaniesContext} from "../../../context/contractCompaniesContext";
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -50,6 +51,7 @@ function Education() {
     const { classes, theme } = useStyles();
     const { providerStatus } = useContext(AuthenticationContext)
     const context = useContext(ResumeContext)
+    const { companiesList } = useContext(ContractCompaniesContext)
     console.log(context.resumeData)
     const form = useForm({
         initialValues: {
@@ -64,7 +66,7 @@ function Education() {
         },
 
         validate: {
-            institution: (value) => (value ? null : "Institution Name must not be empty"),
+            institution: (value) => (value ? companiesList.some(item => item.hasOwnProperty('value') && item["value"] === value)?null:"Institution is not registered" : "Institution must not be empty"),
             degree: (value) => (value ? null : "Degree  must not be empty"),
             from_month: (value) => (value ? null : "From Month  must not be empty"),
             from_year: (value) => (value ? null : "From Year  must not be empty"),

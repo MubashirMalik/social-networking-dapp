@@ -3,24 +3,25 @@ import styled from "styled-components";
 import { AuthenticationContext } from "../../context/authenticationContext";
 import avatar from "../../images/dummy-avatar.png";
 import {
-  ActionIcon,
-  Box,
-  Group,
-  TextInput,
-  Button,
-  Select,
-  Menu,
-  NumberInput,
-  Grid,
-  ThemeIcon,
-  CheckIcon,
-  Modal,
-  Title,
-  Divider,
-  createStyles,
-  Code,
-  Kbd,
-  Text,
+    ActionIcon,
+    Box,
+    Group,
+    TextInput,
+    Button,
+    Select,
+    Menu,
+    NumberInput,
+    Grid,
+    ThemeIcon,
+    CheckIcon,
+    Modal,
+    Title,
+    Divider,
+    createStyles,
+    Code,
+    Kbd,
+    Text,
+    Image, Avatar
 } from "@mantine/core";
 import {
   ArrowUp,
@@ -28,15 +29,18 @@ import {
   Ban,
   Trash,
   FileCheck,
+X,
 } from "tabler-icons-react";
 import { openConfirmModal } from "@mantine/modals";
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { getResumeData } from "../../services/user.service";
+import {getResumeData, postUserPic} from "../../services/user.service";
 import { showNotification } from '@mantine/notifications';
 import  {ResumeContext } from "../../context/resumeContext";
 import calculateRanking from "../../services/resumeRanking";
 import { useEffect } from "react";
 import { getUserData } from "../../Web3Client";
+import {toFormData} from "axios";
+
 
 const StyledProfileHeader = styled.div`
   display: flex;
@@ -123,6 +127,7 @@ const ProfileHeader = () => {
   const { classes, theme } = useStyles();
   const [file, setfile] = useState(null);
   console.log(context);
+    const [imageFile, setiamgeFile] = useState(null);
   const [opened, setOpened] = useState(false);
   console.log(providerStatus.connectedAccount)
 
@@ -269,7 +274,79 @@ const ProfileHeader = () => {
       </Modal>
       <StyledProfileHeader>
         <Container>
-          <img src={avatar} alt="avatar" />
+            {
+                !imageFile &&<Dropzone
+                    sx={{
+
+                        borderRadius:"50%",
+                        width:"120px",
+                        height:"120px"
+                    }}
+                    accept={IMAGE_MIME_TYPE} onDrop={(data)=>{
+                        setiamgeFile(data)
+                const form =new FormData()
+                form.append("images",data[0])
+                        postUserPic(form,providerStatus.connectedAccount).then(res=>{
+                            console.log(res)
+                        }).catch(err=>{
+                            console.log(err)
+                        })
+
+
+                }}>
+                    <Group position="center" spacing="xl" >
+                      <X
+                          onClick={
+                              ()=>{
+                                  console.log("hello")
+                              }
+                          }
+                            style={{position:"absolute",
+                                left:"100px",
+                                top:"0px",
+                                width:"28px",
+                                height:"28px",
+                                zIndex:"1000000000000000000000000"
+                            }}
+                            size={12}
+                            strokeWidth={2}
+                            color={'red'}
+                        />
+                        <Dropzone.Accept>
+
+                        </Dropzone.Accept>
+                        <Dropzone.Reject>
+
+                        </Dropzone.Reject>
+                        <Dropzone.Idle>
+                            <div
+                                style={{
+
+                                    borderRadius:"50%",
+                                    width:"120px",
+                                    height:"120px"
+                                }}
+                            >
+                                <Avatar size={"xl"} radius={"xl"} src={null} alt="no image here" />
+                            </div>
+
+                        </Dropzone.Idle>
+
+
+                    </Group>
+                </Dropzone>
+            }
+
+
+            {
+                imageFile &&(<Image
+                    width={120}
+                    height={120}
+                    src={URL.createObjectURL(imageFile[0])}
+                    imageProps={{ onLoad: () => URL.revokeObjectURL(imageFile[0]) }}
+                />)
+            }
+
           <ProfileInfo>
             <div className="Name">Hi,{providerStatus.userName}</div>
             <div className="Strength-bar">

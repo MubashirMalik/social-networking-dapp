@@ -52,6 +52,15 @@ export const getResumeData = async (payload) => {
     });
     return axiosObject.post("/parse", payload);
 }
+export const postUserPic = async (form,walletAddress) => {
+    const axiosObject = axios.create({
+        baseURL: BASE_URL+"save-user-pic?walletAddress="+walletAddress,
+        timeout: 20000,
+        contentType:"multipart/form-data",
+        method: "POST"
+    });
+    return axiosObject.post("", form);
+}
 
 export const getUserDataDetails = async (walletAddress) => {
     try {

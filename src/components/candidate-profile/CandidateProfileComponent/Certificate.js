@@ -5,7 +5,8 @@ import axios from 'axios';
 import React from 'react'
 import { useContext } from 'react';
 import { AuthenticationContext } from '../../../context/authenticationContext';
-import {addCertification} from "../../../Web3Client";
+import {addCertification, getAllCompanies} from "../../../Web3Client";
+import {ContractCompaniesContext} from "../../../context/contractCompaniesContext";
 
 const useStyles = createStyles((theme) => ({
     button: {
@@ -48,6 +49,7 @@ const useStyles = createStyles((theme) => ({
 function Certificate() {
     const { classes, theme } = useStyles();
     const { providerStatus } = useContext(AuthenticationContext)
+    const { companiesList } = useContext(ContractCompaniesContext)
 
     const form = useForm({
         initialValues: {
@@ -61,7 +63,7 @@ function Certificate() {
         },
 
         validate: {
-            institution: (value) => (value ? null : "Insititution must not be empty"),
+            institution: (value) => (value ? companiesList.some(item => item.hasOwnProperty('value') && item["value"] === value)?null:"Institution is not registered" : "Institution must not be empty"),
             title: (value) => (value ? null : "Name must not be empty"),
             issue_month: (value) => (value ? null : "Issue Month must not be empty"),
             issue_year: (value) => (value ? null : "Issue Year must not be empty"),
@@ -73,6 +75,9 @@ function Certificate() {
 
         },
     });
+    console.log(form.values.institution)
+    console.log(companiesList)
+
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }
         console.log(data)

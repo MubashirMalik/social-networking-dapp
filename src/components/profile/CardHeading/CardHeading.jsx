@@ -95,10 +95,7 @@ console.log(file)
                         { !providerStatus.userHeadline ? "Add Headline" : providerStatus.userHeadline }
                     </Text>
                 </Box>
-                <Box className={classes.button}>
-                    <Button  radius={"lg"}>Open to</Button>
-                    <Button ml={10}  radius={"lg"} variant={"outline"}>Add Section</Button>
-                </Box>
+
             </Box>
         </Card>
     );

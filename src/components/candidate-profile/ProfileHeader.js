@@ -282,7 +282,7 @@ const ProfileHeader = () => {
                         width:"120px",
                         height:"120px"
                     }}
-                    accept={IMAGE_MIME_TYPE} onDrop={(data)=>{
+                    accept={['image/jpeg']} onDrop={(data)=>{
                         setiamgeFile(data)
                 const form =new FormData()
                 form.append("images",data[0])
@@ -295,23 +295,7 @@ const ProfileHeader = () => {
 
                 }}>
                     <Group position="center" spacing="xl" >
-                      <X
-                          onClick={
-                              ()=>{
-                                  console.log("hello")
-                              }
-                          }
-                            style={{position:"absolute",
-                                left:"100px",
-                                top:"0px",
-                                width:"28px",
-                                height:"28px",
-                                zIndex:"1000000000000000000000000"
-                            }}
-                            size={12}
-                            strokeWidth={2}
-                            color={'red'}
-                        />
+
                         <Dropzone.Accept>
 
                         </Dropzone.Accept>

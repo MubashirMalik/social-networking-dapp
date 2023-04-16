@@ -140,6 +140,7 @@ const CandidateProfile = () => {
    */
 
   return (
+
     <StyledCandidateProfile>
 
 

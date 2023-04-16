@@ -1,4 +1,4 @@
-import { Button, createStyles, Divider, Text, TextInput, Title, Box, Grid, Card, Textarea } from '@mantine/core'
+import { Button, createStyles, Divider, Text, TextInput, Title, Box, Grid, Card, Textarea,Select } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import axios from 'axios';
 import React, { useEffect } from 'react'
@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { showNotification } from '@mantine/notifications';
 import  {ResumeContext}  from '../../../context/resumeContext';
+import getCountry from "../../../services/helper/helper";
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -48,6 +49,8 @@ function Basic() {
     const { classes, theme } = useStyles();
     const { providerStatus } = useContext(AuthenticationContext)
     const  context  = useContext(ResumeContext)
+    console.log(getCountry())
+
     console.log(context)
     const form = useForm({
         initialValues: {
@@ -115,8 +118,6 @@ function Basic() {
     return (
         <Grid>
             <Grid.Col span={6}>
-
-
                 <form
                     style={{ width: "100%" }}
                     onSubmit={form.onSubmit((values, event) => {
@@ -152,11 +153,13 @@ function Basic() {
                         placeholder="City"
                         {...form.getInputProps("city")}
                     />
-                    <TextInput
+                    <Select
                         m="sm"
                         label="Your Nationality"
                         placeholder="Your Nationality"
                         withAsterisk
+                        data={getCountry()}
+                        nothingFound={"No result"}
                         {...form.getInputProps("nationality")}
                     />
                     <TextInput
@@ -269,9 +272,15 @@ function Basic() {
                         Website: &nbsp;{" "} {form.values.website_portfolio}
                     </Text>
 
-                    <Text weight={600} size={14} lineClamp={1} >
-                        Bio: &nbsp; {form.values.bio}
-                    </Text>
+                    <div >
+
+                        <Text
+                            style={{ display: "flex",width:"100%" ,wordWrap:"break-word" }}
+                            size={14}>{form.values.bio} </Text>
+                    </div>
+
+
+
                 </Card>
 
 

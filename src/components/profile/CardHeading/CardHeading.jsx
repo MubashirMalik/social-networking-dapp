@@ -81,7 +81,7 @@ console.log(file)
                             width={120}
                             height={120}
                             src={file}
-
+                            radius={"50%"}
                         />:
                         <Avatar radius={100} src={dummyAvatar} sx={{width: "150px", height: "150px"}}/>
                     }

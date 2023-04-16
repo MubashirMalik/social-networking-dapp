@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
     Card,
     Box,
@@ -6,11 +6,12 @@ import {
     Button,
     createStyles,
     Avatar,
-    Title,
+    Title, Image,
 } from '@mantine/core';
 
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import dummyAvatar from '../../../images/dummy-avatar.png'
+import {getUserPic} from "../../../services/user.service";
 
 const useStyles = createStyles(() => ({
     card: {
@@ -55,7 +56,19 @@ const useStyles = createStyles(() => ({
 function CardHeading() {
     const { providerStatus } = useContext(AuthenticationContext)
     const {classes} = useStyles();
+    const[file,setfile] =useState(null)
 
+    useEffect(()=>{
+        getUserPic(providerStatus.connectedAccount).then(response => response.blob())
+            .then(blob => {
+                console.log(blob)
+                const url = URL.createObjectURL(blob);
+                setfile(url);
+            }).catch(err=>{
+            console.log(err)
+        })
+    },[providerStatus.connectedAccount])
+console.log(file)
     return (
         <Card
             className={classes.card} p="lg" radius="md" withBorder
@@ -65,7 +78,15 @@ function CardHeading() {
         >
             <Box className={classes.headerIconBox}>
                 <Box>
-                    <Avatar radius={100} src={dummyAvatar} sx={{width: "150px", height: "150px"}}/>
+                    {file?<Image
+                            width={120}
+                            height={120}
+                            src={file}
+
+                        />:
+                        <Avatar radius={100} src={dummyAvatar} sx={{width: "150px", height: "150px"}}/>
+                    }
+
                 </Box>
             </Box>
             <Box display={"flex"} direction={"row"} className={classes.wrapper}>

@@ -61,6 +61,15 @@ export const postUserPic = async (form,walletAddress) => {
     });
     return axiosObject.post("", form);
 }
+export const getUserPic = async (walletAddress) => {
+    const axiosObject = axios.create({
+        baseURL: BASE_URL+"get-user-pic?walletAddress="+walletAddress,
+        timeout: 20000,
+        contentType:"multipart/form-data",
+        method: "POST"
+    });
+    return axiosObject.get("");
+}
 
 export const getUserDataDetails = async (walletAddress) => {
     try {

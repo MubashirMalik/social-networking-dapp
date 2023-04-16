@@ -59,12 +59,11 @@ function CardHeading() {
     const[file,setfile] =useState(null)
 
     useEffect(()=>{
-        getUserPic(providerStatus.connectedAccount).then(response => response.blob())
-            .then(blob => {
-                console.log(blob)
-                const url = URL.createObjectURL(blob);
-                setfile(url);
-            }).catch(err=>{
+        getUserPic(providerStatus.connectedAccount).then(res => {
+            console.log(res.data)
+            const url = URL.createObjectURL(res.data);
+            setfile(url)
+        }).catch(err=>{
             console.log(err)
         })
     },[providerStatus.connectedAccount])

@@ -16,6 +16,14 @@ const JobCard = (props) => {
     const context = useContext(ResumeContext)
     const { providerStatus } = useContext(AuthenticationContext)
     const handleApplication = () => {
+        if(!applicantData.walletAddress){
+            return showNotification({
+                color: "red",
+                title: 'Profile Update ',
+                message: "Kindly Update the Profile"
+            })
+
+        }
         const data = {
             jobId: _id,
             posterAddress: posterAddress,

@@ -61,8 +61,8 @@ function InsightTable(props) {
         }).catch(err => {
             console.log(err)
         }) */
-        console.log(providerStatus.connectedAccount)
-        getPosterJobs("0x123").then(res => {
+
+        getPosterJobs(providerStatus.connectedAccount).then(res => {
             console.log(res)
             const parsedValues = res.posterJobs.map(item => (
                 {
@@ -90,7 +90,7 @@ function InsightTable(props) {
             })
         }
     
-    }, [selectedJob])
+    }, [selectedJob,row])
     
     return (
         <Box sx={{ height: "65vh" }}>

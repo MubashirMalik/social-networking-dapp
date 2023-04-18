@@ -99,9 +99,13 @@ function Navbar() {
                             <>
                                 <button onClick={() => navigate("/account/about")}>Edit Profile <FaUserEdit /></button>
                                 <button onClick={() => navigate("/profile")}>View Profile</button>
+
                             </>
                             :
-                            <button onClick={() => navigate("/company-profile")}>View Profile</button>
+                            <><button onClick={() => navigate("/insight")}>Insight</button>
+                                <button onClick={() => navigate("/company-profile")}>View Profile</button>
+                            </>
+
                         }
                     </>
                 }

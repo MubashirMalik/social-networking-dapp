@@ -6,12 +6,15 @@ import axios from "axios"
 import { showNotification } from "@mantine/notifications"
 import { useContext } from "react"
 import { ResumeContext } from "../../context/resumeContext"
+import {Button, Tooltip} from "@mantine/core";
+import {AuthenticationContext} from "../../context/authenticationContext";
 
 
 
 const JobCard = (props) => {
     const { _id, title, mode, location, description, engagement, type, posterAddress, applicantData } = props
     const context = useContext(ResumeContext)
+    const { providerStatus } = useContext(AuthenticationContext)
     const handleApplication = () => {
         const data = {
             jobId: _id,
@@ -125,7 +128,12 @@ const JobCard = (props) => {
                     <div style={{ marginBottom: "5px" }}><b>Skill Match:</b> 90%</div>
                     <Link to={`/job/${_id}`}><FiEdit /> Edit Job</Link>
                 </div>
-                <button onClick={handleApplication}>Apply</button>
+
+                    <Button
+                        disabled={providerStatus.isCompany?true:false}
+                        style={{backgroundColor:providerStatus.isCompany?null:"#1cc7d0"}} onClick={handleApplication}>Apply</Button>
+
+
             </div>
         </div>
     )

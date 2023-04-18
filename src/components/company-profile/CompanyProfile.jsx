@@ -61,6 +61,7 @@ export function CompanyProfile({}) {
     useEffect(() => {
         getCompanyData(providerStatus.connectedAccount)
         .then(res => {
+            console.log(res)
             if (res) {
                 setExperiences(res[2])
                 setCertifications(res[1])

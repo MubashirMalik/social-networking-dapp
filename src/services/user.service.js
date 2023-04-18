@@ -72,7 +72,7 @@ export const getUserPic = async (walletAddress) => {
     return axiosObject.get("");
 }
 
-export const getUserDataDetails = async (walletAddress) => {
+export const   getUserDataDetails = async (walletAddress) => {
     try {
         const url = BASE_URL + `/get-user-data?walletAddress=${walletAddress}`
         const response = await fetch(url);

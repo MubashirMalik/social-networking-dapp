@@ -29,6 +29,10 @@ import getCountry from "../../services/helper/helper";
 import {useForm} from "@mantine/form";
 import {getResumeData} from "../../services/user.service";
 import calculateRanking from "../../services/resumeRanking";
+function escapeRegexReservedChars(str) {
+    const regexReservedChars = /[.*+?^${}()|[\]\\]/g;
+    return str.replace(regexReservedChars, '\\$&');
+}
 const useStyles = createStyles((theme) => ({
     colorButton: {
         backgroundColor: "#1cc7d0",
@@ -118,9 +122,10 @@ useEffect(()=>{
 
         var ranking = 0
 
-        context.resumeRankingKeywords.map(keyword => {
+        context.resumeRankingKeywords?.map(keyword => {
                 if (keyword) {
-                    const regex = new RegExp(`\\b${keyword?.toLowerCase()}\\b`, "gi"); // create a regular expression to match whole words only
+                    console.log(keyword)
+                    const regex = new RegExp(`\\b${escapeRegexReservedChars(keyword?.toLowerCase())}\\b`, "gi"); // create a regular expression to match whole words only
                     const found = description.toLowerCase().match(regex);
 
                     if (found) {
@@ -156,6 +161,7 @@ useEffect(()=>{
         axios.post('http://localhost:3001/job/create-application', data)
             .then(response => {
                 if (response.status === 200) {
+                    setActive(3)
                     showNotification({
                         color: "green",
                         title: 'Appliction Submission',
@@ -225,7 +231,7 @@ useEffect(()=>{
                     })}
 
                 >
-                <Stepper active={active} onStepClick={setActive}>
+                <Stepper active={active} onStepClick={setActive} allowNextStepsSelect={false}>
 
                     <Stepper.Step label="Add Bio">
 
@@ -491,7 +497,7 @@ useEffect(()=>{
 
                         </Document>
                     </Stepper.Step>
-                    <Stepper.Step label="Step 3" description="Get full access" >
+                    <Stepper.Step label="Successful Application"  >
 
                         <Paper withBorder radius="md" p="xs" >
                             <Group>

@@ -115,8 +115,8 @@ useEffect(()=>{
         const data = {
             jobId: _id,
             posterAddress: posterAddress,
-            applicantAddress: applicantData.walletAddress,
-            applicantId: applicantData._id,
+            applicantAddress: applicantData?.walletAddress,
+            applicantId: applicantData?._id,
             status: "Pending"
         }
 
@@ -139,7 +139,7 @@ useEffect(()=>{
 
 
         const rankingPayload = {
-            "walletAddress": { "walletAddress": applicantData.walletAddress },
+            "walletAddress": { "walletAddress": applicantData?.walletAddress },
             "updateValue": { "ranking": ranking }
         }
 
@@ -186,7 +186,7 @@ useEffect(()=>{
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }
         console.log(data)
-        if(!applicantData.walletAddress) {
+        if(!applicantData?.walletAddress) {
             axios.post('http://localhost:3001/user/create-user', data)
                 .then(response => {
                     if (response.status === 200) {
@@ -197,7 +197,7 @@ useEffect(()=>{
                             message: "User Creation Successfully",
                         })
                         setActive(1)
-
+                        props.setrenderCard(!props.renderCard)
                     } else {
                         console.error('Failed to create user:', response.statusText);
                     }

@@ -69,8 +69,6 @@ function Experience() {
             designation: (value) => (value ? null : "Designation  must not be empty"),
             from_month: (value) => (value ? null : "From Month  must not be empty"),
             from_year: (value) => (value ? null : "From Year  must not be empty"),
-            to_month: (value) => (value ? null : "To Month  must not be empty"),
-            to_year: (value) => (value ? null : "To Year  must not be empty"),
             country: (value) => (value ? null : "Country  must not be empty"),
             city: (value) => (value ? null : "City  must not be empty"),
             responsibilities: (value) => (value ? null : "Responcibilities  must not be empty"),
@@ -171,23 +169,26 @@ console.log(contractData)
                             {...form.getInputProps(`from_year`)}
                         />
                     </Group>
-                    <Group>
-                        <TextInput
-                            m="sm"
-                            label="To Month"
-                            placeholder=" To Month"
-                            withAsterisk
+                    {
+                        (currently_working)?"":(<Group>
+                            <TextInput
+                                m="sm"
+                                label="To Month"
+                                placeholder=" To Month"
+                                withAsterisk
 
-                            {...form.getInputProps(`to_month`)}
-                        />
-                        <TextInput
-                            m="sm"
-                            label="To Year"
-                            placeholder="To Year"
-                            withAsterisk
-                            {...form.getInputProps(`to_year`)}
-                        />
-                    </Group>
+                                {...form.getInputProps(`to_month`)}
+                            />
+                            <TextInput
+                                m="sm"
+                                label="To Year"
+                                placeholder="To Year"
+                                withAsterisk
+                                {...form.getInputProps(`to_year`)}
+                            />
+                        </Group>)
+                    }
+
 
                     <TextInput
                         m="sm"

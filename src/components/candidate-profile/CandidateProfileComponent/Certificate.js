@@ -59,7 +59,7 @@ function Certificate() {
             issue_year: null,
             exp_month: null,
             exp_year: null,
-            expire: null,
+            expire: false,
         },
 
         validate: {
@@ -67,8 +67,7 @@ function Certificate() {
             title: (value) => (value ? null : "Name must not be empty"),
             issue_month: (value) => (value ? null : "Issue Month must not be empty"),
             issue_year: (value) => (value ? null : "Issue Year must not be empty"),
-            exp_month: (value) => (value ? null : "Expiration Month must not be empty"),
-            exp_year: (value) => (value ? null : "Expiration Year must not be empty"),
+
 
 
 
@@ -161,22 +160,26 @@ function Certificate() {
                     />
                 </Group>
                 <Group>
-                    <TextInput
-                        m="sm"
-                        label="Expiration Month"
-                        placeholder=" Expiration Month"
-                        withAsterisk
-                  
-                        {...form.getInputProps(`exp_month`)}
-                    />
-                    <TextInput
-                        m="sm"
-                        label="Expiration Year"
-                        placeholder="Expiration Year"
-                        withAsterisk
-                        {...form.getInputProps(`exp_year`)}
+                    {expire?(
+                        <><TextInput
+                            m="sm"
+                            label="Expiration Month"
+                            placeholder=" Expiration Month"
+                            withAsterisk
 
-                    />
+                            {...form.getInputProps(`exp_month`)}
+                        />
+                        <TextInput
+                            m="sm"
+                            label="Expiration Year"
+                            placeholder="Expiration Year"
+                            withAsterisk
+                            {...form.getInputProps(`exp_year`)}
+
+                        /></>):""
+
+                    }
+
                     <Switch
                         m="md"
                         label="The Certificate doesn't Expire"

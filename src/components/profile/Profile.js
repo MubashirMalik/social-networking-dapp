@@ -8,7 +8,8 @@ import { useContext, useEffect, useState } from "react";
 import { AuthenticationContext } from "../../context/authenticationContext.js";
 import { getUserData } from "../../Web3Client.js";
 import { NotificationManager } from 'react-notifications';
-import { getUserExperienceDetails } from "../../services/user.service.js";
+import {getUserDataDetails, getUserExperienceDetails} from "../../services/user.service.js";
+import {Skills} from "./Skills/Skills";
 
 function Profile() {
     const  { providerStatus } = useContext(AuthenticationContext)
@@ -16,6 +17,7 @@ function Profile() {
     const [certifications, setCertifications] = useState([])
     const [workExperiences, setWorkExperiences] = useState([])
     const [refreshUserData, setRefreshUserData] = useState(false)
+    const [userData, setUserData] = useState({})
 
     const [experiences, setexperiences] = useState([])
     useEffect(() => {
@@ -34,6 +36,13 @@ function Profile() {
         }).catch(err => {
             console.log(err)
         })
+        getUserDataDetails(providerStatus.connectedAccount).then(res => {
+            console.log(res)
+            setUserData(res)
+        }).catch(err => {
+            console.log(err)
+        })
+
     }, [providerStatus.connectedAccount,refreshUserData])
 console.log(workExperiences)
 console.log(certifications)
@@ -45,6 +54,7 @@ console.log(degrees)
             <Experience workExperiences={workExperiences} setRefreshUserData={setRefreshUserData} />
             <Education degrees={degrees} setRefreshUserData={setRefreshUserData}/>
             <Certification certifications={certifications} setRefreshUserData={setRefreshUserData} />
+            <Skills skills={userData?.skills}  />
         </Group>
     )
 }

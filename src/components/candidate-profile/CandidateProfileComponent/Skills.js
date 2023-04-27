@@ -8,6 +8,7 @@ import { ImCancelCircle } from "react-icons/im";
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import { ResumeContext } from '../../../context/resumeContext';
 import { Title, FlexRow, InputGroup, SkillItem } from "../../styles/Section.styled"
+import {editUserDataDetails} from "../../../services/user.service";
 function Skills() {
     const [newSkill, setNewSkill] = useState("")
     const [skills, setSkills] = useState([])
@@ -45,31 +46,25 @@ function Skills() {
 
     }, [context.resumeData])
     const handleSubmit = () => {
-        const data = { skills: skills, walletAddress: providerStatus.connectedAccount }
-        console.log(data)
-        axios.post('http://localhost:3001/user/create-user-skills', data)
-            .then(response => {
 
-                if (response.status === 200) {
-                    console.log('User Skills Added !');
-                    console.log('Response:', response.data);
-                    showNotification({
-                        title: 'User Skills',
-                        message: "User Skills Added Successfully",
-                    })
+        const updatePayload = {
+            "walletAddress": { "walletAddress": providerStatus.connectedAccount },
+            "updateValue": { "skills": skills }
+        }
 
-                } else {
-                    console.error('Failed to add user Skills:', response.statusText);
-                }
+        axios.put("http://localhost:3001/user/update-user", updatePayload).then((response) => {
+            showNotification({
+                color: "green",
+                title: 'Skills  ',
+                message: "Skills Added Successfully",
             })
-            .catch(error => {
-                console.log(error)
-                showNotification({
-                    title: 'User Skills not Added Successfully',
-                    message: JSON.stringify(error.response.data),
-                })
-                console.error('Error creating user Skills:', error);
-            });
+        }).catch((err) => {
+            showNotification({
+                color: "red",
+                title: 'Skills',
+                message: "Skills Not Added Successfully",
+            })
+        })
     }
     return (
         <Grid>

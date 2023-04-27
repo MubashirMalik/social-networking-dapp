@@ -11,7 +11,7 @@ import {
 
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import dummyAvatar from '../../../images/dummy-avatar.png'
-import {getUserPic} from "../../../services/user.service";
+import {getUserDataDetails, getUserPic} from "../../../services/user.service";
 
 const useStyles = createStyles(() => ({
     card: {
@@ -57,13 +57,19 @@ function CardHeading() {
     const { providerStatus } = useContext(AuthenticationContext)
     const {classes} = useStyles();
     const[file,setfile] =useState(null)
-
+    const [userData, setuserData] = useState({})
     useEffect(()=>{
         getUserPic(providerStatus.connectedAccount).then(res => {
             console.log(res.data)
             const url = URL.createObjectURL(res.data);
             setfile(url)
         }).catch(err=>{
+            console.log(err)
+        })
+        getUserDataDetails(providerStatus.connectedAccount).then((res) => {
+            console.log(res)
+            setuserData({ ...res })
+        }).then((err)=>{
             console.log(err)
         })
     },[providerStatus.connectedAccount])
@@ -92,7 +98,7 @@ console.log(file)
                 <Box className={classes.titleBox}>
                     <Title>{ providerStatus.userName }</Title>
                     <Text>
-                        { !providerStatus.userHeadline ? "Add Headline" : providerStatus.userHeadline }
+                        { !userData.headline ? "Add Headline" : userData.headline }
                     </Text>
                 </Box>
 

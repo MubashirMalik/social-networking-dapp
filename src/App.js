@@ -17,6 +17,7 @@ import {MantineProvider} from "@mantine/core";
 import {NotificationsProvider} from "@mantine/notifications";
 import Insight from "./components/Insights/Insight";
 
+
 export default function App() {
 	useEffect(() => {
 		void initWeb3Client()
@@ -36,6 +37,7 @@ export default function App() {
 								<Route exact path="/job/:jobId" element={<PostJob />} />
 								<Route exact path="/profile" element={<Profile />} />
 								<Route exact path="/insight" element={<Insight />} />
+
 								{/* <Route path="*" element={ <PageNotFound />}/> */}
 								<Route exact path="/company-profile" element={<CompanyProfile />} />
 							</Routes>

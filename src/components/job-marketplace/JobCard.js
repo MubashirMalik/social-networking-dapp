@@ -174,9 +174,10 @@ useEffect(()=>{
             })
             .catch(error => {
                 console.log(error)
+                setActive(3)
                 showNotification({
-                    color: "red",
-                    title: 'Application Submission not Successfull',
+                    color: "yellow",
+                    title: 'Application Submission Updated',
                     message: JSON.stringify(error.response.data),
                 })
                 console.error('Error Submitting Application:', error);

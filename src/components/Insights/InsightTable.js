@@ -62,7 +62,7 @@ function InsightTable(props) {
             console.log(err)
         }) */
 
-        getPosterJobs(providerStatus.connectedAccount).then(res => {
+        getPosterJobs("0x123").then(res => {
             console.log(res)
             const parsedValues = res.posterJobs.map(item => (
                 {

@@ -3,7 +3,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useContext, useState } from 'react';
 import { useEffect } from 'react';
 import { AuthenticationContext } from '../../../../context/authenticationContext';
-import { getUserExperienceDetails } from '../../../../services/user.service';
+import {getUserExperienceDetails, getUserPic} from '../../../../services/user.service';
 import { MONTH_NAMES, TOKEN_TYPE_EXPERIENCE} from "../../../../util";
 import { getUser, requestVerification } from '../../../../Web3Client';
 
@@ -33,6 +33,8 @@ export function ExperienceCard({ workExperience, id, setRefreshUserData }) {
     const [issuingOrganization, setIssuingOrganization] = useState()
     const { providerStatus, setProviderStatus } = useContext(AuthenticationContext)
     const [experienceData, setexperienceData] = useState([])
+    const [url, setUrl] = useState("")
+
     useEffect(() => {
         getUser(workExperience?.issuingOrganization)
             .then(res => {
@@ -43,7 +45,17 @@ export function ExperienceCard({ workExperience, id, setRefreshUserData }) {
 
 
     }, [workExperience?.issuingOrganization])
+useEffect(()=>{
 
+    getUserPic(workExperience?.issuingOrganization).then(res => {
+        console.log(res.data)
+        const url = URL.createObjectURL(res.data);
+        setUrl(url)
+    }).catch(err=>{
+        console.log(err)
+    })
+
+},[workExperience?.issuingOrganization,providerStatus.connectedAccount])
     const handleClick = () => {
         requestVerification(providerStatus.connectedAccount, id, TOKEN_TYPE_EXPERIENCE)
         .then(res => {
@@ -55,7 +67,7 @@ export function ExperienceCard({ workExperience, id, setRefreshUserData }) {
 
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
-            <Image src={data.image} height={100} width={100} radius={"md"} />
+            <Image src={url.length>1?url:data.image} height={100} width={100} radius={"md"} />
             <div className={classes.body}>
                 <Box className={classes.box}>
                     <Text className={classes.title} mt="sm">

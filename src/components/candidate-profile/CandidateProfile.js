@@ -176,51 +176,56 @@ const CandidateProfile = () => {
                       >
                         Basic
                       </Tabs.Tab>
+                      {providerStatus.isCompany?"":(
+                          <>
+                            <Tabs.Tab
+                                className="employee-creation-tab-list"
+                                onClick={() => {
+                                  setCurrentSectionTargetRef(Section.Education);
+                                }}
+                                color={"blue"}
+                                value="Education"
+                                style={Section.Education === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
+                            >
+                              Education
+                            </Tabs.Tab>
+                            <Tabs.Tab
+                                className="employee-creation-tab-list"
+                                onClick={() => {
+                                  setCurrentSectionTargetRef(Section.Experience);
+                                }}
+                                value="Experience"
+                                style={Section.Experience === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
 
-                      <Tabs.Tab
-                        className="employee-creation-tab-list"
-                        onClick={() => {
-                          setCurrentSectionTargetRef(Section.Education);
-                        }}
-                        color={"blue"}
-                        value="Education"
-                        style={Section.Education === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
-                      >
-                        Education
-                      </Tabs.Tab>
-                      <Tabs.Tab
-                        className="employee-creation-tab-list"
-                        onClick={() => {
-                          setCurrentSectionTargetRef(Section.Experience);
-                        }}
-                        value="Experience"
-                        style={Section.Experience === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
+                            >
+                              Experience
+                            </Tabs.Tab>
+                            <Tabs.Tab
+                                className="employee-creation-tab-list"
+                                onClick={() => {
+                                  setCurrentSectionTargetRef(Section.Certificate);
+                                }}
+                                value="Certificate"
+                                style={Section.Certificate === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
 
-                      >
-                        Experience
-                      </Tabs.Tab>
-                      <Tabs.Tab
-                        className="employee-creation-tab-list"
-                        onClick={() => {
-                          setCurrentSectionTargetRef(Section.Certificate);
-                        }}
-                        value="Certificate"
-                        style={Section.Certificate === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
+                            >
+                              Certificate
+                            </Tabs.Tab>
+                            <Tabs.Tab
+                                className="employee-creation-tab-list"
+                                onClick={() => {
+                                  setCurrentSectionTargetRef(Section.Skills);
+                                }}
+                                value="Skills"
+                                style={Section.Skills === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
 
-                      >
-                        Certificate
-                      </Tabs.Tab>
-                      <Tabs.Tab
-                        className="employee-creation-tab-list"
-                        onClick={() => {
-                          setCurrentSectionTargetRef(Section.Skills);
-                        }}
-                        value="Skills"
-                        style={Section.Skills === currentSectionTargetRef ? { backgroundColor: "#1cc7d0" } : {}}
+                            >
+                              Skills
+                            </Tabs.Tab>
+                          </>
 
-                      >
-                        Skills
-                      </Tabs.Tab>
+                        )}
+
                     </Tabs.List>
 
                     <Tabs.Panel value="Basic" pt="xs" style={{ width: "100%" }}>
@@ -231,77 +236,81 @@ const CandidateProfile = () => {
 
                     </Tabs.Panel>
 
+                    {providerStatus.isCompany?"":(
+                        <>
+                          <Tabs.Panel value="Education" pt="xs">
+                            <Text
+                                ref={
+                                  currentSectionTargetRef == Section.Experience
+                                      ? targetRef
+                                      : null
+                                }
+                                style={{ textAlign: "center" }}
+                                mb="xs"
+                                size={16}
+                            >
+                              Education
+                            </Text>
+                            <Divider size="xs" mb="xl" />
+
+                            <Education />
+                          </Tabs.Panel>
+                          <Tabs.Panel value="Experience" pt="xs">
+                            <Text
+                                ref={
+                                  currentSectionTargetRef == Section.Experience
+                                      ? targetRef
+                                      : null
+                                }
+                                style={{ textAlign: "center" }}
+                                mb="xs"
+                                size={16}
+                            >
+                              Experience
+                            </Text>
+                            <Divider size="xs" mb="xl" />
+
+                            <Experience />
+                          </Tabs.Panel>
+
+                          <Tabs.Panel value="Certificate" pt="xs">
+                            <Text
+                                ref={
+                                  currentSectionTargetRef == Section.Certificate
+                                      ? targetRef
+                                      : null
+                                }
+                                style={{ textAlign: "center" }}
+                                mb="xs"
+                                size={16}
+                            >
+                              Licenses & Certifications
+                            </Text>
+                            <Divider size="xs" mb="xl" />
 
 
-                    <Tabs.Panel value="Education" pt="xs">
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Experience
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Education
-                      </Text>
-                      <Divider size="xs" mb="xl" />
+                            <Certificate />
+                          </Tabs.Panel>
 
-                      <Education />
-                    </Tabs.Panel>
-                    <Tabs.Panel value="Experience" pt="xs">
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Experience
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Experience
-                      </Text>
-                      <Divider size="xs" mb="xl" />
-
-                      <Experience />
-                    </Tabs.Panel>
-
-                    <Tabs.Panel value="Certificate" pt="xs">
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Certificate
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Licenses & Certifications
-                      </Text>
-                      <Divider size="xs" mb="xl" />
+                          <Tabs.Panel value="Skills" pt="xs" ml={10}>
+                            <Text
+                                ref={
+                                  currentSectionTargetRef == Section.Other
+                                      ? targetRef
+                                      : null
+                                }
+                                style={{ textAlign: "center" }}
+                                mb="xs"
+                                size={16}
+                            >
+                              Skills
+                            </Text>
+                            <Skills />
+                          </Tabs.Panel>
+                        </>
+                       )}
 
 
-                      <Certificate />
-                    </Tabs.Panel>
-
-                    <Tabs.Panel value="Skills" pt="xs" ml={10}>
-                      <Text
-                        ref={
-                          currentSectionTargetRef == Section.Other
-                            ? targetRef
-                            : null
-                        }
-                        style={{ textAlign: "center" }}
-                        mb="xs"
-                        size={16}
-                      >
-                        Skills
-                      </Text>
-                      <Skills />
-                    </Tabs.Panel>
 
                   </Tabs>
 

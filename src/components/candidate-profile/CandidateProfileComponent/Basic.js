@@ -7,6 +7,7 @@ import { AuthenticationContext } from '../../../context/authenticationContext';
 import { showNotification } from '@mantine/notifications';
 import  {ResumeContext}  from '../../../context/resumeContext';
 import getCountry from "../../../services/helper/helper";
+import {getUserDataDetails} from "../../../services/user.service";
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -87,8 +88,32 @@ function Basic() {
         
 
     }, [context.resumeData,providerStatus.connectedAccount])
+    useEffect(() => {
+        getUserDataDetails(providerStatus.connectedAccount).then(res => {
+            form.setValues({
+                headline: res?.headline,
+                full_name: res?.full_name,
+                location: res?.location,
+                city: res?.city,
+                nationality: res?.nationality,
+                bio: res?.bio,
+                wallet_address: res?.wallet_address,
+                linked_in: res?.linked_in,
+                github: res?.github,
+                website_portfolio: res?.website_portfolio,
+            })
+    }).catch(err => {
+    })
 
-    
+
+
+
+
+    }, [providerStatus.connectedAccount])
+
+
+
+
 
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }

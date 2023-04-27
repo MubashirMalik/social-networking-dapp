@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import {addCertification, getAllCompanies} from "../../../Web3Client";
 import {ContractCompaniesContext} from "../../../context/contractCompaniesContext";
+import {monthsList} from "../../../services/helper/helper";
 
 const useStyles = createStyles((theme) => ({
     button: {
@@ -143,12 +144,12 @@ function Certificate() {
                     {...form.getInputProps(`title`)}
                 />
                 <Group>
-                    <TextInput
+                    <Select
                         m="sm"
                         label="Issue Month"
                         placeholder=" Issue Month"
                         withAsterisk
-
+                        data={monthsList}
                         {...form.getInputProps(`issue_month`)}
                     />
                     <TextInput
@@ -160,13 +161,13 @@ function Certificate() {
                     />
                 </Group>
                 <Group>
-                    {expire?(
-                        <><TextInput
+                    {!(form.values.expire)?(
+                        <><Select
                             m="sm"
                             label="Expiration Month"
                             placeholder=" Expiration Month"
                             withAsterisk
-
+                            data={monthsList}
                             {...form.getInputProps(`exp_month`)}
                         />
                         <TextInput
@@ -222,9 +223,9 @@ function Certificate() {
                             m={10}
                             title={`${form.values.title ? form.values.title : ""}`} >
                             <Box>
-                                <Text tt="uppercase">{form.values.institution}</Text>
-                                <Group><Text>{form.values.issue_month}</Text><Text> {form.values.issue_year}</Text> </Group>
-                                <Group><Text>{form.values.exp_month}</Text> <Text>{form.values.exp_year}</Text></Group>
+                                <Text tt="uppercase">Institution : {form.values.institution}</Text>
+                                <Group><Text>Issue Month :{form.values.issue_month}</Text><Text>Issue Year :{form.values.issue_year}</Text> </Group>
+                                <Group><Text>Expiration Month :{form.values.exp_month}</Text> <Text>Expiration Year :{form.values.exp_year}</Text></Group>
                                 {!(form.values.expire) ? <Badge size="lg" radius="xl" color="red" >
                                     Will Expire
                                 </Badge> : <Badge size="lg" radius="xl" color="teal" >

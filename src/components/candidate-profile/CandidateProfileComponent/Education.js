@@ -1,4 +1,4 @@
-import { Alert, Box, Button, createStyles, Group, TextInput } from '@mantine/core'
+import {Alert, Box, Button, createStyles, Group, Select, TextInput} from '@mantine/core'
 import { Divider, Grid, Text, Card, Textarea } from '@mantine/core'
 
 import { useForm } from '@mantine/form';
@@ -9,6 +9,7 @@ import { AuthenticationContext } from '../../../context/authenticationContext';
 import { ResumeContext } from '../../../context/resumeContext';
 import {addDegree} from "../../../Web3Client";
 import {ContractCompaniesContext} from "../../../context/contractCompaniesContext";
+import {monthsList} from "../../../services/helper/helper";
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -83,14 +84,15 @@ function Education() {
     useEffect(() => {
 
         form.setValues({
-            institution: context.resumeData?.college_name,
-            degree: context.resumeData?.degree,
+            institution: context.resumeData?.college_name?context.resumeData?.college_name:form.values.institution,
+            degree: context.resumeData?.degree?.[0]?context.resumeData?.degree[0]:form.values.degree,
           
         })
 
 
 
     }, [context.resumeData])
+   console.log ( form.values)
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }
         console.log(data)
@@ -157,12 +159,12 @@ function Education() {
                     {...form.getInputProps(`degree`)}
                 />
                 <Group>
-                    <TextInput
+                    <Select
                         m="sm"
                         label="From Month"
                         placeholder=" From Month"
                         withAsterisk
-
+                        data={monthsList}
                         {...form.getInputProps(`from_month`)}
                     />
                     <TextInput
@@ -174,12 +176,12 @@ function Education() {
                     />
                 </Group>
                 <Group>
-                    <TextInput
+                    <Select
                         m="sm"
                         label="To Month"
                         placeholder=" To Month"
                         withAsterisk
-
+                        data={monthsList}
                         {...form.getInputProps(`to_month`)}
 
                     />
@@ -242,9 +244,10 @@ function Education() {
                             m={10}
                             title={`${form.values.degree ? form.values.degree : ""}`} >
                             <Box>
-                                <Text tt="uppercase">{form.values.insititution}</Text>
-                                <Group><Text>{form.values.from_month}</Text><Text> {form.values.from_year}</Text> <Text>{form.values.to_month}</Text> <Text>{form.values.to_year}</Text></Group>
-                                <Group><Text>{form.values.city}</Text> <Text>{form.values.country}</Text></Group>
+                                <Text tt="uppercase">Institution : {form.values.institution}</Text>
+                                <Group><Text>From Month :{form.values.from_month}</Text><Text>From Year : {form.values.from_year}</Text> </Group>
+                                <Group><Text>To Month : {form.values.to_month}</Text> <Text>To Year :{form.values.to_year}</Text></Group>
+                                <Group><Text>City :{form.values.city}</Text> <Text>Country : {form.values.country}</Text></Group>
 
                             </Box>
 

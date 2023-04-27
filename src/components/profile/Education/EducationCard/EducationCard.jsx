@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { AuthenticationContext } from '../../../../context/authenticationContext';
 import {MONTH_NAMES, TOKEN_TYPE_EDUCATION} from "../../../../util";
 import { getUser, requestVerification } from '../../../../Web3Client';
+import {getUserPic} from "../../../../services/user.service";
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -31,7 +32,7 @@ export function EducationCard({ degree, id, setRefreshUserData }) {
     const {classes} = useStyles();
     const [issuingOrganization, setIssuingOrganization] = useState()
     const { providerStatus } = useContext(AuthenticationContext)
-
+    const [url, setUrl] = useState("")
     useEffect(() => {
         getUser(degree.issuingOrganization)
         .then(res => {
@@ -40,6 +41,17 @@ export function EducationCard({ degree, id, setRefreshUserData }) {
             }
         })
     }, [degree.issuingOrganization])
+    useEffect(()=>{
+
+        getUserPic(degree.issuingOrganization).then(res => {
+            console.log(res.data)
+            const url = URL.createObjectURL(res.data);
+            setUrl(url)
+        }).catch(err=>{
+            console.log(err)
+        })
+
+    },[degree.issuingOrganization,providerStatus.connectedAccount])
 
     const handleClick = () => {
         requestVerification(providerStatus.connectedAccount, id, TOKEN_TYPE_EDUCATION)
@@ -52,7 +64,7 @@ export function EducationCard({ degree, id, setRefreshUserData }) {
 
     return (<Card withBorder radius="md" p={20} className={classes.card}>
         <Group>
-            <Image src={data.image} height={100} width={100} radius={"md"}/>
+            <Image src={url.length>1?url:data.image} height={100} width={100} radius={"md"}/>
             <div className={classes.body}>
                 <Box className={classes.box}>
                     <Text className={classes.title} mt="sm">

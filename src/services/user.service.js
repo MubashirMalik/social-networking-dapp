@@ -82,6 +82,7 @@ export const   getUserDataDetails = async (walletAddress) => {
     }
 }
 
+
 export const getUserExperienceDetails = async (walletAddress) => {
     try {
         const url = BASE_URL + `/get-user-experience?walletAddress=${walletAddress}`

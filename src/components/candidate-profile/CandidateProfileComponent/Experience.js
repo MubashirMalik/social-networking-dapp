@@ -7,6 +7,7 @@ import { AuthenticationContext } from '../../../context/authenticationContext';
 import { ResumeContext } from '../../../context/resumeContext';
 import { addWorkExperience } from '../../../Web3Client';
 import {ContractCompaniesContext} from "../../../context/contractCompaniesContext";
+import {monthsList} from "../../../services/helper/helper";
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -50,6 +51,7 @@ function Experience() {
     const { providerStatus } = useContext(AuthenticationContext)
     const context = useContext(ResumeContext)
     const { companiesList } = useContext(ContractCompaniesContext)
+    console.log(companiesList)
     const form = useForm({
         initialValues: {
             institution: null,
@@ -77,8 +79,8 @@ function Experience() {
     useEffect(() => {
        
         form.setValues({
-            designation:context.resumeData?.experience,
-            institution:context.resumeData?.company_names
+            designation:context.resumeData?.experience?context.resumeData?.experience:form.values.designation,
+            institution:context.resumeData?.company_names?context.resumeData?.company_names:form.values.institution
 
         })
       
@@ -88,6 +90,7 @@ function Experience() {
 
     const handleSubmit = (payload) => {
         const data = { ...payload, walletAddress: providerStatus.connectedAccount }
+        console.log(payload)
 const contractData ={
     issuingOrganization:payload.institution,
     designation:payload.designation,
@@ -126,6 +129,7 @@ console.log(contractData)
                 })
                 console.error('Error creating user:', error);
             });}
+    console.log(form.values)
     return (
         <Grid>
             <Grid.Col span={6}>
@@ -153,12 +157,12 @@ console.log(contractData)
 
                     />
                     <Group>
-                        <TextInput
+                        <Select
                             m="sm"
                             label="From Month"
                             placeholder=" From Month"
                             withAsterisk
-                            data={[]}
+                            data={monthsList}
                             {...form.getInputProps(`from_month`)}
                         />
                         <TextInput
@@ -166,17 +170,18 @@ console.log(contractData)
                             label="From Year"
                             placeholder="From Year"
                             withAsterisk
+
                             {...form.getInputProps(`from_year`)}
                         />
                     </Group>
                     {
-                        (currently_working)?"":(<Group>
-                            <TextInput
+                        (form.values.currently_working)?"":(<Group>
+                            <Select
                                 m="sm"
                                 label="To Month"
                                 placeholder=" To Month"
                                 withAsterisk
-
+                                data={monthsList}
                                 {...form.getInputProps(`to_month`)}
                             />
                             <TextInput
@@ -256,10 +261,10 @@ console.log(contractData)
                             m={10}
                             title={`${form.values.designation ? form.values.designation : ""}`} >
                             <Box>
-                                <Text tt="uppercase">{form.values.institution}</Text>
-                                <Group><Text>{form.values.from_month}</Text><Text> {form.values.from_year}</Text> <Text>{form.values.to_month}</Text> <Text>{form.values.to_year}</Text></Group>
-                                <Group><Text>{form.values.city}</Text> <Text>{form.values.country}</Text></Group>
-                                <Text>{form.values.responcibilities}</Text>
+                                <Text tt="uppercase">Institution : {form.values.institution}</Text>
+                                <Group><Text>From Month :{form.values.from_month}</Text><Text>From Year : {form.values.from_year}</Text> </Group>
+                                <Group><Text>To Month : {form.values.to_month}</Text> <Text>To Year :{form.values.to_year}</Text></Group>
+                                <Group><Text>City : {form.values.city}</Text> <Text>Country{form.values.country}</Text></Group>
                                 {form.values.currently_working ? <Badge size="lg" radius="xl" color="teal" >
                                     Currently Working
                                 </Badge> : <Badge size="lg" radius="xl" color="red" >

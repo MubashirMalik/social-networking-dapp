@@ -93,22 +93,7 @@ export function CompanyProfile({}) {
             {/* Replace with outlet */}
             <CardHeading/>
             <Viewable/>
-            <Card shadow={"md"} withBorder radius="md"  className={classes.card}>
-                <Stack spacing={15} >
-                    <Title size={20}>
-                        All Token Requests
-                    </Title>
-                    <Grid gutter={5} gutterXs="md" gutterMd="xl" gutterXl={15}>
-                        { displayExperiences }
-                        { displayCertifications }
-                        { displayDegrees }
-                    </Grid>
 
-                    <Box className={classes.wrapper}>
-                        { degrees.length === 0 && certifications.length === 0 && experiences.length === 0 && "You have no pending requests." }
-                    </Box>
-                </Stack>
-            </Card>
         </Group>
     );
 }

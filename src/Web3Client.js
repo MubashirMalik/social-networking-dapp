@@ -8,21 +8,19 @@ let smartContract = null;
 export const initWeb3Client = async () => {
     try {
         web3 = new Web3(window.ethereum)
-        console.log(web3.eth.net.getId())
         const networkId = await web3.eth.net.getId()
-        console.log(networkId)
         smartContract = new web3.eth.Contract(
             SmartContractBuild.abi,
             SmartContractBuild.networks[networkId].address
         )
-        console.log(smartContract)
+
+
     } catch (e) {
         console.log("Error initializing network: ", e)
     }
 }
 
 export const isRegistered =async  (connectedAccount)  => {
-    console.log(connectedAccount)
     try {
         console.log(smartContract)
         const res = await smartContract.methods

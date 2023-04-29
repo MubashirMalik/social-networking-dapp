@@ -27,3 +27,5 @@ export var monthsList = [
     { value: "11", label: "Nov" },
     { value: "12", label: "Dec" }
 ];
+
+export var monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

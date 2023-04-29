@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { MdWork } from "react-icons/md";
 import { useNavigate } from "react-router-dom"
 import { addressFormatter } from "../../util";
@@ -8,6 +8,7 @@ import { getUser, isRegistered } from "../../Web3Client";
 import RegistrationPopup from "../RegistrationPopup";
 
 import './Navbar.css'
+import {Logout} from "tabler-icons-react";
 
 function Navbar() {
     const [isOpenModal, setIsOpenModal] = useState(false);
@@ -32,10 +33,10 @@ function Navbar() {
                 }).then(accounts => {
                     console.log("Account connected:", accounts)
                     setProviderStatus(prevProviderStatus => ({
-                        ...prevProviderStatus, 
+                        ...prevProviderStatus,
                         connectedAccount: accounts[0],
                         message: "Connected wallet: " + addressFormatter(accounts[0]),
-                        badgeColor: "green" 
+                        badgeColor: "green"
                     }))
 
                     isRegistered(accounts[0])
@@ -46,11 +47,13 @@ function Navbar() {
                             getUser(accounts[0])
                             .then(res => {
                                 if (res) {
+
                                     setProviderStatus(prevProviderStatus => ({
-                                        ...prevProviderStatus, 
+                                        ...prevProviderStatus,
                                         userName: res.fullName,
                                         isCompany: res.isCompany
                                     }))
+                                    localStorage.setItem("account",accounts[0])
                                     !res.isCompany ? navigate("/profile") : navigate("/company-profile")
                                 }
                             }).catch(err=>{
@@ -65,6 +68,7 @@ function Navbar() {
             setProviderStatus(prevProviderStatus => ({...prevProviderStatus, message: "No wallet"}))
         }
     }
+   console.log(providerStatus)
 
     return(
         <>
@@ -99,11 +103,53 @@ function Navbar() {
                             <>
                                 <button onClick={() => navigate("/account/about")}>Edit Profile <FaUserEdit /></button>
                                 <button onClick={() => navigate("/profile")}>View Profile</button>
+                                <button onClick={() => {
+
+                                    localStorage.setItem("account","")
+                                    setProviderStatus({
+                                        message: "Detecting provider",
+                                        connectedAccount: "",
+                                        badgeColor: "red",
+                                        userName: "",
+                                        isCompany: false
+                                    })
+                                    navigate("/")
+
+
+
+                                }
+
+
+                                }><Logout
+                                    size={48}
+                                    strokeWidth={2}
+                                    color={'white'}
+                                /></button>
 
                             </>
                             :
                             <><button onClick={() => navigate("/insight")}>Insight</button>
                                 <button onClick={() => navigate("/company-profile")}>View Profile</button>
+                                <button onClick={() => navigate("/company-approval")}>Approvals</button>
+
+                                <button onClick={() => {
+
+
+                                    localStorage.setItem("account","")
+                                    setProviderStatus({
+                                        message: "Detecting provider",
+                                        connectedAccount: "",
+                                        badgeColor: "red",
+                                        userName: "",
+                                        isCompany: false
+                                    })
+                                    navigate("/")
+
+                                }}><Logout
+                                    size={48}
+                                    strokeWidth={2}
+                                    color={'white'}
+                                /></button>
                             </>
 
                         }

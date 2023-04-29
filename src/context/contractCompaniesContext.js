@@ -24,7 +24,7 @@ function ContractCompaniesContextProvider(props) {
                 }
             });
         }
-    }, [providerStatus.connectedAccount])
+    }, [providerStatus?.connectedAccount])
 
     return (
         <ContractCompaniesContext.Provider value={{ companiesList }}>

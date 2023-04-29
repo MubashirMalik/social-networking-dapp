@@ -51,9 +51,9 @@ export function Skills({ skills }) {
                         </List>
                     ) :
                     <NoRecordAlert
-                        section="experiences"
-                        message="Add professional work experiences to stand out to employers."
-                        href="/account/experience"
+                        section="Skills"
+                        message="Add Skills to stand out to employers."
+                        href="/account/skill"
                     />
                 }
             </Stack>

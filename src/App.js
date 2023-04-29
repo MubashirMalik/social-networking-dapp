@@ -25,6 +25,7 @@ export default function App() {
 	const  { providerStatus, setProviderStatus } = useContext(AuthenticationContext)
 	const navigate = useNavigate();
 	const [render,setRender]=useState(true)
+	const [selectedAddress, setSelectedAddress] = useState(null);
 	const connectWallet = () => {
 		if (window.ethereum) {
 			window.ethereum._metamask.isUnlocked().then(isUnlocked => {
@@ -88,9 +89,36 @@ export default function App() {
 			}
 		})
 
-	}, [])
+	}, [selectedAddress])
 
 
+
+
+	useEffect(() => {
+		// Listen for changes to the user's Metamask account
+		window.ethereum.on('accountsChanged', (accounts) => {
+			if (accounts.length === 0) {
+				// User has disconnected their Metamask account
+				console.log("here")
+				setSelectedAddress(null);
+				localStorage.removeItem("account")
+				setProviderStatus({
+					message: "Detecting provider",
+					connectedAccount: "",
+					badgeColor: "red",
+					userName: "",
+					isCompany: false
+				})
+			} else {
+				// User has changed their Metamask account
+				console.log("not here")
+				setSelectedAddress(accounts[0]);
+			}
+		});
+
+		// Cleanup the listener when the component unmounts
+
+	}, []);
 
 
 

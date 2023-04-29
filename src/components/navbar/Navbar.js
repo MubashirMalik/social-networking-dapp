@@ -117,6 +117,7 @@ function Navbar() {
 
 
 
+
                                 }
 
 
@@ -143,6 +144,7 @@ function Navbar() {
                                         userName: "",
                                         isCompany: false
                                     })
+
                                     navigate("/")
 
                                 }}><Logout

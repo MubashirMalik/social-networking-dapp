@@ -3,10 +3,6 @@ import { TokenCard } from "./TokenCard/TokenCard.jsx";
 import {useEffect, useState} from "react";
 import CardHeading from '../profile/CardHeading/CardHeading.jsx';
 import Viewable from '../profile/Viewable/Viewable.jsx';
-import { getCompanyData } from '../../Web3Client.js';
-import { AuthenticationContext } from '../../context/authenticationContext.js';
-import { useContext } from 'react';
-import { TOKEN_TYPE_CERTIFICATION, TOKEN_TYPE_EDUCATION, TOKEN_TYPE_EXPERIENCE } from '../../util.js';
 
 const useStyles = createStyles((theme) => ({
     card: {
@@ -50,43 +46,6 @@ const useStyles = createStyles((theme) => ({
 
 
 export function CompanyProfile({}) {
-    const {classes} = useStyles();
-    const  { providerStatus } = useContext(AuthenticationContext)
-
-    const [experiences, setExperiences] = useState([])
-    const [certifications, setCertifications] = useState([])
-    const [degrees, setDegrees] = useState([])
-    const [trigger, setTrigger] = useState()
-
-    useEffect(() => {
-        getCompanyData(providerStatus.connectedAccount)
-        .then(res => {
-            console.log(res)
-            if (res) {
-                setExperiences(res[2])
-                setCertifications(res[1])
-                setDegrees(res[0])
-            }
-        })
-    }, [providerStatus.connectedAccount, trigger])
-
-    const displayExperiences = experiences?.map(experience => (
-        <Grid.Col span={6}>
-            <TokenCard data={experience} tokenType={TOKEN_TYPE_EXPERIENCE} setTrigger={setTrigger} />
-        </Grid.Col>
-    ));
-
-    const displayCertifications = certifications?.map(certification => (
-        <Grid.Col span={6}>
-            <TokenCard data={certification} tokenType={TOKEN_TYPE_CERTIFICATION} setTrigger={setTrigger} />
-        </Grid.Col>
-    ));
-
-    const displayDegrees = degrees?.map(degree => (
-        <Grid.Col span={6}>
-            <TokenCard data={degree} tokenType={TOKEN_TYPE_EDUCATION} setTrigger={setTrigger} />
-        </Grid.Col>
-    ));
 
     return (
         <Group ml={180} mr={180} mb={80}>

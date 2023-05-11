@@ -1,13 +1,29 @@
-import { Button, createStyles, Group, Select, Switch, Grid, Text, Divider, Card, Alert, Box, Textarea, TextInput, Badge } from '@mantine/core'
-import { useForm } from '@mantine/form';
-import { showNotification } from '@mantine/notifications';
+import {
+    Button,
+    createStyles,
+    Group,
+    Select,
+    Switch,
+    Grid,
+    Text,
+    Divider,
+    Card,
+    Alert,
+    Box,
+    Textarea,
+    TextInput,
+    Badge
+} from '@mantine/core'
+import {useForm} from '@mantine/form';
+import {showNotification} from '@mantine/notifications';
 import axios from 'axios';
-import React, { useContext, useEffect } from 'react'
-import { AuthenticationContext } from '../../../context/authenticationContext';
-import { ResumeContext } from '../../../context/resumeContext';
-import { addWorkExperience } from '../../../Web3Client';
+import React, {useContext, useEffect} from 'react'
+import {AuthenticationContext} from '../../../context/authenticationContext';
+import {ResumeContext} from '../../../context/resumeContext';
+import {addWorkExperience} from '../../../Web3Client';
 import {ContractCompaniesContext} from "../../../context/contractCompaniesContext";
 import {monthsList} from "../../../services/helper/helper";
+
 const useStyles = createStyles((theme) => ({
     button: {
         borderTopRightRadius: 0,
@@ -41,16 +57,17 @@ const useStyles = createStyles((theme) => ({
         borderBottomLeftRadius: 0,
         border: 0,
         borderLeft: `1px solid ${theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white
-            }`,
+        }`,
     },
 
 
 }));
+
 function Experience() {
-    const { classes, theme } = useStyles();
-    const { providerStatus } = useContext(AuthenticationContext)
+    const {classes, theme} = useStyles();
+    const {providerStatus} = useContext(AuthenticationContext)
     const context = useContext(ResumeContext)
-    const { companiesList } = useContext(ContractCompaniesContext)
+    const {companiesList} = useContext(ContractCompaniesContext)
     console.log(companiesList)
     const form = useForm({
         initialValues: {
@@ -67,7 +84,7 @@ function Experience() {
         },
 
         validate: {
-            institution: (value) => (value ? companiesList.some(item => item.hasOwnProperty('value') && item["value"] === value)?null:"Institution is not registered" : "Institution must not be empty"),
+            institution: (value) => (value ? companiesList.some(item => item.hasOwnProperty('value') && item["value"] === value) ? null : "Institution is not registered" : "Institution must not be empty"),
             designation: (value) => (value ? null : "Designation  must not be empty"),
             from_month: (value) => (value ? null : "From Month  must not be empty"),
             from_year: (value) => (value ? null : "From Year  must not be empty"),
@@ -77,66 +94,88 @@ function Experience() {
         },
     });
     useEffect(() => {
-       
+
         form.setValues({
-            designation:context.resumeData?.experience?context.resumeData?.experience:form.values.designation,
-            institution:context.resumeData?.company_names?context.resumeData?.company_names:form.values.institution
+            designation: context.resumeData?.experience ? context.resumeData?.experience : form.values.designation,
+            institution: context.resumeData?.company_names ? context.resumeData?.company_names : form.values.institution
 
         })
-      
-    
 
-}, [context.resumeData])
+
+    }, [context.resumeData])
+    useEffect(() => {
+        if (form.values.currently_working === true) {
+            form.setValues((prev) => {
+
+                return {
+                    ...prev,
+                    to_month: null,
+                    to_year: null,
+
+                }
+
+
+            })
+        }
+
+
+    }, [form.values.currently_working])
 
     const handleSubmit = (payload) => {
-        const data = { ...payload, walletAddress: providerStatus.connectedAccount }
+        const data = {...payload, walletAddress: providerStatus.connectedAccount}
         console.log(payload)
-const contractData ={
-    issuingOrganization:payload.institution,
-    designation:payload.designation,
-    fromMonth: parseInt(payload.from_month),
-    fromYear:parseInt(payload.from_year),
-    toMonth:parseInt(payload.to_month),
-    toYear:parseInt(payload.to_year),
-    isCurrentJob:payload.currently_working
+        const contractData = {
+            issuingOrganization: payload.institution,
+            designation: payload.designation,
+            fromMonth: parseInt(payload.from_month),
+            fromYear: parseInt(payload.from_year),
+            toMonth: parseInt(payload.to_month),
+            toYear: parseInt(payload.to_year),
+            isCurrentJob: payload.currently_working
 
-}
-console.log(contractData)
-        addWorkExperience(providerStatus.connectedAccount,contractData ).then(res=>{
+        }
+
+
+        console.log(contractData)
+        addWorkExperience(providerStatus.connectedAccount, contractData).then(res => {
             console.log(res)
-        })
-        console.log(data)
-        axios.post('http://localhost:3001/user/create-user-experience', data)
-            .then(response => {
+            if(res){
+                console.log(data)
+                axios.post('http://localhost:3001/user/create-user-experience', data)
+                    .then(response => {
 
-                if (response.status === 200) {
-                    console.log('User Experience Added !');
-                    console.log('Response:', response.data);
-                    showNotification({
-                        title: 'User Experience',
-                        message: "User Experience Added Successfully",
+                        if (response.status === 200) {
+                            console.log('User Experience Added !');
+                            console.log('Response:', response.data);
+                            showNotification({
+                                title: 'User Experience',
+                                message: "User Experience Added Successfully",
+                            })
+
+                        } else {
+                            console.error('Failed to add user Experience:', response.statusText);
+                        }
                     })
+                    .catch(error => {
+                        console.log(error)
+                        showNotification({
+                            title: 'User Experience not Added Successfully',
+                            message: JSON.stringify(error.response.data),
+                        })
+                        console.error('Error creating user:', error);
+                    });
+            }
 
-                } else {
-                    console.error('Failed to add user Experience:', response.statusText);
-                }
-            })
-            .catch(error => {
-                console.log(error)
-                showNotification({
-                    title: 'User Experience not Added Successfully',
-                    message: JSON.stringify(error.response.data),
-                })
-                console.error('Error creating user:', error);
-            });}
+        })
+    }
     console.log(form.values)
     return (
         <Grid>
             <Grid.Col span={6}>
                 <form
-                    style={{ width: "100%" }}
+                    style={{width: "100%"}}
                     onSubmit={form.onSubmit((values, event) => {
-                        
+
                         handleSubmit(values)
                     })}
                 >
@@ -175,7 +214,7 @@ console.log(contractData)
                         />
                     </Group>
                     {
-                        (form.values.currently_working)?"":(<Group>
+                        (form.values.currently_working) ? "" : (<Group>
                             <Select
                                 m="sm"
                                 label="To Month"
@@ -254,23 +293,24 @@ console.log(contractData)
                     <Text mt="md" weight={600} size={19}>
                         Experience{" "}
                     </Text>
-                    <Divider />
-                    <div style={{ width: "100%" }}>
+                    <Divider/>
+                    <div style={{width: "100%"}}>
                         <Alert
 
                             m={10}
-                            title={`${form.values.designation ? form.values.designation : ""}`} >
+                            title={`${form.values.designation ? form.values.designation : ""}`}>
                             <Box>
                                 <Text tt="uppercase">Institution : {form.values.institution}</Text>
-                                <Group><Text>From Month :{form.values.from_month}</Text><Text>From Year : {form.values.from_year}</Text> </Group>
-                                <Group><Text>To Month : {form.values.to_month}</Text> <Text>To Year :{form.values.to_year}</Text></Group>
+                                <Group><Text>From Month :{form.values.from_month}</Text><Text>From Year
+                                    : {form.values.from_year}</Text> </Group>
+                                <Group><Text>To Month : {form.values.to_month}</Text> <Text>To Year
+                                    :{form.values.to_year}</Text></Group>
                                 <Group><Text>City : {form.values.city}</Text> <Text>Country{form.values.country}</Text></Group>
-                                {form.values.currently_working ? <Badge size="lg" radius="xl" color="teal" >
+                                {form.values.currently_working ? <Badge size="lg" radius="xl" color="teal">
                                     Currently Working
-                                </Badge> : <Badge size="lg" radius="xl" color="red" >
+                                </Badge> : <Badge size="lg" radius="xl" color="red">
                                     Not Working Currently
                                 </Badge>}
-
 
 
                             </Box>

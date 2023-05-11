@@ -86,7 +86,7 @@ function Education() {
         form.setValues({
             institution: context.resumeData?.college_name?context.resumeData?.college_name:form.values.institution,
             degree: context.resumeData?.degree?.[0]?context.resumeData?.degree[0]:form.values.degree,
-          
+
         })
 
 
@@ -105,29 +105,34 @@ function Education() {
             toYear: parseInt(payload.to_year),
         }
         addDegree(providerStatus.connectedAccount, contractData).then(res=>{
-            axios.post('http://localhost:3001/user/create-user-education', data)
-                .then(response => {
+            if(res){
+                axios.post('http://localhost:3001/user/create-user-education', data)
+                    .then(response => {
 
-                    if (response.status === 200) {
-                        console.log('User Education Added !');
-                        console.log('Response:', response.data);
-                        showNotification({
-                            title: 'User Education',
-                            message: "User Education Added Successfully",
-                        })
+                        if (response.status === 200) {
+                            console.log('User Education Added !');
+                            console.log('Response:', response.data);
+                            showNotification({
+                                title: 'User Education',
+                                message: "User Education Added Successfully",
+                            })
 
-                    } else {
-                        console.error('Failed to add user education:', response.statusText);
-                    }
-                })
-                .catch(error => {
-                    console.log(error)
-                    showNotification({
-                        title: 'User Education not Added Successfully',
-                        message: JSON.stringify(error.response.data),
+                        } else {
+                            console.error('Failed to add user education:', response.statusText);
+                        }
                     })
-                    console.error('Error creating user:', error);
-                });
+                    .catch(error => {
+                        console.log(error)
+                        showNotification({
+                            title: 'User Education not Added Successfully',
+                            message: JSON.stringify(error.response.data),
+                        })
+                        console.error('Error creating user:', error);
+                    });
+
+            }
+
+
         }).catch(err=>{
             console.log(err)
         })

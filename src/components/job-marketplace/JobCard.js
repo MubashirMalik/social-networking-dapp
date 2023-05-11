@@ -106,7 +106,10 @@ useEffect(()=>{
         headline:applicantData?.headline,
         location:applicantData?.location,
         website_portfolio:applicantData?.website_portfolio,
-        city:applicantData?.city
+        city:applicantData?.city,
+        github:applicantData?.github,
+        linked_in:applicantData?.linked_in,
+
     })
 
 
@@ -139,8 +142,8 @@ useEffect(()=>{
 
 
         const rankingPayload = {
-            "walletAddress": { "walletAddress": applicantData?.walletAddress },
-            "updateValue": { "ranking": ranking }
+          "walletAddress": applicantData?.walletAddress ,
+        "ranking": ranking
         }
 
         axios.put("http://localhost:3001/user/update-user", rankingPayload).then((response) => {
@@ -215,6 +218,34 @@ useEffect(()=>{
             setActive(1)
         }
 
+    }
+
+    const handleUpdate = (payload) => {
+        const data = { ...form.values , walletAddress:providerStatus.connectedAccount }
+
+        axios.put('http://localhost:3001/user/update-user', data)
+            .then(response => {
+                if (response.status === 200) {
+                    setActive(1)
+                    console.log('User Updated successfully!');
+                    console.log('Response:', response.data);
+                    showNotification({
+                        title: 'User Updated',
+                        message: "User Updated Successfully",
+                    })
+
+                } else {
+                    console.error('Failed to create user:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                showNotification({
+                    title: 'User Updated not Successfull',
+                    message: JSON.stringify(error.response.data),
+                })
+                console.error('Error Updating user:', error);
+            });
     }
     return (
         <>
@@ -313,7 +344,9 @@ useEffect(()=>{
                                     gap: "10px",
                                     marginTop: "10px",
                                 }}
-                            >
+                            > <Button className={classes.colorOutlineButton} onClick={handleUpdate} mt="sm">
+                                Update
+                            </Button>
                                 <Button className={classes.colorButton} mt="sm" type="submit">
                                     Save
                                 </Button>
@@ -563,11 +596,10 @@ useEffect(()=>{
                     </div>
 
                     <Button
-                        disabled={providerStatus.isCompany?true:false}
-                        style={{backgroundColor:providerStatus.isCompany?null:"#1cc7d0"}}
+                        disabled={providerStatus.isCompany?true:providerStatus.connectedAccount==""?true:false}
+                        style={{backgroundColor:providerStatus.isCompany?null:providerStatus.connectedAccount==""?null:"#1cc7d0"}}
                     onClick={()=>{
-                    setOpened(true)}
-                    }
+                    setOpened(true)}}
                     >Apply</Button>
 
 

@@ -25,6 +25,7 @@ const useStyles = createStyles((theme) => ({
 
         }
     },
+
     colorOutlineButton: {
         borderColor: "#1cc7d0",
         backgroundColor: "white",
@@ -79,13 +80,13 @@ function Basic() {
     });
 
     useEffect(() => {
-       
+
             form.setValues({
                 full_name:context.resumeData.name,
                 wallet_address:providerStatus.connectedAccount
             })
-          
-        
+
+
 
     }, [context.resumeData,providerStatus.connectedAccount])
     useEffect(() => {
@@ -138,6 +139,32 @@ function Basic() {
                     message: JSON.stringify(error.response.data),
                 })
                 console.error('Error creating user:', error);
+            });
+    }
+    const handleUpdate = (payload) => {
+        const data = { ...form.values , walletAddress:providerStatus.connectedAccount }
+
+        axios.put('http://localhost:3001/user/update-user', data)
+            .then(response => {
+                if (response.status === 200) {
+                    console.log('User Updated successfully!');
+                    console.log('Response:', response.data);
+                    showNotification({
+                        title: 'User Updated',
+                        message: "User Updated Successfully",
+                    })
+
+                } else {
+                    console.error('Failed to create user:', response.statusText);
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                showNotification({
+                    title: 'User Updated not Successfull',
+                    message: JSON.stringify(error.response.data),
+                })
+                console.error('Error Updating user:', error);
             });
     }
     return (
@@ -228,6 +255,10 @@ function Basic() {
                             marginTop: "10px",
                         }}
                     >
+                        <Button className={classes.colorOutlineButton} onClick={handleUpdate} mt="sm">
+                            Update
+                        </Button>
+
                         <Button className={classes.colorButton} mt="sm" type="submit">
                             Save
                         </Button>
@@ -297,12 +328,6 @@ function Basic() {
                         Website: &nbsp;{" "} {form.values.website_portfolio}
                     </Text>
 
-                    <div >
-
-                        <Text
-                            style={{ display: "flex",width:"100%" ,wordWrap:"break-word" }}
-                            size={14}>{form.values.bio} </Text>
-                    </div>
 
 
 

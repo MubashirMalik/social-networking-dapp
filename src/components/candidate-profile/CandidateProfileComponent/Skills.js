@@ -35,9 +35,9 @@ function Skills() {
         setSkills(skills.filter(sk => sk !== skill))
     }
     useEffect(() => {
-        
+
         if (context.resumeData.skills) {
-          
+
             setSkills(context.resumeData.skills)
         }
 
@@ -48,8 +48,8 @@ function Skills() {
     const handleSubmit = () => {
 
         const updatePayload = {
-            "walletAddress": { "walletAddress": providerStatus.connectedAccount },
-            "updateValue": { "skills": skills }
+            "walletAddress":  providerStatus.connectedAccount ,
+            "skills": skills
         }
 
         axios.put("http://localhost:3001/user/update-user", updatePayload).then((response) => {
@@ -96,24 +96,7 @@ function Skills() {
                 </FlexRow>
 
             </Grid.Col>
-            <Grid.Col span={6}>
-                <Card
-                    withBorder
-                    shadow="sm"
-                    radius="md"
-                >
-                    <Text mt="md" weight={600} size={19}>
-                        Skills{" "}
-                    </Text>
-                    <Divider />
-                    <List>
-                        {skills?.map(item => (
-                            <List.Item>{item}</List.Item>
-                        ))}
-                    </List>
-                </Card>
 
-            </Grid.Col>
 
 
 

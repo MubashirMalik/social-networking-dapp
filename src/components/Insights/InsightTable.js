@@ -62,7 +62,7 @@ function InsightTable(props) {
             console.log(err)
         }) */
 
-        getPosterJobs("0x123").then(res => {
+        getPosterJobs(providerStatus.connectedAccount).then(res => {
             console.log(res)
             const parsedValues = res.posterJobs.map(item => (
                 {
@@ -89,9 +89,9 @@ function InsightTable(props) {
                 console.log(err)
             })
         }
-    
+
     }, [selectedJob,row])
-    
+
     return (
         <Box sx={{ height: "65vh" }}>
             <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
@@ -159,7 +159,7 @@ function InsightTable(props) {
                             return jobId.datePosted;
                         },
                     },
-                    
+
                     {
                         accessor: "Ranking",
                         title: "Ranking",

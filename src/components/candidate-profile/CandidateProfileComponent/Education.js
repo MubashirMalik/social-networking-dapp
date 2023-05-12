@@ -75,10 +75,6 @@ function Education() {
             to_year: (value) => (value ? null : "To Year  must not be empty"),
             city: (value) => (value ? null : "City must not be empty"),
             country: (value) => (value ? null : "Country  must not be empty"),
-
-
-
-
         },
     });
     useEffect(() => {
@@ -144,7 +140,30 @@ function Education() {
             <Grid.Col span={6}>   <form
                 style={{ width: "100%" }}
                 onSubmit={form.onSubmit((values, event) => {
-                    handleSubmit(values)
+
+if(form.values.to_month && form.values.to_year){
+    // Convert month name to month number
+    const monthNum1 = new Date(`${form.values.from_month} 1, ${form.values.from_year}`).getMonth() + 1;
+    const monthNum2 = new Date(`${form.values.to_month} 1, ${form.values.to_year}`).getMonth() + 1;
+
+// Convert year string to integer
+    const year1 = parseInt(form.values.from_year);
+    const year2 = parseInt(form.values.to_year);
+
+// Create date objects for the two dates
+    const date1 = new Date(`${year1}-${monthNum1}-01`);
+    const date2 = new Date(`${year2}-${monthNum2}-01`);
+    if (date1 > date2) {
+        form.setFieldError('from_month', 'Must Be less than To Month');
+        form.setFieldError('from_year', 'Must Be less than To Year');
+    } else if (date2 > date1) {
+        handleSubmit(values)
+    } else {
+        handleSubmit(values)
+    }
+}
+
+
 
                 })}
             >

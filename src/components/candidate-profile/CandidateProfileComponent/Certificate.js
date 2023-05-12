@@ -2,7 +2,7 @@ import { Button, createStyles, Group, Select, Switch, Textarea, Grid, Badge,Card
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import axios from 'axios';
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useContext } from 'react';
 import { AuthenticationContext } from '../../../context/authenticationContext';
 import {addCertification, getAllCompanies} from "../../../Web3Client";
@@ -75,6 +75,25 @@ function Certificate() {
 
         },
     });
+
+
+    useEffect(() => {
+        if (form.values.expire === true) {
+            form.setValues((prev) => {
+
+                return {
+                    ...prev,
+                    exp_month: null,
+                    exp_year: null,
+
+                }
+
+
+            })
+        }
+
+
+    }, [form.values.expire])
     console.log(form.values.institution)
     console.log(companiesList)
 
@@ -128,7 +147,32 @@ function Certificate() {
             <Grid.Col span={6}>   <form
                 style={{ width: "100%" }}
                 onSubmit={form.onSubmit((values, event) => {
-                    handleSubmit(values)
+
+                    if(form.values.exp_month && form.values.exp_year) {
+                        console.log("asd")
+                        // Convert month name to month number
+                        const monthNum1 = new Date(`${form.values.issue_month} 1, ${form.values.issue_year}`).getMonth() + 1;
+                        const monthNum2 = new Date(`${form.values.exp_month} 1, ${form.values.exp_year}`).getMonth() + 1;
+
+// Convert year string to integer
+                        const year1 = parseInt(form.values.issue_year);
+                        const year2 = parseInt(form.values.exp_year);
+
+// Create date objects for the two dates
+                        const date1 = new Date(`${year1}-${monthNum1}-01`);
+                        const date2 = new Date(`${year2}-${monthNum2}-01`);
+                        if (date1 > date2) {
+                            form.setFieldError('issue_month', 'Must Be less than To Month');
+                            form.setFieldError('issue_year', 'Must Be less than To Year');
+                        } else if (date2 > date1) {
+                            handleSubmit(values)
+                        } else {
+                            handleSubmit(values)
+                        }
+
+                    }else{
+                        handleSubmit(values)
+                    }
 
                 })}
             >
